@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "genesis_website (static — npx serve)",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "/Users/sanjitaleti/Documents/genesis_website", "--listen", "3000", "--no-clipboard"],
+      "port": 3000
+    },
+    {
+      "name": "Woodblock (static — python3)",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "3001", "--directory", "/Users/sanjitaleti/Documents/claude/Woodblock"],
+      "port": 3001
+    }
+  ]
+}

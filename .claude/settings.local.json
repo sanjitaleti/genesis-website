@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls /Users/sanjitaleti/Documents/ | grep -i claude)",
+      "Bash(mkdir -p \"/Users/sanjitaleti/Documents/ballards boxing gym\")",
+      "Bash(cp /Users/sanjitaleti/Documents/genesis_website/index.html \"/Users/sanjitaleti/Documents/ballards boxing gym/index.html\")",
+      "Bash(mkdir -p /Users/sanjitaleti/Documents/html-assignment/html)",
+      "Bash(cp /Users/sanjitaleti/Documents/genesis_website/html/about.html /Users/sanjitaleti/Documents/html-assignment/html/about.html)"
+    ]
+  }
+}
