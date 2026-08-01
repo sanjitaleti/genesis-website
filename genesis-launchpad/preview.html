@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Genesis Launchpad — Ship AI products, faster</title>
+<meta name="description" content="The infrastructure layer for teams shipping AI products. Deploy, observe, and scale without the busywork." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink: { DEFAULT: "#050505", 800: "#0A0A0A", 700: "#111111" },
+          cyan: { DEFAULT: "#00E5FF" },
+          pink: { DEFAULT: "#FF4D8D" },
+        },
+        fontFamily: { sans: ["Inter", "system-ui", "sans-serif"] },
+        boxShadow: {
+          glass: "0 8px 40px -12px rgba(0,0,0,0.6)",
+          "glow-cyan": "0 0 40px -8px rgba(0,229,255,0.45)",
+        },
+      },
+    },
+  };
+</script>
+<style>
+  :root { --ink:#050505; }
+  html, body { background:#050505; color:#fafafa; -webkit-font-smoothing:antialiased; }
+  ::selection { background: rgba(0,229,255,.22); color:#fff; }
+  ::-webkit-scrollbar { width:10px; }
+  ::-webkit-scrollbar-track { background:#050505; }
+  ::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:999px; border:2px solid #050505; }
+  ::-webkit-scrollbar-thumb:hover { background:rgba(0,229,255,.35); }
+
+  @media (pointer: fine) { * { cursor: none !important; } }
+
+  .text-muted { color: rgba(250,250,250,.62); }
+  .text-faint { color: rgba(250,250,250,.40); }
+  .eyebrow { font-size:.75rem; font-weight:500; text-transform:uppercase; letter-spacing:.16em; color:rgba(0,229,255,.8); }
+
+  .glass { position:relative; border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.04);
+    border-radius:1rem; box-shadow:0 8px 40px -12px rgba(0,0,0,.6); backdrop-filter:blur(24px); }
+  .glass::before { content:""; position:absolute; left:0; right:0; top:0; height:1px; pointer-events:none;
+    background:linear-gradient(to right, transparent, rgba(255,255,255,.20), transparent); }
+
+  .grain { background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  /* chrome wordmark logo */
+  .chrome-logo { font-weight:800; font-style:italic; line-height:1; letter-spacing:-.01em;
+    background:linear-gradient(115deg,#c8d0d8 0%,#fff 18%,#9aa4af 34%,#f2f5f8 52%,#aab4bf 70%,#fff 86%,#c8d0d8 100%);
+    background-size:250% 100%; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
+    filter:drop-shadow(0 -1px 5px rgba(0,229,255,.4)) drop-shadow(0 2px 6px rgba(255,77,141,.3)); animation:chrome-sweep 7s linear infinite; }
+  @keyframes chrome-sweep { from{background-position:0 0;} to{background-position:250% 0;} }
+
+  /* masked headline reveal */
+  .mask { display:block; overflow:hidden; padding-bottom:.08em; }
+  .mask > span { display:block; transform:translateY(115%); transition:transform 1s cubic-bezier(.16,1,.3,1); }
+  .reveal-head.in .mask > span { transform:translateY(0); }
+  .reveal-head .mask:nth-child(2) > span { transition-delay:.12s; }
+
+  /* generic scroll reveal */
+  .reveal { opacity:0; transform:translateY(24px); transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity:1; transform:none; }
+
+  /* marquee */
+  @keyframes marquee { from{transform:translateX(0);} to{transform:translateX(-50%);} }
+  .marquee-track { animation: marquee 28s linear infinite; }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+
+  /* custom cursor */
+  #cursorRing { position:fixed; left:0; top:0; width:32px; height:32px; border:1px solid #fff; border-radius:999px;
+    mix-blend-mode:difference; transform:translate(-50%,-50%); pointer-events:none; z-index:90;
+    transition:width .3s, height .3s, opacity .3s; will-change:transform; }
+  #cursorDot { position:fixed; left:0; top:0; width:6px; height:6px; background:#00E5FF; border-radius:999px;
+    transform:translate(-50%,-50%); pointer-events:none; z-index:90; will-change:transform; }
+
+  /* preloader */
+  #pre { position:fixed; inset:0; z-index:100; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#050505; }
+  #pre.done { transform:translateY(-100%); transition:transform .9s cubic-bezier(.76,0,.24,1); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .mask > span { opacity:1 !important; transform:none !important; transition:none; }
+    .marquee-track { animation:none; }
+    @media (pointer: fine) { * { cursor:auto !important; } }
+  }
+</style>
+</head>
+<body class="font-sans antialiased">
+
+<!-- WebGL backdrop -->
+<canvas id="gl" class="fixed inset-0 -z-10 h-full w-full"></canvas>
+<div aria-hidden class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+  <div class="absolute inset-0" style="background:radial-gradient(120% 80% at 50% 0%, transparent 45%, rgba(5,5,5,.85) 100%)"></div>
+  <div class="grain absolute inset-0 opacity-[.04]" style="mix-blend-mode:screen"></div>
+</div>
+
+<!-- scroll progress -->
+<div id="progress" class="fixed inset-x-0 top-0 z-[80] h-px origin-left scale-x-0 bg-cyan shadow-glow-cyan"></div>
+
+<!-- custom cursor -->
+<div id="cursorRing"></div>
+<div id="cursorDot"></div>
+
+<!-- preloader -->
+<div id="pre">
+  <div class="flex items-baseline gap-2.5">
+    <span class="chrome-logo" style="font-size:2.25rem">GENESIS</span>
+    <span class="text-xl font-semibold tracking-tight text-faint">LP</span>
+  </div>
+  <div class="mt-10 flex items-baseline gap-1"><span id="preNum" class="text-6xl md:text-7xl font-semibold tabular-nums tracking-tight">0</span><span class="text-2xl text-cyan">%</span></div>
+  <div class="mt-6 h-px w-48 overflow-hidden bg-white/10"><div id="preBar" class="h-full origin-left scale-x-0 bg-cyan" style="transition:transform 2.1s cubic-bezier(.22,1,.36,1)"></div></div>
+</div>
+
+<!-- Nav -->
+<header id="nav" class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-colors duration-300">
+  <nav class="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6 md:px-8">
+    <a href="#" class="group inline-flex items-baseline gap-2.5" data-cursor>
+      <span class="chrome-logo" style="font-size:1.2rem">GENESIS</span>
+      <span class="text-sm font-semibold tracking-tight text-faint">LP</span>
+    </a>
+    <ul class="hidden items-center gap-8 md:flex text-sm">
+      <li><a href="#features" class="text-muted hover:text-white transition-colors" data-cursor>Features</a></li>
+      <li><a href="#solutions" class="text-muted hover:text-white transition-colors" data-cursor>Solutions</a></li>
+      <li><a href="#stats" class="text-muted hover:text-white transition-colors" data-cursor>Platform</a></li>
+      <li><a href="#cta" class="text-muted hover:text-white transition-colors" data-cursor>Pricing</a></li>
+    </ul>
+    <a href="#cta" data-cursor data-magnetic class="hidden md:inline-flex items-center gap-2 rounded-full border border-white/[0.12] bg-white/[0.06] px-6 py-3 text-sm font-medium transition hover:border-cyan/40 hover:bg-white/[0.09] hover:shadow-glow-cyan">Get a demo →</a>
+    <button id="burger" aria-label="Menu" data-cursor class="grid h-10 w-10 place-items-center rounded-lg border border-white/10 bg-white/[0.04] md:hidden">
+      <span class="flex flex-col gap-[5px]"><span class="block h-px w-5 bg-white"></span><span class="block h-px w-5 bg-white"></span><span class="block h-px w-5 bg-white"></span></span>
+    </button>
+  </nav>
+  <div id="mobile" class="hidden border-t border-white/[0.08] bg-ink/90 px-6 py-6 backdrop-blur-xl md:hidden">
+    <a href="#features" class="block border-b border-white/[0.06] py-4 text-xl">Features</a>
+    <a href="#solutions" class="block border-b border-white/[0.06] py-4 text-xl">Solutions</a>
+    <a href="#stats" class="block border-b border-white/[0.06] py-4 text-xl">Platform</a>
+    <a href="#cta" class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-cyan px-6 py-3 text-sm font-semibold text-ink">Get a demo →</a>
+  </div>
+</header>
+
+<main class="relative z-10">
+  <!-- Hero -->
+  <section class="relative overflow-hidden pt-44 md:pt-52">
+    <div class="mx-auto w-full max-w-6xl px-6 md:px-8">
+      <div class="max-w-4xl">
+        <span class="reveal inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1.5 text-xs text-muted backdrop-blur-md">
+          <span class="h-1.5 w-1.5 rounded-full bg-cyan shadow-glow-cyan"></span> Now in private beta — v1.0
+        </span>
+        <h1 id="heroHead" class="reveal-head mt-6 text-[clamp(2.75rem,6.5vw,6rem)] font-semibold leading-[1.0]" style="letter-spacing:-0.04em">
+          <span class="mask"><span>Ship AI products,</span></span>
+          <span class="mask"><span class="text-pink">without the busywork.</span></span>
+        </h1>
+        <p class="reveal mt-7 max-w-xl text-lg md:text-xl leading-relaxed text-muted">
+          Genesis Launchpad is the infrastructure layer for teams building with AI. Deploy, observe, and scale your models from one calm, deliberate control plane.
+        </p>
+        <div class="reveal mt-10 flex flex-wrap items-center gap-5">
+          <a href="#cta" data-cursor data-magnetic class="inline-flex items-center gap-2 rounded-full bg-cyan px-6 py-3 text-sm font-semibold text-ink transition hover:shadow-glow-cyan">Get a demo →</a>
+          <a href="#features" data-cursor data-magnetic class="inline-flex items-center gap-2 rounded-full border border-white/[0.12] bg-white/[0.06] px-6 py-3 text-sm font-medium transition hover:border-cyan/40 hover:bg-white/[0.09]">Explore the platform →</a>
+        </div>
+      </div>
+
+      <div class="reveal mt-20 glass overflow-hidden p-2" data-cursor>
+        <div class="flex items-center gap-2 px-4 py-3">
+          <span class="h-3 w-3 rounded-full bg-white/10"></span><span class="h-3 w-3 rounded-full bg-white/10"></span><span class="h-3 w-3 rounded-full bg-white/10"></span>
+          <span class="ml-3 font-mono text-xs text-faint">launchpad — deploy · observe · scale</span>
+        </div>
+        <div class="grid gap-px overflow-hidden rounded-xl border border-white/[0.06] md:grid-cols-3" style="background:rgba(255,255,255,.02)">
+          <div class="p-6" style="background:rgba(5,5,5,.4)"><div class="font-mono text-xs uppercase tracking-wider text-faint">Requests / min</div><div class="mt-2 text-2xl font-semibold">48,210</div><div class="mt-1 text-xs" style="color:rgba(0,229,255,.8)">+12.4%</div></div>
+          <div class="p-6" style="background:rgba(5,5,5,.4)"><div class="font-mono text-xs uppercase tracking-wider text-faint">p95 latency</div><div class="mt-2 text-2xl font-semibold">212ms</div><div class="mt-1 text-xs" style="color:rgba(0,229,255,.8)">−8.1%</div></div>
+          <div class="p-6" style="background:rgba(5,5,5,.4)"><div class="font-mono text-xs uppercase tracking-wider text-faint">Error rate</div><div class="mt-2 text-2xl font-semibold">0.02%</div><div class="mt-1 text-xs" style="color:rgba(0,229,255,.8)">stable</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust marquee -->
+  <section class="py-16 md:py-20">
+    <div class="mx-auto w-full max-w-6xl px-6 md:px-8 reveal flex flex-col items-center gap-8">
+      <span class="text-xs uppercase tracking-[0.16em] text-faint">Trusted by teams shipping AI at scale</span>
+    </div>
+    <div class="marquee relative mt-8 flex overflow-hidden" style="-webkit-mask-image:linear-gradient(to right,transparent,black 12%,black 88%,transparent);mask-image:linear-gradient(to right,transparent,black 12%,black 88%,transparent)">
+      <div class="marquee-track flex shrink-0 items-center gap-16 pr-16 text-xl font-medium text-muted" id="mq"></div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="border-t border-white/[0.06] py-24 md:py-32">
+    <div class="mx-auto w-full max-w-6xl px-6 md:px-8">
+      <div class="reveal">
+        <span class="eyebrow">Why Genesis</span>
+        <h2 class="mt-4 max-w-3xl text-[clamp(1.75rem,3vw,2.75rem)] font-semibold leading-[1.1]" style="letter-spacing:-.025em">The platform disappears, so the product can lead.</h2>
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-muted">Everything you need to run AI in production, designed to get out of your way.</p>
+      </div>
+      <div class="mt-16 grid gap-6 md:grid-cols-3">
+        <div class="reveal tilt glass p-8"><h3 class="text-xl font-semibold">One control plane</h3><p class="mt-4 leading-relaxed text-muted">Deploy, version, and roll back every model from a single deliberate surface. No tab-juggling, no glue code.</p></div>
+        <div class="reveal tilt glass p-8"><h3 class="text-xl font-semibold">Observability built in</h3><p class="mt-4 leading-relaxed text-muted">Traces, costs, and p95 latency on every request — surfaced the moment they drift, not days later in a dashboard nobody opens.</p></div>
+        <div class="reveal tilt glass p-8"><h3 class="text-xl font-semibold">Scale that stays quiet</h3><p class="mt-4 leading-relaxed text-muted">Autoscaling that holds latency flat under load. You feel the traffic in the metrics, never in the product.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section id="stats" class="border-t border-white/[0.06] py-20">
+    <div class="mx-auto w-full max-w-6xl px-6 md:px-8">
+      <div class="reveal grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/[0.08] md:grid-cols-4">
+        <div class="p-8 text-center" style="background:rgba(255,255,255,.02)"><div class="count text-3xl md:text-4xl font-semibold text-cyan" data-val="99.99" data-dec="2" data-suffix="%">0</div><div class="mt-2 text-sm text-muted">Uptime across regions</div></div>
+        <div class="p-8 text-center" style="background:rgba(255,255,255,.02)"><div class="count text-3xl md:text-4xl font-semibold text-cyan" data-val="212" data-suffix="ms">0</div><div class="mt-2 text-sm text-muted">Median p95 latency</div></div>
+        <div class="p-8 text-center" style="background:rgba(255,255,255,.02)"><div class="count text-3xl md:text-4xl font-semibold text-cyan" data-val="12" data-suffix="k+">0</div><div class="mt-2 text-sm text-muted">Models in production</div></div>
+        <div class="p-8 text-center" style="background:rgba(255,255,255,.02)"><div class="count text-3xl md:text-4xl font-semibold text-cyan" data-val="40" data-suffix="%">0</div><div class="mt-2 text-sm text-muted">Lower infra spend</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solutions -->
+  <section id="solutions" class="border-t border-white/[0.06] py-24 md:py-32">
+    <div class="mx-auto w-full max-w-6xl px-6 md:px-8">
+      <div class="reveal"><span class="eyebrow">Solutions</span><h2 class="mt-4 max-w-3xl text-[clamp(1.75rem,3vw,2.75rem)] font-semibold leading-[1.1]" style="letter-spacing:-.025em">From shadow infrastructure to a single calm surface.</h2></div>
+      <div class="mt-16 grid gap-6 md:grid-cols-2">
+        <div class="reveal tilt glass p-8"><div class="flex items-start gap-3"><span class="mt-1 text-faint">✕</span><h3 class="text-lg font-semibold text-muted">Deploys break in the dark.</h3></div><div class="mt-5 flex items-start gap-3 border-t border-white/[0.06] pt-5"><span class="mt-1 text-cyan">→</span><p class="leading-relaxed">Versioned endpoints with instant rollback. Every change is observable and reversible before a user ever feels it.</p></div></div>
+        <div class="reveal tilt glass p-8"><div class="flex items-start gap-3"><span class="mt-1 text-faint">✕</span><h3 class="text-lg font-semibold text-muted">Costs surface a month too late.</h3></div><div class="mt-5 flex items-start gap-3 border-t border-white/[0.06] pt-5"><span class="mt-1 text-cyan">→</span><p class="leading-relaxed">Real-time per-route spend with anomaly alerts, so the surprise shows up in a notification, not an invoice.</p></div></div>
+        <div class="reveal tilt glass p-8"><div class="flex items-start gap-3"><span class="mt-1 text-faint">✕</span><h3 class="text-lg font-semibold text-muted">Latency hides until it's a complaint.</h3></div><div class="mt-5 flex items-start gap-3 border-t border-white/[0.06] pt-5"><span class="mt-1 text-cyan">→</span><p class="leading-relaxed">p95 tracing on every request and autoscaling that holds it flat under load.</p></div></div>
+        <div class="reveal tilt glass p-8"><div class="flex items-start gap-3"><span class="mt-1 text-faint">✕</span><h3 class="text-lg font-semibold text-muted">Quality regresses silently.</h3></div><div class="mt-5 flex items-start gap-3 border-t border-white/[0.06] pt-5"><span class="mt-1 text-cyan">→</span><p class="leading-relaxed">An eval harness gates every version. You ship only when the numbers still hold.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta" class="py-24 md:py-32">
+    <div class="mx-auto w-full max-w-6xl px-6 md:px-8">
+      <div class="reveal glass relative overflow-hidden px-8 py-16 text-center md:px-16 md:py-24">
+        <div class="pointer-events-none absolute -top-1/2 left-1/2 h-[60%] w-[60%] -translate-x-1/2 rounded-full" style="background:rgba(0,229,255,.08);filter:blur(100px)"></div>
+        <h2 class="relative mx-auto max-w-2xl text-[clamp(1.875rem,3.5vw,3rem)] font-semibold leading-[1.08]" style="letter-spacing:-.03em">Ready to launch?</h2>
+        <p class="relative mx-auto mt-5 max-w-xl text-lg leading-relaxed text-muted">Set it up once. Deploy, observe, and scale without the busywork. See Genesis Launchpad running on your own stack.</p>
+        <div class="relative mt-10 flex flex-wrap items-center justify-center gap-4">
+          <a href="#" data-cursor data-magnetic class="inline-flex items-center gap-2 rounded-full bg-cyan px-6 py-3 text-sm font-semibold text-ink transition hover:shadow-glow-cyan">Get a demo →</a>
+          <a href="#" data-cursor data-magnetic class="inline-flex items-center gap-2 rounded-full border border-white/[0.12] bg-white/[0.06] px-6 py-3 text-sm font-medium transition hover:border-cyan/40 hover:bg-white/[0.09]">View pricing →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="relative z-10 border-t border-white/[0.08]" style="background:rgba(10,10,10,.4)">
+  <div class="mx-auto w-full max-w-6xl px-6 md:px-8 py-16">
+    <div class="flex flex-col items-start justify-between gap-4 text-sm text-faint md:flex-row md:items-center">
+      <span>© <span id="yr"></span> Genesis Launchpad. All rights reserved.</span>
+      <span class="inline-flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-cyan shadow-glow-cyan"></span> All systems operational</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("yr").textContent = new Date().getFullYear();
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const fine = window.matchMedia("(pointer: fine)").matches;
+
+  /* ---------- WebGL shader backdrop ---------- */
+  (function(){
+    const canvas = document.getElementById("gl");
+    const gl = canvas.getContext("webgl", { antialias:false, alpha:false });
+    if(!gl){ canvas.style.display="none"; return; }
+    const VERT = "attribute vec2 a_pos; void main(){ gl_Position = vec4(a_pos,0.0,1.0); }";
+    const FRAG = `
+      precision highp float;
+      uniform vec2 u_res; uniform float u_time; uniform vec2 u_mouse;
+      float hash(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }
+      float noise(vec2 p){ vec2 i=floor(p),f=fract(p); float a=hash(i),b=hash(i+vec2(1,0)),c=hash(i+vec2(0,1)),d=hash(i+vec2(1,1));
+        vec2 u=f*f*(3.0-2.0*f); return mix(a,b,u.x)+(c-a)*u.y*(1.0-u.x)+(d-b)*u.x*u.y; }
+      float fbm(vec2 p){ float v=0.0,a=0.5; for(int i=0;i<5;i++){ v+=a*noise(p); p*=2.0; a*=0.5; } return v; }
+      void main(){
+        vec2 uv=gl_FragCoord.xy/u_res.xy; vec2 p=uv; p.x*=u_res.x/u_res.y; float t=u_time*0.06;
+        vec2 q=vec2(fbm(p*2.0+t), fbm(p*2.0+vec2(5.2,1.3)-t));
+        vec2 r=vec2(fbm(p*2.0+q*1.6+vec2(1.7,9.2)+t*1.2), fbm(p*2.0+q*1.6+vec2(8.3,2.8)-t*0.8));
+        float f=fbm(p*2.0+r*1.8);
+        float cyanMask=smoothstep(0.55,0.95,f); float pinkMask=smoothstep(0.55,0.95,1.0-f);
+        vec3 col=vec3(0.0);
+        col+=vec3(0.0,0.9,1.0)*cyanMask*0.55;
+        col+=vec3(1.0,0.30,0.55)*pinkMask*0.42;
+        vec2 m=u_mouse; m.x*=u_res.x/u_res.y; col+=vec3(0.0,0.9,1.0)*smoothstep(0.6,0.0,distance(p,m))*0.10;
+        col*=smoothstep(1.25,0.2,length(uv-0.5))*0.85;
+        gl_FragColor=vec4(col,1.0);
+      }`;
+    function sh(type,src){ const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); return s; }
+    const prog=gl.createProgram();
+    gl.attachShader(prog,sh(gl.VERTEX_SHADER,VERT)); gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FRAG));
+    gl.linkProgram(prog); gl.useProgram(prog);
+    const buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+    const loc=gl.getAttribLocation(prog,"a_pos"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+    const uRes=gl.getUniformLocation(prog,"u_res"), uTime=gl.getUniformLocation(prog,"u_time"), uMouse=gl.getUniformLocation(prog,"u_mouse");
+    const mouse={x:.5,y:.5}, target={x:.5,y:.5};
+    addEventListener("mousemove",e=>{ target.x=e.clientX/innerWidth; target.y=1-e.clientY/innerHeight; },{passive:true});
+    const dpr=Math.min(devicePixelRatio||1,1.5);
+    function resize(){ const w=canvas.width=innerWidth*dpr|0, h=canvas.height=innerHeight*dpr|0; gl.viewport(0,0,w,h); gl.uniform2f(uRes,w,h); }
+    resize(); addEventListener("resize",resize);
+    const start=performance.now();
+    function render(now){ mouse.x+=(target.x-mouse.x)*.06; mouse.y+=(target.y-mouse.y)*.06;
+      gl.uniform1f(uTime,(now-start)/1000); gl.uniform2f(uMouse,mouse.x,mouse.y); gl.drawArrays(gl.TRIANGLES,0,3);
+      if(!reduce) requestAnimationFrame(render); }
+    render(start);
+  })();
+
+  /* ---------- Preloader ---------- */
+  (function(){
+    const pre=document.getElementById("pre");
+    if(reduce || sessionStorage.getItem("gl_intro")){ pre.remove(); document.documentElement.style.overflow=""; return; }
+    document.documentElement.style.overflow="hidden";
+    const num=document.getElementById("preNum");
+    requestAnimationFrame(()=>{ document.getElementById("preBar").style.transform="scaleX(1)"; });
+    let finished=false;
+    function finish(){ if(finished) return; finished=true; num.textContent="100";
+      sessionStorage.setItem("gl_intro","1"); document.documentElement.style.overflow="";
+      pre.classList.add("done");
+      pre.addEventListener("transitionend",()=>pre.remove(),{once:true});
+      setTimeout(()=>pre.remove(),1200); }
+    const t0=performance.now();
+    (function up(now){ if(finished) return; const t=Math.min((now-t0)/2100,1);
+      num.textContent=Math.round((1-Math.pow(1-t,3))*100);
+      if(t<1) requestAnimationFrame(up); else setTimeout(finish,400); })(t0);
+    // wall-clock safety: lift the curtain even if rAF is throttled/stalled
+    setTimeout(finish, 3000);
+  })();
+
+  /* ---------- Custom cursor + magnetic ---------- */
+  if(fine){
+    const ring=document.getElementById("cursorRing"), dot=document.getElementById("cursorDot");
+    let rx=innerWidth/2, ry=innerHeight/2, tx=rx, ty=ry, hover=false;
+    addEventListener("mousemove",e=>{ tx=e.clientX; ty=e.clientY; dot.style.transform=`translate(${e.clientX}px,${e.clientY}px) translate(-50%,-50%)`; },{passive:true});
+    addEventListener("mouseover",e=>{ hover=!!e.target.closest("a,button,[data-cursor]"); });
+    (function loop(){ rx+=(tx-rx)*.18; ry+=(ty-ry)*.18;
+      ring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%) scale(${hover?2.4:1})`;
+      ring.style.opacity=hover?".6":"1"; requestAnimationFrame(loop); })();
+
+    document.querySelectorAll("[data-magnetic]").forEach(el=>{
+      el.addEventListener("mousemove",e=>{ const r=el.getBoundingClientRect();
+        el.style.transform=`translate(${(e.clientX-(r.left+r.width/2))*.4}px,${(e.clientY-(r.top+r.height/2))*.4}px)`; });
+      el.addEventListener("mouseleave",()=>{ el.style.transform=""; el.style.transition="transform .4s cubic-bezier(.2,.7,.2,1)";
+        setTimeout(()=>el.style.transition="",400); });
+    });
+  } else { document.getElementById("cursorRing").style.display="none"; document.getElementById("cursorDot").style.display="none"; }
+
+  /* ---------- 3D tilt cards ---------- */
+  if(fine){
+    document.querySelectorAll(".tilt").forEach(card=>{
+      card.style.transformStyle="preserve-3d"; card.style.transition="transform .2s ease-out";
+      card.addEventListener("mousemove",e=>{ const r=card.getBoundingClientRect();
+        const px=(e.clientX-r.left)/r.width, py=(e.clientY-r.top)/r.height;
+        card.style.transform=`perspective(900px) rotateX(${(0.5-py)*8}deg) rotateY(${(px-0.5)*8}deg)`; });
+      card.addEventListener("mouseleave",()=>{ card.style.transform="perspective(900px) rotateX(0) rotateY(0)"; });
+    });
+  }
+
+  /* ---------- Nav bg + mobile menu ---------- */
+  const nav=document.getElementById("nav");
+  const progress=document.getElementById("progress");
+  function onScroll(){
+    const y=scrollY;
+    if(y>24){ nav.style.background="rgba(5,5,5,.7)"; nav.style.backdropFilter="blur(24px)"; nav.style.borderBottomColor="rgba(255,255,255,.08)"; }
+    else { nav.style.background="transparent"; nav.style.backdropFilter="none"; nav.style.borderBottomColor="transparent"; }
+    const max=document.documentElement.scrollHeight-innerHeight;
+    progress.style.transform=`scaleX(${max>0?y/max:0})`;
+  }
+  addEventListener("scroll",onScroll,{passive:true}); onScroll();
+  const burger=document.getElementById("burger"), mobile=document.getElementById("mobile");
+  burger.addEventListener("click",()=>mobile.classList.toggle("hidden"));
+  mobile.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>mobile.classList.add("hidden")));
+
+  /* ---------- Marquee content ---------- */
+  const brands=["Northwind","Atlas","Vantage","Helio","Quanta","Meridian","Orbital","Cinder"];
+  document.getElementById("mq").innerHTML=[...brands,...brands].map(b=>`<span class="whitespace-nowrap transition-colors hover:text-white" data-cursor>${b}</span>`).join("");
+
+  /* ---------- Scroll reveals + headline ---------- */
+  const io=new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }); },{rootMargin:"-80px"});
+  document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+  setTimeout(()=>document.getElementById("heroHead").classList.add("in"), reduce?0:450);
+
+  /* ---------- Count-up ---------- */
+  const cio=new IntersectionObserver((es)=>{ es.forEach(e=>{ if(!e.isIntersecting) return; const el=e.target; cio.unobserve(el);
+    const val=parseFloat(el.dataset.val), dec=parseInt(el.dataset.dec||"0"), suf=el.dataset.suffix||"";
+    if(reduce){ el.textContent=val.toFixed(dec)+suf; return; }
+    let settled=false;
+    const t0=performance.now(); (function tick(now){ if(settled) return; const t=Math.min((now-t0)/1600,1); const ev=1-Math.pow(1-t,3);
+      el.textContent=(val*ev).toFixed(dec)+suf; if(t<1) requestAnimationFrame(tick); else settled=true; })(t0);
+    // wall-clock safety: snap to final value even if rAF is throttled
+    setTimeout(()=>{ settled=true; el.textContent=val.toFixed(dec)+suf; }, 1900); }); },{rootMargin:"-60px"});
+  document.querySelectorAll(".count").forEach(el=>cio.observe(el));
+</script>
+</body>
+</html>

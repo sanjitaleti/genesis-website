@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Colour — cool-tinted near-black, one cyan signal, pink as a rare flag */
+  --color-paper: oklch(15% 0.012 240);
+  --color-paper-2: oklch(20% 0.012 240);
+  --color-paper-3: oklch(25% 0.012 240);
+  --color-ink: oklch(96% 0.005 230);
+  --color-ink-2: oklch(72% 0.01 230);
+  --color-ink-3: oklch(52% 0.01 230);
+  --color-rule: oklch(30% 0.012 235);
+  --color-rule-2: oklch(38% 0.014 235);
+  --color-accent: oklch(84% 0.14 200);
+  --color-accent-ink: oklch(18% 0.03 230);
+  --color-flag: oklch(70% 0.2 5);
+  --color-focus: oklch(84% 0.14 200);
+
+  /* Spacing — 4pt named scale */
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4.5rem;
+  --space-3xl: 7rem;
+
+  --text-display: clamp(2.75rem, 5vw + 0.5rem, 5rem);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur: 180ms;
+  --radius: 6px;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-rule);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-feature-settings: "ss01", "cv01";
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display), sans-serif;
+    font-style: normal; /* headers are roman — never italic */
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-paper);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-rule-2);
+    border-radius: 999px;
+    border: 3px solid var(--color-paper);
+  }
+}
+
+@layer components {
+  .wrap {
+    @apply mx-auto w-full max-w-wide px-6 md:px-10;
+  }
+
+  /* Mono meta label — used sparingly, never as a per-section eyebrow */
+  .meta {
+    @apply font-mono text-xs tracking-[0.02em] text-ink-3;
+  }
+
+  /* Ledger row — the ruled, tabular spine of the site */
+  .ledger-row {
+    @apply grid items-baseline gap-x-6 gap-y-2 border-t border-rule py-7 transition-colors duration-200 md:py-9;
+  }
+  .ledger-row:hover {
+    border-color: var(--color-rule-2);
+  }
+  .ledger-index {
+    @apply font-mono text-sm text-ink-3;
+  }
+
+  /* Primary CTA — solid cyan, one per page */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 whitespace-nowrap rounded-[var(--radius)] px-5 py-3 text-sm font-medium transition-colors duration-200;
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+  .btn-primary:hover {
+    background: color-mix(in oklch, var(--color-accent) 88%, white);
+  }
+
+  /* Secondary — bordered, monochrome */
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 whitespace-nowrap rounded-[var(--radius)] border border-rule-2 px-5 py-3 text-sm font-medium text-ink transition-colors duration-200;
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-ink-2);
+    background: var(--color-paper-2);
+  }
+
+  /* Quiet text link with a drawn cyan underline on hover */
+  .link {
+    @apply relative inline-flex items-center gap-1.5 whitespace-nowrap text-ink transition-colors duration-200;
+  }
+  .link::after {
+    content: "";
+    @apply absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-200;
+    background: var(--color-accent);
+  }
+  .link:hover::after {
+    @apply scale-x-100;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}

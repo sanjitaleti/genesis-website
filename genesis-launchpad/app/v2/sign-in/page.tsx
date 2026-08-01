@@ -1,0 +1,80 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { AuroraField } from "@/components/v2/AuroraField";
+import { SignInForm } from "@/components/v2/SignInForm";
+import { SpaceScene } from "@/components/v2/SpaceScene";
+import { IconX } from "@/components/v2/icons";
+
+export const metadata: Metadata = {
+  title: { absolute: "Sign in to Genesis LP" },
+  description: "Sign in to your Genesis LP dashboard.",
+};
+
+export default function V2SignIn() {
+  return (
+    <>
+      <AuroraField />
+
+      <Link href="/v2" className="v2-auth-close" aria-label="Close and go back">
+        <IconX />
+      </Link>
+
+      <div className="v2-content">
+        <div className="v2-auth">
+          {/* ---------------------------------------- form side */}
+          <div className="v2-auth-form">
+            <Link
+              href="/v2"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 10,
+                marginBottom: 44,
+                fontSize: 15,
+                fontWeight: 600,
+                color: "var(--text)",
+                textDecoration: "none",
+              }}
+            >
+              <span
+                aria-hidden
+                style={{
+                  width: 22,
+                  height: 22,
+                  borderRadius: 7,
+                  background: "var(--grad-brand)",
+                }}
+              />
+              Genesis LP
+            </Link>
+
+            <SignInForm />
+          </div>
+
+          {/* ---------------------------------------- art side */}
+          <aside className="v2-auth-art">
+            <SpaceScene />
+            <div className="v2-auth-art-grain" aria-hidden />
+
+            <figure className="v2-quote">
+              <div className="v2-quote-head">
+                <div className="v2-quote-av" aria-hidden>
+                  DM
+                </div>
+                <div>
+                  <p className="v2-quote-name">Dana Morales</p>
+                  <p className="v2-quote-handle">Morales Plumbing &amp; Heating</p>
+                </div>
+              </div>
+              <blockquote className="v2-quote-body">
+                &ldquo;We used to lose two or three jobs a week to voicemail. Now
+                every call gets picked up, and I can see exactly what it booked
+                while I was under a sink.&rdquo;
+              </blockquote>
+            </figure>
+          </aside>
+        </div>
+      </div>
+    </>
+  );
+}
