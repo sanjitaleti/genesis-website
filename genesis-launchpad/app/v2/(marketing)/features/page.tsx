@@ -3,7 +3,7 @@ import Link from "next/link";
 import { IconArrow, IconShield, IconClock, IconChart, IconCheck } from "@/components/v2/icons";
 
 export const metadata: Metadata = {
-  title: { absolute: "Features — Genesis LP" },
+  title: { absolute: "Features · Genesis LP" },
   description: "Everything your Genesis LP AI receptionist handles, in plain English.",
 };
 
@@ -45,7 +45,7 @@ const facts = [
   },
   {
     title: "Handles the messy calls too",
-    body: "Reschedules, cancellations, \"is anyone open right now\" — it stays calm and gets it done.",
+    body: "Reschedules, cancellations, \"is anyone open right now\": it stays calm and gets it done.",
     art: <IconShield className="v2-fact-icon" />,
   },
 ];
@@ -64,7 +64,7 @@ const steps = [
   {
     n: "03",
     title: "It shows up in your dashboard",
-    body: "The call, the booking, the outcome — logged and waiting for you, no chasing required.",
+    body: "The call, the booking, the outcome: logged and waiting for you, no chasing required.",
   },
 ];
 
@@ -76,7 +76,7 @@ export default function FeaturesPage() {
           className="v2-display v2-in"
           style={{ ["--d" as string]: "0.1s", fontSize: "clamp(2.6rem, 5.6vw, 4.4rem)", maxWidth: "16ch" }}
         >
-          Everything it <span className="v2-grad-text">handles for you.</span>
+          Everything we <span className="v2-grad-text">handle for you.</span>
         </h1>
         <p
           className="v2-in"
@@ -89,7 +89,7 @@ export default function FeaturesPage() {
             color: "var(--text-dim)",
           }}
         >
-          One AI receptionist, built around how your business actually runs — not
+          One AI receptionist, built around how your business actually runs, not
           a script you have to work around.
         </p>
       </section>

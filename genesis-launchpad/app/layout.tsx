@@ -28,11 +28,11 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://genesislp.ai"),
   title: {
-    default: "Genesis LP — AI automation & workflow agency",
-    template: "%s — Genesis LP",
+    default: "Genesis LP: AI automation & workflow agency",
+    template: "%s · Genesis LP",
   },
   description:
-    "Genesis LP replaces the manual work clogging your operations with systems that run themselves. Audit, build, run — in weeks, not quarters.",
+    "Genesis LP replaces the manual work clogging your operations with systems that run themselves. Audit, build, run, in weeks, not quarters.",
   openGraph: {
     title: "Genesis LP",
     description:

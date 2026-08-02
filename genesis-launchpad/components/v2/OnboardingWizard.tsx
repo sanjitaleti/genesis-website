@@ -72,7 +72,7 @@ export function OnboardingWizard() {
       {step === 1 ? (
         <div className="v2-in">
           <h1 className="v2-display" style={{ fontSize: "clamp(2.2rem, 4.5vw, 3rem)" }}>
-            Welcome — let&rsquo;s set you up.
+            Welcome. Let&rsquo;s set you up.
           </h1>
           <p style={{ margin: "14px 0 34px", fontSize: "1.02rem", lineHeight: 1.6, color: "var(--text-dim)" }}>
             Two quick things, then your dashboard is ready.

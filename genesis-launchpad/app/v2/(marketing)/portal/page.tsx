@@ -4,8 +4,8 @@ import { PortalPreview } from "@/components/v2/PortalPreview";
 import { IconArrow } from "@/components/v2/icons";
 
 export const metadata: Metadata = {
-  title: { absolute: "Portal — Genesis LP" },
-  description: "The dashboard you get with your Genesis LP AI receptionist — every call, booking, and dollar it earned you.",
+  title: { absolute: "Portal · Genesis LP" },
+  description: "The dashboard you get with your Genesis LP AI receptionist: every call, booking, and dollar it earned you.",
 };
 
 export default function PortalPage() {
@@ -29,7 +29,7 @@ export default function PortalPage() {
             color: "var(--text-dim)",
           }}
         >
-          Log in whenever you like. No spreadsheets, no reports to chase — just
+          Log in whenever you like. No spreadsheets, no reports to chase, just
           what happened on the phone, and what it earned you. This is a real
           preview of what clients see.
         </p>

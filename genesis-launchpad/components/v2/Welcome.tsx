@@ -11,7 +11,7 @@ const beats = [
   {
     Icon: IconPhone,
     title: "Every call, logged",
-    body: "Who rang, what they wanted, and how it ended — down to the overnight ones.",
+    body: "Who rang, what they wanted, and how it ended, down to the overnight ones.",
   },
   {
     Icon: IconUsers,
@@ -21,7 +21,7 @@ const beats = [
   {
     Icon: IconChart,
     title: "The numbers that matter",
-    body: "Answer rate, bookings, revenue recovered — all computed from real calls.",
+    body: "Answer rate, bookings, revenue recovered, all computed from real calls.",
   },
 ];
 

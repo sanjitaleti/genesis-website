@@ -3,7 +3,7 @@ import { AuroraField } from "@/components/v2/AuroraField";
 import { OnboardingWizard } from "@/components/v2/OnboardingWizard";
 
 export const metadata: Metadata = {
-  title: { absolute: "Set up your account — Genesis LP" },
+  title: { absolute: "Set up your account · Genesis LP" },
   description: "Tell us about your business and pick a look for your dashboard.",
 };
 

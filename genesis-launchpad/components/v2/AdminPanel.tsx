@@ -52,7 +52,7 @@ export function AdminPanel({ initialAuthed }: { initialAuthed: boolean }) {
       if (!res.ok) throw new Error(json.error || "request failed");
       setMarkResult(
         json.matchedExistingOrg
-          ? `${email} already has an account — unlocked their dashboard now.`
+          ? `${email} already has an account. Unlocked their dashboard now.`
           : `${email} is saved. Their dashboard unlocks as soon as they create an account.`,
       );
       setEmail("");

@@ -5,7 +5,7 @@ import { ResetPasswordConfirmForm } from "@/components/v2/ResetPasswordConfirmFo
 import { IconX } from "@/components/v2/icons";
 
 export const metadata: Metadata = {
-  title: { absolute: "Set new password — Genesis LP" },
+  title: { absolute: "Set new password · Genesis LP" },
   description: "Set a new Genesis LP password.",
 };
 

@@ -60,7 +60,7 @@ export function ResetPasswordConfirmForm() {
         Set a new password
       </h1>
       <p style={{ margin: "14px 0 30px", fontSize: "1.02rem", lineHeight: 1.6, color: "var(--text-dim)" }}>
-        This link only works once — pick something you&rsquo;ll remember.
+        This link only works once, so pick something you&rsquo;ll remember.
       </p>
 
       <div className="v2-field">

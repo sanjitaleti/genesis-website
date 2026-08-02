@@ -4,7 +4,7 @@ import { AdminPanel } from "@/components/v2/AdminPanel";
 import { ADMIN_COOKIE_NAME, isValidAdminCookie } from "@/lib/v2/admin-auth";
 
 export const metadata: Metadata = {
-  title: { absolute: "Admin — Genesis LP" },
+  title: { absolute: "Admin · Genesis LP" },
   robots: { index: false, follow: false },
 };
 

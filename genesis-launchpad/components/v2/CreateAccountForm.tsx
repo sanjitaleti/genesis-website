@@ -50,7 +50,7 @@ export function CreateAccountForm() {
         className="v2-in"
         style={{ ["--d" as string]: "0.14s", margin: "14px 0 34px", fontSize: "1.02rem", lineHeight: 1.6, color: "var(--text-dim)" }}
       >
-        Use the same email you talked to us with, if you have one — it&rsquo;s how we match you up.
+        Use the same email you talked to us with, if you have one. It&rsquo;s how we match you up.
       </p>
 
       <div className="v2-in" style={{ ["--d" as string]: "0.22s" }}>

@@ -138,7 +138,7 @@ export function OverviewView({ range }: { range: Range }) {
             <h4>Busiest hours</h4>
             <p>When your phone actually rings</p>
           </div>
-          <span className="v2-dash-note">Peak at 1pm — 74 calls</span>
+          <span className="v2-dash-note">Peak at 1pm: 74 calls</span>
         </header>
         <ColumnChart values={hourly} labels={hourLabels} />
       </section>
@@ -433,7 +433,7 @@ export function SettingsView() {
         <header className="v2-dash-card-head">
           <div>
             <h4>Appearance</h4>
-            <p>How your dashboard looks — just for you, changeable anytime</p>
+            <p>How your dashboard looks, just for you, changeable anytime</p>
           </div>
           {saving ? (
             <span className="v2-dash-note">Saving…</span>

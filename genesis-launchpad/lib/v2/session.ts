@@ -77,7 +77,7 @@ export async function signInWithGoogle(): Promise<SignInResult> {
   });
 
   if (error) {
-    return { ok: false, message: "Google sign-in isn't set up yet — use email and password." };
+    return { ok: false, message: "Google sign-in isn't set up yet. Use email and password." };
   }
   // On success the browser is already navigating away to Google.
   return { ok: true };
@@ -100,7 +100,7 @@ export async function createAccount(email: string, password: string): Promise<Si
   });
 
   if (error) {
-    return { ok: false, message: "Couldn't create that account — try a different email or a longer password." };
+    return { ok: false, message: "Couldn't create that account. Try a different email or a longer password." };
   }
   return { ok: true };
 }
@@ -132,7 +132,7 @@ export async function confirmPasswordReset(password: string): Promise<SignInResu
 
   const { error } = await browserClient().auth.updateUser({ password });
   if (error) {
-    return { ok: false, message: "Couldn't set that password — try a longer one." };
+    return { ok: false, message: "Couldn't set that password. Try a longer one." };
   }
   return { ok: true };
 }

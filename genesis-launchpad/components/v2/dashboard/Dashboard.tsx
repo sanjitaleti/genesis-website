@@ -118,7 +118,7 @@ function DashboardShell({
               This is a preview of what {data.business} will see once a plan is active. Talk to
               us and we&rsquo;ll get you set up.
             </p>
-            <Link href="/v2/pricing" className="v2-btn v2-btn--lg">
+            <Link href="/v2/pricing?locked=1" className="v2-btn v2-btn--lg">
               See pricing
             </Link>
           </div>

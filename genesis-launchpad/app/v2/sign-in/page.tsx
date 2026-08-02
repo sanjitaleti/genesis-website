@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { AuroraField } from "@/components/v2/AuroraField";
 import { SignInForm } from "@/components/v2/SignInForm";
 import { SpaceScene } from "@/components/v2/SpaceScene";
@@ -58,8 +59,8 @@ export default function V2SignIn() {
 
             <figure className="v2-quote">
               <div className="v2-quote-head">
-                <div className="v2-quote-av" aria-hidden>
-                  DM
+                <div className="v2-quote-av">
+                  <Image src="/testimonials/dana-morales.jpg" alt="Dana Morales" width={42} height={42} />
                 </div>
                 <div>
                   <p className="v2-quote-name">Dana Morales</p>

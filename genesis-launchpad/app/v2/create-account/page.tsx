@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { AuroraField } from "@/components/v2/AuroraField";
 import { CreateAccountForm } from "@/components/v2/CreateAccountForm";
 import { SpaceScene } from "@/components/v2/SpaceScene";
 import { IconX } from "@/components/v2/icons";
 
 export const metadata: Metadata = {
-  title: { absolute: "Create your account — Genesis LP" },
+  title: { absolute: "Create your account · Genesis LP" },
   description: "Create your Genesis LP account.",
 };
 
@@ -48,8 +49,8 @@ export default function V2CreateAccount() {
 
             <figure className="v2-quote">
               <div className="v2-quote-head">
-                <div className="v2-quote-av" aria-hidden>
-                  DM
+                <div className="v2-quote-av">
+                  <Image src="/testimonials/dana-morales.jpg" alt="Dana Morales" width={42} height={42} />
                 </div>
                 <div>
                   <p className="v2-quote-name">Dana Morales</p>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { GalaxyLayer } from "@/components/v2/GalaxyLayer";
 import {
   IconArrow,
@@ -33,21 +34,21 @@ const testimonials = [
   {
     name: "Dana Morales",
     handle: "Morales Plumbing & Heating",
-    initials: "DM",
+    photo: "/testimonials/dana-morales.jpg",
     quote:
       "We used to lose two or three jobs a week to voicemail. Now every call gets answered, and I know exactly what got booked.",
   },
   {
     name: "Priya Anand",
     handle: "Brightside Family Dental",
-    initials: "PA",
+    photo: "/testimonials/priya-anand.jpg",
     quote:
       "Patients used to call after hours and just hang up. Now they get an answer and a next-day slot before we even open.",
   },
   {
     name: "Marcus Webb",
     handle: "The Fade Room",
-    initials: "MW",
+    photo: "/testimonials/marcus-webb.jpg",
     quote:
       "It sounds like one of my own staff answering, not a machine. Clients honestly can't tell the difference.",
   },
@@ -139,7 +140,9 @@ export default function V2Landing() {
             {testimonials.map((t) => (
               <article key={t.name} className="v2-panel v2-testi-card">
                 <div className="v2-testi-head">
-                  <div className="v2-testi-av" aria-hidden>{t.initials}</div>
+                  <div className="v2-testi-av">
+                    <Image src={t.photo} alt={t.name} width={40} height={40} />
+                  </div>
                   <div>
                     <p className="v2-testi-name">{t.name}</p>
                     <p className="v2-testi-handle">{t.handle}</p>
@@ -204,7 +207,7 @@ export default function V2Landing() {
                 }}
               >
                 Log in whenever you like and see every call, booking, and dollar
-                it earned you — no spreadsheets, no reports to chase.
+                it earned you, no spreadsheets, no reports to chase.
               </p>
             </div>
             <Link href="/v2/portal" className="v2-btn v2-btn--lg">

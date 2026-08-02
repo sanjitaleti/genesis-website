@@ -3,7 +3,7 @@ import { Dashboard } from "@/components/v2/dashboard/Dashboard";
 import { getPortalBundle } from "@/lib/v2/portal";
 
 export const metadata: Metadata = {
-  title: { absolute: "Portal — Genesis LP" },
+  title: { absolute: "Portal · Genesis LP" },
   description: "Your Genesis LP client dashboard.",
 };
 

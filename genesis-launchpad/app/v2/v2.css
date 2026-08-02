@@ -18,8 +18,8 @@
   --blush: #ffd6ff;
 
   --text: #f7f3fb;
-  --text-dim: rgba(247, 243, 251, 0.66);
-  --text-faint: rgba(247, 243, 251, 0.42);
+  --text-dim: rgba(247, 243, 251, 0.8);
+  --text-faint: rgba(247, 243, 251, 0.6);
   --line: rgba(255, 214, 255, 0.10);
   --line-2: rgba(255, 214, 255, 0.20);
 
@@ -908,10 +908,38 @@
   font-weight: 500;
   color: var(--edge);
 }
+.v2-tier-discount {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 650;
+  color: #fff;
+  background: linear-gradient(100deg, var(--edge), var(--glow2));
+}
 .v2-tier-list { list-style: none; margin: 22px 0 26px; padding: 0; display: flex; flex-direction: column; gap: 11px; }
 .v2-tier-list li { display: flex; gap: 10px; font-size: 14px; line-height: 1.5; color: var(--text-dim); }
 .v2-tier-list svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; color: var(--edge); }
 .v2-tier-cta { margin-top: auto; }
+
+/* ---------------------------------------------------------------
+   Pricing grid — all plans visible at once, no scroll reveal
+   --------------------------------------------------------------- */
+
+.v2-pricing-grid-cards {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  margin-top: 40px;
+}
+.v2-pricing-grid-card {
+  position: relative;
+  padding-bottom: 26px;
+}
+.v2-pricing-grid-card.is-featured {
+  transform: translateY(-10px);
+}
 
 /* On phones there is no room to fly: the stage becomes a plain stack. */
 @media (max-width: 900px) {
@@ -1365,10 +1393,10 @@
 .v2-quote-av {
   width: 42px; height: 42px; flex-shrink: 0;
   border-radius: 50%;
-  display: grid; place-items: center;
-  font-size: 15px; font-weight: 600; color: #fff;
+  overflow: hidden;
   background: var(--grad-brand);
 }
+.v2-quote-av img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .v2-quote-name { font-size: 15px; font-weight: 600; margin: 0; }
 .v2-quote-handle { font-size: 13px; color: rgba(255,255,255,0.6); margin: 1px 0 0; }
 .v2-quote-body { margin: 14px 0 0; font-size: 14.5px; line-height: 1.6; color: rgba(255,255,255,0.9); }
@@ -1486,13 +1514,10 @@
   height: 40px;
   flex-shrink: 0;
   border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: 14px;
-  font-weight: 600;
-  color: #fff;
+  overflow: hidden;
   background: var(--grad-brand);
 }
+.v2-testi-av img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .v2-testi-name { font-size: 14.5px; font-weight: 600; margin: 0; }
 .v2-testi-handle { font-size: 12.5px; color: var(--text-faint); margin: 1px 0 0; }
 .v2-testi-body {
@@ -1716,7 +1741,7 @@
 .v2-dash[data-accent="mono"][data-mode="dark"],
 .v2-theme-preview[data-accent="mono"][data-mode="dark"] {
   --ink: #0a0a0c; --ink-1: #131316; --ink-rgb: 10, 10, 12;
-  --text: #f5f5f7; --text-dim: rgba(245,245,247,0.66); --text-faint: rgba(245,245,247,0.42);
+  --text: #f5f5f7; --text-dim: rgba(245,245,247,0.8); --text-faint: rgba(245,245,247,0.6);
   --line: rgba(255,255,255,0.10); --line-2: rgba(255,255,255,0.20);
   --magenta: #f5f5f7; --magenta-soft: #c9c9d1; --magenta-rgb: 245, 245, 247;
   --violet: #8a8a92; --violet-lift: #a6a6ad; --violet-rgb: 138, 138, 146; --blush: #ffffff;
@@ -1726,7 +1751,7 @@
 .v2-dash[data-accent="mono"][data-mode="light"],
 .v2-theme-preview[data-accent="mono"][data-mode="light"] {
   --ink: #ffffff; --ink-1: #f5f5f6; --ink-rgb: 255, 255, 255;
-  --text: #101014; --text-dim: rgba(16,16,20,0.66); --text-faint: rgba(16,16,20,0.42);
+  --text: #101014; --text-dim: rgba(16,16,20,0.8); --text-faint: rgba(16,16,20,0.6);
   --line: rgba(0,0,0,0.10); --line-2: rgba(0,0,0,0.18);
   --magenta: #101014; --magenta-soft: #3a3a42; --magenta-rgb: 16, 16, 20;
   --violet: #6b6b74; --violet-lift: #55555c; --violet-rgb: 107, 107, 116; --blush: #101014;
@@ -1737,7 +1762,7 @@
 .v2-dash[data-accent="punch"][data-mode="dark"],
 .v2-theme-preview[data-accent="punch"][data-mode="dark"] {
   --ink: #04030a; --ink-1: #0a0616; --ink-rgb: 4, 3, 10;
-  --text: #f7f3fb; --text-dim: rgba(247,243,251,0.66); --text-faint: rgba(247,243,251,0.42);
+  --text: #f7f3fb; --text-dim: rgba(247,243,251,0.8); --text-faint: rgba(247,243,251,0.6);
   --line: rgba(255,214,255,0.10); --line-2: rgba(255,214,255,0.20);
   --magenta: #f72585; --magenta-soft: #ff5ca8; --magenta-rgb: 247, 37, 133;
   --violet: #7b2cbf; --violet-lift: #9645d6; --violet-rgb: 123, 44, 191; --blush: #ffd6ff;
@@ -1747,7 +1772,7 @@
 .v2-dash[data-accent="punch"][data-mode="light"],
 .v2-theme-preview[data-accent="punch"][data-mode="light"] {
   --ink: #fffaf9; --ink-1: #f7ecf5; --ink-rgb: 255, 250, 249;
-  --text: #1c0a1a; --text-dim: rgba(28,10,26,0.66); --text-faint: rgba(28,10,26,0.42);
+  --text: #1c0a1a; --text-dim: rgba(28,10,26,0.8); --text-faint: rgba(28,10,26,0.6);
   --line: rgba(90,24,154,0.12); --line-2: rgba(90,24,154,0.20);
   --magenta: #d6178a; --magenta-soft: #b8106f; --magenta-rgb: 214, 23, 138;
   --violet: #6b21a8; --violet-lift: #7e3fc0; --violet-rgb: 107, 33, 168; --blush: #6b21a8;
@@ -1758,7 +1783,7 @@
 .v2-dash[data-accent="cyan"][data-mode="dark"],
 .v2-theme-preview[data-accent="cyan"][data-mode="dark"] {
   --ink: #03080a; --ink-1: #061419; --ink-rgb: 3, 8, 10;
-  --text: #eafbff; --text-dim: rgba(234,251,255,0.66); --text-faint: rgba(234,251,255,0.42);
+  --text: #eafbff; --text-dim: rgba(234,251,255,0.8); --text-faint: rgba(234,251,255,0.6);
   --line: rgba(180,240,255,0.10); --line-2: rgba(180,240,255,0.20);
   --magenta: #22d3ee; --magenta-soft: #67e8f9; --magenta-rgb: 34, 211, 238;
   --violet: #3b82f6; --violet-lift: #60a5fa; --violet-rgb: 59, 130, 246; --blush: #a5f3fc;
@@ -1768,7 +1793,7 @@
 .v2-dash[data-accent="cyan"][data-mode="light"],
 .v2-theme-preview[data-accent="cyan"][data-mode="light"] {
   --ink: #f5fdff; --ink-1: #e8f7fb; --ink-rgb: 245, 253, 255;
-  --text: #04141a; --text-dim: rgba(4,20,26,0.66); --text-faint: rgba(4,20,26,0.42);
+  --text: #04141a; --text-dim: rgba(4,20,26,0.8); --text-faint: rgba(4,20,26,0.6);
   --line: rgba(8,120,150,0.12); --line-2: rgba(8,120,150,0.20);
   --magenta: #0891b2; --magenta-soft: #0e7490; --magenta-rgb: 8, 145, 178;
   --violet: #1d4ed8; --violet-lift: #2f5fe0; --violet-rgb: 29, 78, 216; --blush: #1d4ed8;
@@ -1779,7 +1804,7 @@
 .v2-dash[data-accent="citrus"][data-mode="dark"],
 .v2-theme-preview[data-accent="citrus"][data-mode="dark"] {
   --ink: #0a0903; --ink-1: #141607; --ink-rgb: 10, 9, 3;
-  --text: #fbfdea; --text-dim: rgba(251,253,234,0.66); --text-faint: rgba(251,253,234,0.42);
+  --text: #fbfdea; --text-dim: rgba(251,253,234,0.8); --text-faint: rgba(251,253,234,0.6);
   --line: rgba(250,240,150,0.10); --line-2: rgba(250,240,150,0.20);
   --magenta: #facc15; --magenta-soft: #fde047; --magenta-rgb: 250, 204, 21;
   --violet: #65a30d; --violet-lift: #84cc16; --violet-rgb: 101, 163, 13; --blush: #fef08a;
@@ -1789,7 +1814,7 @@
 .v2-dash[data-accent="citrus"][data-mode="light"],
 .v2-theme-preview[data-accent="citrus"][data-mode="light"] {
   --ink: #fdfdf2; --ink-1: #f7f8e3; --ink-rgb: 253, 253, 242;
-  --text: #14150a; --text-dim: rgba(20,21,10,0.66); --text-faint: rgba(20,21,10,0.42);
+  --text: #14150a; --text-dim: rgba(20,21,10,0.8); --text-faint: rgba(20,21,10,0.6);
   --line: rgba(120,120,20,0.12); --line-2: rgba(120,120,20,0.20);
   --magenta: #a16207; --magenta-soft: #854d0e; --magenta-rgb: 161, 98, 7;
   --violet: #3f6212; --violet-lift: #4d7a16; --violet-rgb: 63, 98, 18; --blush: #3f6212;
@@ -2370,6 +2395,75 @@
 .v2-plan-price { display: block; margin-top: 3px; font-size: 13px; color: var(--text-dim); }
 
 .v2-btn-ghost--sm { padding: 9px 15px; font-size: 13px; }
+
+/* ---------------------------------------------------------------
+   Conversational forms — one question at a time, Typeform-style
+   --------------------------------------------------------------- */
+
+.v2-cform {
+  width: 100%;
+}
+.v2-cform-progress {
+  height: 3px;
+  border-radius: 999px;
+  background: var(--line-2);
+  overflow: hidden;
+  margin-bottom: 34px;
+}
+.v2-cform-progress span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--grad-brand);
+  transition: width 0.4s var(--ease);
+}
+
+.v2-cform-step {
+  animation: v2-cform-in 0.4s var(--ease) both;
+}
+@keyframes v2-cform-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.v2-cform-label {
+  display: block;
+  font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 18px;
+}
+.v2-cform-optional {
+  margin-left: 10px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-faint);
+  vertical-align: middle;
+}
+
+.v2-cform-input {
+  font-size: 17px;
+}
+
+.v2-cform-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 22px;
+}
+.v2-cform-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+}
+
+.v2-cform-hint {
+  margin: 14px 0 0;
+  font-size: 12.5px;
+  color: var(--text-faint);
+}
 
 /* ---------------------------------------------------------------
    Paywall lock — unpaid orgs see their real theme, blurred, with a

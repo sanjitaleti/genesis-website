@@ -27,14 +27,14 @@ export async function generateMetadata({
   const { plan } = await params;
   const info = planFor(plan);
   return {
-    title: { absolute: info ? `Get started with ${info.label} — Genesis LP` : "Get started — Genesis LP" },
+    title: { absolute: info ? `Get started with ${info.label} · Genesis LP` : "Get started · Genesis LP" },
     description: "Tell us about your business so we can scope your AI receptionist.",
   };
 }
 
 const points = [
   { Icon: IconClock, title: "One business day", body: "We read every submission and reply within one business day." },
-  { Icon: IconShield, title: "No obligation", body: "This scopes the work — you decide after the call, not before." },
+  { Icon: IconShield, title: "No obligation", body: "This scopes the work. You decide after the call, not before." },
   { Icon: IconCheck, title: "The more detail, the better", body: "Specifics here mean a sharper first conversation." },
 ];
 
@@ -71,12 +71,12 @@ export default async function GetStartedPage({ params }: { params: Promise<{ pla
                 color: "var(--text-dim)",
               }}
             >
-              You picked {info.label} — {info.blurb}. A few questions so we show up to
+              You picked {info.label}: {info.blurb}. A few questions so we show up to
               your call already knowing your business, not asking the basics.
             </p>
 
             <div style={{ marginTop: 40, maxWidth: 520 }}>
-              <IntakeForm planLabel={info.label} planKey={plan} />
+              <IntakeForm planLabel={info.label} />
             </div>
           </div>
 

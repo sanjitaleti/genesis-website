@@ -128,7 +128,7 @@ export function SignInForm() {
 
         {isConfigured() ? null : (
           <p className="v2-auth-demo">
-            Demo access — email <code>Test123</code>, password <code>Test123</code>
+            Demo access: email <code>Test123</code>, password <code>Test123</code>
           </p>
         )}
 

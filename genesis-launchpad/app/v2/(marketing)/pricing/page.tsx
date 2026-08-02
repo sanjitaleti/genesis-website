@@ -1,15 +1,32 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PricingStage } from "@/components/v2/PricingStage";
+import { PricingGrid } from "@/components/v2/PricingGrid";
 import { GalaxyLayer } from "@/components/v2/GalaxyLayer";
 import { IconArrow } from "@/components/v2/icons";
 
 export const metadata: Metadata = {
-  title: { absolute: "Pricing — Genesis LP" },
+  title: { absolute: "Pricing · Genesis LP" },
   description: "Fixed scope, fixed price, no long contracts. Genesis LP pricing for AI receptionists and automation.",
 };
 
-export default function PricingPage() {
+export default async function PricingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ locked?: string }>;
+}) {
+  const { locked } = await searchParams;
+
+  // Arriving from a locked dashboard means "I need to pick a plan right
+  // now" — skip the scroll-driven story and show every plan at once.
+  if (locked) {
+    return (
+      <div className="v2-content">
+        <PricingGrid />
+      </div>
+    );
+  }
+
   return (
     <div className="v2-content">
       <GalaxyLayer triggerId="pricing" />
@@ -37,7 +54,7 @@ export default function PricingPage() {
             }}
           >
             Twenty minutes on the phone and we&rsquo;ll tell you honestly which
-            one makes sense — or if none of them do yet.
+            one makes sense, or if none of them do yet.
           </p>
           <div style={{ marginTop: 30, display: "flex", justifyContent: "center" }}>
             <Link href="/v2/contact" className="v2-btn v2-btn--lg">

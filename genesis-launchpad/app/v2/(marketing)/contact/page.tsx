@@ -3,7 +3,7 @@ import { ContactForm } from "@/components/v2/ContactForm";
 import { IconClock, IconShield, IconCheck } from "@/components/v2/icons";
 
 export const metadata: Metadata = {
-  title: { absolute: "Contact — Genesis LP" },
+  title: { absolute: "Contact · Genesis LP" },
   description: "Book a free 20-minute call with Genesis LP about your AI receptionist.",
 };
 
