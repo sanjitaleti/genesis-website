@@ -2372,6 +2372,53 @@
 .v2-btn-ghost--sm { padding: 9px 15px; font-size: 13px; }
 
 /* ---------------------------------------------------------------
+   Paywall lock — unpaid orgs see their real theme, blurred, with a
+   non-blurred overlay pointing at pricing
+   --------------------------------------------------------------- */
+
+.v2-dash[data-locked="true"] {
+  position: relative;
+}
+.v2-dash[data-locked="true"] > .v2-dash-side,
+.v2-dash[data-locked="true"] > .v2-dash-main {
+  filter: blur(11px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.v2-lock-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(var(--ink-rgb), 0.45);
+}
+.v2-lock-card {
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  padding: 40px 34px;
+  border-radius: 20px;
+  border: 1px solid var(--line-2);
+  background: rgba(var(--ink-rgb), 0.94);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+.v2-lock-card h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 650;
+}
+.v2-lock-card p {
+  margin: 12px 0 24px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+/* ---------------------------------------------------------------
    Onboarding wizard
    --------------------------------------------------------------- */
 

@@ -94,8 +94,23 @@ function DashboardShell({
   const showRange = view === "overview";
 
   return (
-    <div className="v2-dash" data-accent={accent} data-mode={mode}>
+    <div className="v2-dash" data-accent={accent} data-mode={mode} data-locked={!data.paid}>
       <div className="v2-dash-glow" aria-hidden />
+
+      {!data.paid ? (
+        <div className="v2-lock-overlay">
+          <div className="v2-lock-card">
+            <h2>Choose a plan to unlock your dashboard</h2>
+            <p>
+              This is a preview of what {data.business} will see once a plan is active. Talk to
+              us and we&rsquo;ll get you set up.
+            </p>
+            <Link href="/v2/pricing" className="v2-btn v2-btn--lg">
+              See pricing
+            </Link>
+          </div>
+        </div>
+      ) : null}
 
       {/* ------------------------------------------------------- sidebar */}
       <aside className="v2-dash-side">
