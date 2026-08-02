@@ -2410,6 +2410,7 @@
   margin: 0;
   font-size: 20px;
   font-weight: 650;
+  color: var(--text);
 }
 .v2-lock-card p {
   margin: 12px 0 24px;
