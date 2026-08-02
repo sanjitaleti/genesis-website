@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Script from "next/script";
+
+const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL;
 
 export function IntakeForm({ planLabel, planKey }: { planLabel: string; planKey: string }) {
   const [sent, setSent] = useState(false);
@@ -12,9 +15,21 @@ export function IntakeForm({ planLabel, planKey }: { planLabel: string; planKey:
       <div className="v2-panel" style={{ padding: "34px 30px" }}>
         <h3 style={{ margin: 0, fontSize: 19, fontWeight: 600 }}>Got it — thanks.</h3>
         <p style={{ margin: "10px 0 0", fontSize: 14.5, lineHeight: 1.65, color: "var(--text-dim)" }}>
-          We&rsquo;ll go through this and reply within one business day to set up
-          your call.
+          {CALENDLY_URL
+            ? "Grab a time below and let's talk it through."
+            : "We'll go through this and reply within one business day to set up your call."}
         </p>
+
+        {CALENDLY_URL ? (
+          <>
+            <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
+            <div
+              className="calendly-inline-widget"
+              data-url={CALENDLY_URL}
+              style={{ minWidth: 320, width: "100%", height: 700, marginTop: 20 }}
+            />
+          </>
+        ) : null}
       </div>
     );
   }
