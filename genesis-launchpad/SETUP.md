@@ -247,6 +247,58 @@ dashboard.
 
 ---
 
+## 8. Paid customers, Calendly, and Create Account
+
+Only clients who've actually bought a package get a working dashboard.
+Everyone else can still create an account and go through onboarding, but
+sees a blurred preview with a link back to pricing.
+
+### 8.1 Run the customers table migration
+
+Open **SQL Editor**, paste the whole of `supabase/customers.sql`, and run
+it. This also backfills every existing organization to `paid = true`, so
+current clients aren't affected.
+
+### 8.2 Turn off "Confirm email"
+
+So a freshly created account (via `/v2/create-account`) can sign in
+immediately instead of waiting on a confirmation email: go to **Authentication → Sign In / Providers** (not "Providers" alone — Supabase's current dashboard nests this under a "Sign In / Providers" page). Under the **User Signups** section, make sure **"Allow new users to sign up"** is on, then turn off **"Confirm email"** (it's a separate toggle in that same section, described as "Users will need to confirm their email address before signing in for the first time"). Also confirm the **Email** provider itself is enabled under the **Auth Providers** section on the same page — if it's off, email/password sign-in and sign-up won't work at all regardless of the Confirm-email setting. Click **Save changes** after any change on this page.
+
+### 8.3 Set an admin password
+
+Add `ADMIN_PASSWORD` to `.env.local` (and to Vercel's environment
+variables) — any strong password. This gates `/v2/admin`, the internal page
+for marking a client paid after a Calendly call closes. Leaving it unset
+makes that page entirely unreachable.
+
+### 8.4 Add your Calendly link
+
+Add `NEXT_PUBLIC_CALENDLY_URL` — your scheduling link, e.g.
+`https://calendly.com/yourname/30min`. This is public (it's just embedded
+on the page), so it's safe in the client bundle. Without it, the pricing
+intake form falls back to plain "we'll reply within a business day" copy.
+
+### 8.5 How marking someone paid works
+
+1. A lead fills out the pricing intake form and books a call via the
+   embedded Calendly widget.
+2. If the call closes, go to `/v2/admin`, sign in with `ADMIN_PASSWORD`,
+   and enter their email + plan.
+3. If they already have an account, their dashboard unlocks immediately.
+   If not, it unlocks automatically the moment they create an account
+   (`/v2/create-account`) or sign in with Google using that same email and
+   finish onboarding.
+
+### 8.6 Checking it works
+
+- Sign in as an account with no matching `customers` row → onboard → the
+  dashboard should be visibly blurred with a "Choose a plan" link to
+  `/v2/pricing`.
+- Mark that same email as paid from `/v2/admin` → refresh the dashboard →
+  it should unlock immediately, still showing their real theme.
+
+---
+
 ## Before the site goes public
 
 Two placeholders are still in the marketing copy and should be replaced or
