@@ -103,7 +103,7 @@ export function ConversationalForm({
   return (
     <div className="v2-cform">
       <div className="v2-cform-progress">
-        <span style={{ width: `${((step + 1) / fields.length) * 100}%` }} />
+        <span style={{ transform: `scaleX(${(step + 1) / fields.length})` }} />
       </div>
 
       <div key={field.id} className="v2-cform-step">
