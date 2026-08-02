@@ -60,6 +60,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "already onboarded" }, { status: 409 });
   }
 
+  // Has this email already been marked paid (e.g. via the admin page after
+  // a Calendly call closed)? If so, this org starts unlocked and picks up
+  // whatever plan was recorded — never trust a client-supplied "paid" flag.
+  const email = user.email?.trim().toLowerCase();
+  const { data: customer } = email
+    ? await db.from("customers").select("id, plan").eq("email", email).maybeSingle()
+    : { data: null };
+
   // Slugs must be unique; a short random suffix avoids collisions between
   // two businesses that happen to share a name, without asking the user to
   // think about it.
@@ -67,7 +75,14 @@ export async function POST(req: Request) {
 
   const { data: org, error: orgError } = await db
     .from("organizations")
-    .insert({ name: business, slug, theme_accent: accent, theme_mode: mode })
+    .insert({
+      name: business,
+      slug,
+      theme_accent: accent,
+      theme_mode: mode,
+      paid: Boolean(customer),
+      ...(customer ? { plan: customer.plan } : {}),
+    })
     .select("id")
     .single();
 
@@ -85,6 +100,10 @@ export async function POST(req: Request) {
     // Best-effort cleanup so a failed onboarding doesn't leave an orphaned org.
     await db.from("organizations").delete().eq("id", org.id);
     return NextResponse.json({ error: "could not link account" }, { status: 500 });
+  }
+
+  if (customer) {
+    await db.from("customers").update({ claimed_org_id: org.id }).eq("id", customer.id);
   }
 
   return NextResponse.json({ ok: true });
