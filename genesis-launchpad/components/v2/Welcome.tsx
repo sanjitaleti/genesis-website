@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { WarpField } from "./WarpField";
-import { IconArrow, IconChart, IconCalendar, IconPhone } from "./icons";
-import { account, isSignedIn } from "@/lib/v2/session";
+import { IconArrow, IconChart, IconUsers, IconPhone } from "./icons";
+import { account as demoAccount, isSignedIn, hasProfile } from "@/lib/v2/session";
+import { isConfigured, browserClient } from "@/lib/v2/supabase";
 
 const beats = [
   {
@@ -13,14 +14,14 @@ const beats = [
     body: "Who rang, what they wanted, and how it ended — down to the overnight ones.",
   },
   {
-    Icon: IconCalendar,
-    title: "Your calendar, filled",
-    body: "Jobs your receptionist booked land straight in, ready for the week ahead.",
+    Icon: IconUsers,
+    title: "Every customer, tracked",
+    body: "Callers, jobs booked, and lifetime value, rolled up automatically.",
   },
   {
     Icon: IconChart,
     title: "The numbers that matter",
-    body: "Answer rate, bookings, revenue recovered. No reports to chase.",
+    body: "Answer rate, bookings, revenue recovered — all computed from real calls.",
   },
 ];
 
@@ -28,17 +29,42 @@ export function Welcome() {
   const router = useRouter();
   const [ready, setReady] = useState(false);
   const [launched, setLaunched] = useState(false);
+  const [business, setBusiness] = useState(demoAccount.business);
+  const [plan, setPlan] = useState(demoAccount.plan);
   const timer = useRef<number | null>(null);
 
-  // Client-side gate. This is a demo, so it keeps honest people out of the
-  // portal rather than securing anything — real auth belongs on a server.
   useEffect(() => {
     let alive = true;
-    isSignedIn().then((ok) => {
+
+    (async () => {
+      const signedIn = await isSignedIn();
       if (!alive) return;
-      if (!ok) router.replace("/v2/sign-in");
-      else setReady(true);
-    });
+      if (!signedIn) {
+        router.replace("/v2/sign-in");
+        return;
+      }
+
+      const onboarded = await hasProfile();
+      if (!alive) return;
+      if (!onboarded) {
+        router.replace("/v2/onboarding");
+        return;
+      }
+
+      // Real org, not the hardcoded demo one — a signed-in client should see
+      // their own business name here, not whichever account this app was
+      // last demoed with.
+      if (isConfigured()) {
+        const { data } = await browserClient().from("organizations").select("name, plan").maybeSingle();
+        if (alive && data) {
+          setBusiness(data.name);
+          setPlan(data.plan);
+        }
+      }
+
+      if (alive) setReady(true);
+    })();
+
     return () => {
       alive = false;
     };
@@ -70,11 +96,11 @@ export function Welcome() {
       <div className="v2-welcome-inner">
         <span className="v2-welcome-mark" aria-hidden />
 
-        <p className="v2-welcome-eyebrow">{account.plan} plan · now live</p>
+        <p className="v2-welcome-eyebrow">{plan} plan · now live</p>
 
         <h1 className="v2-display v2-welcome-title">
           Welcome aboard,{" "}
-          <span className="v2-grad-text">{account.business}.</span>
+          <span className="v2-grad-text">{business}.</span>
         </h1>
 
         <p className="v2-welcome-sub">

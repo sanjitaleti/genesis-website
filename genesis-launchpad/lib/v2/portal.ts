@@ -27,18 +27,28 @@ import {
   type Tile,
 } from "./data";
 import { account } from "./session";
+import { DEFAULT_ACCENT, DEFAULT_MODE, type Accent, type Mode } from "./theme";
+
+export type SummaryStat = { label: string; value: string; note: string };
 
 export type PortalData = {
   live: boolean;
   business: string;
   plan: string;
+  themeAccent: Accent;
+  themeMode: Mode;
   tiles: Tile[];
   volume: { a: number[]; b: number[]; labels: string[] };
   funnel: { label: string; n: string; pct: number; tone: string }[];
   resolution: { label: string; value: number; tone: string }[];
   hourly: number[];
-  calls: CallRecord[];
-  customers: Customer[];
+  /** Full call history, independent of the 24h/7d/30d picker — that picker
+   *  only scopes the Overview KPIs above. Calls and Customers always show
+   *  everything, so a client's history doesn't quietly vanish once it's
+   *  older than the selected window. */
+  allCalls: CallRecord[];
+  allCustomers: Customer[];
+  allTimeSummary: SummaryStat[];
   appointments: Appointment[];
   activity: { t: string; text: string; tone: string }[];
 };
@@ -67,6 +77,22 @@ const dayLabel = (iso: string) => {
 };
 
 const duration = (secs: number) => `${Math.floor(secs / 60)}m ${(secs % 60).toString().padStart(2, "0")}s`;
+
+/**
+ * A real phone number is more useful than a repeated "Unknown caller" label
+ * when the agent hasn't captured a name — every historical Green City call
+ * falls into this bucket, since name extraction only started once the
+ * data-collection fields were added.
+ */
+const formatPhone = (e164: string | null) => {
+  if (!e164) return null;
+  const digits = e164.replace(/\D/g, "").replace(/^1/, "");
+  if (digits.length !== 10) return e164;
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+};
+
+const callerLabel = (name: string | null, phone: string | null) =>
+  name ?? formatPhone(phone) ?? "Unknown caller";
 
 const OUTCOME_LABEL: Record<string, CallRecord["status"]> = {
   booked: "Booked",
@@ -100,13 +126,25 @@ function demoData(range: Range): PortalData {
     live: false,
     business: account.business,
     plan: account.plan,
+    themeAccent: DEFAULT_ACCENT,
+    themeMode: DEFAULT_MODE,
     tiles: tilesByRange[range],
     volume: volumeByRange[range],
     funnel: demoFunnel,
     resolution: demoResolution,
     hourly: demoHourly,
-    calls: demoCalls,
-    customers: demoCustomers,
+    allCalls: demoCalls,
+    allCustomers: demoCustomers,
+    allTimeSummary: [
+      { label: "Calls answered", value: demoCalls.length.toLocaleString(), note: "example data" },
+      {
+        label: "Jobs booked",
+        value: demoCalls.filter((c) => c.status === "Booked").length.toLocaleString(),
+        note: "example data",
+      },
+      { label: "Avg. call length", value: "3m 12s", note: "example data" },
+      { label: "Revenue recovered", value: "$6,240", note: "example data" },
+    ],
     appointments: demoAppointments,
     activity: demoActivity,
   };
@@ -179,14 +217,16 @@ function buildVolume(rows: CallRow[], range: Range) {
 }
 
 type LiveSource = {
-  org: { name?: string; plan?: string } | null;
+  org: { name?: string; plan?: string; theme_accent?: string; theme_mode?: string } | null;
   rows: CallRow[];
   appts: Record<string, unknown>[];
 };
 
 /**
- * One trip to the database. The widest range is fetched and the narrower ones
- * are sliced from it in memory, so switching 24h/7d/30d costs nothing.
+ * One trip to the database, fetching the FULL call history — not just the
+ * last 30 days. The 24h/7d/30d picker only scopes the Overview KPIs; Calls
+ * and Customers always show everything, or a fresh client's history quietly
+ * goes missing the moment it's older than a month.
  */
 async function fetchLive(): Promise<LiveSource | null> {
   const db = await serverClient();
@@ -198,16 +238,51 @@ async function fetchLive(): Promise<LiveSource | null> {
 
   // RLS restricts every one of these to the caller's own organisation.
   const [{ data: org }, { data: callRows }, { data: apptRows }] = await Promise.all([
-    db.from("organizations").select("name, plan").maybeSingle(),
+    db.from("organizations").select("name, plan, theme_accent, theme_mode").maybeSingle(),
     db
       .from("calls")
       .select("conversation_id, started_at, duration_secs, caller_name, caller_phone, reason, outcome, value_cents, summary")
-      .gte("started_at", sinceFor("30d"))
-      .order("started_at", { ascending: false }),
+      .order("started_at", { ascending: false })
+      .limit(5000),
     db.from("appointments").select("starts_at, duration_mins, customer_name, title, kind"),
   ]);
 
   return { org, rows: (callRows ?? []) as CallRow[], appts: apptRows ?? [] };
+}
+
+function toCallRecord(r: CallRow): CallRecord {
+  return {
+    id: r.conversation_id,
+    time: clock(r.started_at),
+    day: dayLabel(r.started_at),
+    caller: callerLabel(r.caller_name, r.caller_phone),
+    phone: formatPhone(r.caller_phone) ?? r.caller_phone ?? "—",
+    reason: r.reason ?? r.summary ?? "—",
+    status: OUTCOME_LABEL[r.outcome] ?? "Handled",
+    duration: duration(r.duration_secs),
+    value: money(r.value_cents),
+  };
+}
+
+/** Every honest figure derivable from the full call history — nothing here
+ *  is estimated or assumed, so a metric with no real basis is simply omitted
+ *  rather than filled in with a plausible-looking guess. */
+function buildAllTimeSummary(rows: CallRow[]): SummaryStat[] {
+  const answered = rows.length;
+  const booked = rows.filter((r) => r.outcome === "booked");
+  const totalSecs = rows.reduce((s, r) => s + r.duration_secs, 0);
+  const revenueCents = rows.reduce((s, r) => s + (r.value_cents ?? 0), 0);
+
+  return [
+    { label: "Calls answered", value: answered.toLocaleString(), note: "all time" },
+    { label: "Jobs booked", value: booked.length.toLocaleString(), note: "all time" },
+    {
+      label: "Avg. call length",
+      value: answered ? duration(Math.round(totalSecs / answered)) : "—",
+      note: "all time",
+    },
+    { label: "Revenue recovered", value: money(revenueCents), note: "booked jobs, all time" },
+  ];
 }
 
 function buildLive(src: LiveSource, range: Range): PortalData {
@@ -228,6 +303,10 @@ function buildLive(src: LiveSource, range: Range): PortalData {
     live: true,
     business: org?.name ?? "Your business",
     plan: org?.plan ?? "Lunar",
+    themeAccent: (["mono", "punch", "cyan", "citrus"].includes(org?.theme_accent ?? "")
+      ? org!.theme_accent
+      : DEFAULT_ACCENT) as Accent,
+    themeMode: (["dark", "light"].includes(org?.theme_mode ?? "") ? org!.theme_mode : DEFAULT_MODE) as Mode,
     tiles: buildTiles(rows, range),
     volume: buildVolume(rows, range),
     funnel: [
@@ -243,18 +322,9 @@ function buildLive(src: LiveSource, range: Range): PortalData {
       { label: "Passed to you", value: counts.passed, tone: "#4cc9f0" },
     ],
     hourly: Array.from({ length: 24 }, (_, h) => rows.filter((r) => new Date(r.started_at).getHours() === h).length),
-    calls: rows.map((r) => ({
-      id: r.conversation_id,
-      time: clock(r.started_at),
-      day: dayLabel(r.started_at),
-      caller: r.caller_name ?? "Unknown caller",
-      phone: r.caller_phone ?? "—",
-      reason: r.reason ?? r.summary ?? "—",
-      status: OUTCOME_LABEL[r.outcome] ?? "Handled",
-      duration: duration(r.duration_secs),
-      value: money(r.value_cents),
-    })),
-    customers: buildCustomers(rows),
+    allCalls: src.rows.map(toCallRecord),
+    allCustomers: buildCustomers(src.rows),
+    allTimeSummary: buildAllTimeSummary(src.rows),
     appointments: appts.map((a) => ({
       day: new Date(a.starts_at as string).getDate(),
       time: clock(a.starts_at as string),
@@ -271,7 +341,7 @@ function buildLive(src: LiveSource, range: Range): PortalData {
   };
 }
 
-/** Roll the call log up into one row per caller. */
+/** Roll the full call history up into one row per caller. */
 function buildCustomers(rows: CallRow[]): Customer[] {
   const byPhone = new Map<string, Customer & { _cents: number }>();
 
@@ -284,9 +354,9 @@ function buildCustomers(rows: CallRow[]): Customer[] {
       continue;
     }
     byPhone.set(key, {
-      name: r.caller_name ?? "Unknown caller",
+      name: callerLabel(r.caller_name, r.caller_phone),
       business: "—",
-      phone: r.caller_phone ?? "—",
+      phone: formatPhone(r.caller_phone) ?? r.caller_phone ?? "—",
       jobs: r.outcome === "booked" ? 1 : 0,
       lifetime: "—",
       last: dayLabel(r.started_at),

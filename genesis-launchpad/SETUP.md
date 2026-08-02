@@ -152,6 +152,101 @@ Server logs print `[elevenlabs]` lines for rejected or unmatched calls.
 
 ---
 
+## 6. Resend (contact form + pricing intake emails)
+
+The contact form and the "Get started" intake page both save to a new
+`leads` table in Supabase and *try* to email you a notification on top of
+that. The save always happens; the email is best-effort.
+
+### 6.1 Run the leads table migration
+Supabase → **SQL Editor** → paste the whole of `supabase/leads.sql` → Run.
+(This is separate from `schema.sql`, which you already ran — this one's new.)
+
+### 6.2 Create a Resend account
+1. Go to [resend.com](https://resend.com) → sign up (free tier: 3,000
+   emails/month, no card required)
+2. **API Keys** → **Create API Key** → copy it
+
+### 6.3 Add the environment variables
+In `.env.local` (and later, Vercel's Environment Variables — same pattern as
+every other key so far):
+
+```
+RESEND_API_KEY=            # from step 6.2
+LEAD_NOTIFICATION_EMAIL=   # the inbox that should receive these — your email
+```
+
+That's enough to go live. Emails send from Resend's shared sandbox address
+(`onboarding@resend.dev`) — it works immediately, no domain setup required,
+but it'll show that address as the sender rather than something at
+`genesislp.ai`.
+
+### 6.4 Optional: send from your own domain
+1. Resend → **Domains** → **Add Domain** → `genesislp.ai`
+2. It'll give you DNS records (similar to the Vercel/Cloudflare dance from
+   earlier) — add them in Cloudflare the same way
+3. Once verified, set `RESEND_FROM_EMAIL=Genesis LP <hello@genesislp.ai>` (or
+   whatever address you want) in the environment variables
+
+### 6.5 Checking it works
+Submit the contact form or a "Get started" intake at
+`/v2/get-started/lunar`. Within a few seconds:
+- **Supabase → Table Editor → leads** shows the new row
+- Your inbox gets the notification email (check spam the first time — sandbox
+  sender addresses sometimes land there until your own domain is verified)
+
+If the row appears but no email arrives, `RESEND_API_KEY` or
+`LEAD_NOTIFICATION_EMAIL` is likely missing on the deployed environment —
+the submission is never lost either way, since Supabase is the source of
+truth and email is only a notification on top of it.
+
+---
+
+## 7. Google sign-in
+
+The "Continue with Google" button on the sign-in page is fully wired in
+code — it calls Supabase's real OAuth flow. Right now clicking it shows
+"Google sign-in isn't set up yet," because Supabase doesn't have Google
+credentials configured. No code changes needed for this one, only account
+setup.
+
+### 7.1 Create the OAuth client
+1. Go to [console.cloud.google.com](https://console.cloud.google.com) →
+   create a project (or use an existing one)
+2. **APIs & Services → Credentials → Create Credentials → OAuth client ID**
+3. Application type: **Web application**
+4. Under **Authorized redirect URIs**, add:
+   ```
+   https://YOUR-PROJECT-REF.supabase.co/auth/v1/callback
+   ```
+   (find `YOUR-PROJECT-REF` in your Supabase Project URL — it's the part
+   before `.supabase.co`)
+5. Create it, then copy the **Client ID** and **Client Secret**
+
+### 7.2 Enable it in Supabase
+1. Supabase → **Authentication → Providers → Google**
+2. Toggle it on, paste the Client ID and Client Secret from 7.1
+3. Save
+
+### 7.3 Allow the redirect back to your site
+Supabase → **Authentication → URL Configuration**:
+- **Site URL**: `https://genesislp.ai`
+- **Redirect URLs**: add `https://genesislp.ai/v2/welcome` (and
+  `https://www.genesislp.ai/v2/welcome`, since both resolve)
+
+Without this step Google sign-in will authenticate but then fail to redirect
+back into the app.
+
+### 7.4 Checking it works
+Click "Continue with Google" on `/v2/sign-in` — it should take you to a real
+Google account picker, then land you on `/v2/welcome` signed in. Note: a
+Google login created this way has no matching `profiles` row automatically —
+follow the same steps as adding any client (SETUP.md step 1.4–1.5) to link
+that Google account to an organization, or it'll sign in to an empty
+dashboard.
+
+---
+
 ## Before the site goes public
 
 Two placeholders are still in the marketing copy and should be replaced or

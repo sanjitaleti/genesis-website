@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import {
   IconChart,
   IconPhone,
-  IconCalendar,
   IconUsers,
   IconReport,
   IconGear,
@@ -15,18 +14,16 @@ import {
   IconSearch,
 } from "../icons";
 import { OverviewView, CallsView, CustomersView, ReportsView, SettingsView } from "./views";
-import { CalendarView } from "./Calendar";
-import { PortalDataProvider } from "./PortalData";
+import { PortalDataProvider, usePortalData, useTheme } from "./PortalData";
 import { isSignedIn, signOut } from "@/lib/v2/session";
 import type { Range } from "@/lib/v2/data";
 import type { PortalData } from "@/lib/v2/portal";
 
-type ViewId = "overview" | "calls" | "calendar" | "customers" | "reports" | "settings";
+type ViewId = "overview" | "calls" | "customers" | "reports" | "settings";
 
 const nav: { id: ViewId; label: string; Icon: typeof IconChart }[] = [
   { id: "overview", label: "Overview", Icon: IconChart },
   { id: "calls", label: "Calls", Icon: IconPhone },
-  { id: "calendar", label: "Calendar", Icon: IconCalendar },
   { id: "customers", label: "Customers", Icon: IconUsers },
   { id: "reports", label: "Reports", Icon: IconReport },
   { id: "settings", label: "Settings", Icon: IconGear },
@@ -35,7 +32,6 @@ const nav: { id: ViewId; label: string; Icon: typeof IconChart }[] = [
 const titles: Record<ViewId, { h: string; sub: string }> = {
   overview: { h: "Overview", sub: "How your receptionist is doing" },
   calls: { h: "Calls", sub: "Every call it has taken" },
-  calendar: { h: "Calendar", sub: "Jobs it booked for you" },
   customers: { h: "Customers", sub: "Who has been calling" },
   reports: { h: "Reports", sub: "What it earned you back" },
   settings: { h: "Settings", sub: "How it answers and who it tells" },
@@ -63,13 +59,42 @@ export function Dashboard({ bundle }: { bundle: Record<Range, PortalData> }) {
 
   if (!ready) return <div className="v2-dash-hold" aria-hidden />;
 
+  return (
+    <PortalDataProvider value={bundle[range]} bundle={bundle}>
+      <DashboardShell view={view} setView={setView} range={range} setRange={setRange} />
+    </PortalDataProvider>
+  );
+}
+
+/**
+ * The themed shell — split out so it can read the accent/mode (and the
+ * range-scoped data) from context. A component can't consume the context it
+ * renders the provider for, hence the split. view/range live one level up so
+ * changing range can swap which slice of `bundle` the provider hands out.
+ *
+ * `data-accent`/`data-mode` on the root are what every CSS variable override
+ * in v2.css keys off of.
+ */
+function DashboardShell({
+  view,
+  setView,
+  range,
+  setRange,
+}: {
+  view: ViewId;
+  setView: (v: ViewId) => void;
+  range: Range;
+  setRange: (r: Range) => void;
+}) {
+  const router = useRouter();
+  const data = usePortalData();
+  const { accent, mode } = useTheme();
+
   const t = titles[view];
   const showRange = view === "overview";
-  const data = bundle[range];
 
   return (
-    <PortalDataProvider value={data}>
-    <div className="v2-dash">
+    <div className="v2-dash" data-accent={accent} data-mode={mode}>
       <div className="v2-dash-glow" aria-hidden />
 
       {/* ------------------------------------------------------- sidebar */}
@@ -163,13 +188,11 @@ export function Dashboard({ bundle }: { bundle: Record<Range, PortalData> }) {
         <main className="v2-dash-body" key={view}>
           {view === "overview" ? <OverviewView range={range} /> : null}
           {view === "calls" ? <CallsView /> : null}
-          {view === "calendar" ? <CalendarView /> : null}
           {view === "customers" ? <CustomersView /> : null}
           {view === "reports" ? <ReportsView /> : null}
           {view === "settings" ? <SettingsView /> : null}
         </main>
       </div>
     </div>
-    </PortalDataProvider>
   );
 }

@@ -60,6 +60,61 @@ export async function signInWith(email: string, password: string): Promise<SignI
   return { ok: true };
 }
 
+/**
+ * Redirects to Google, then back to /v2/welcome once Supabase has a session.
+ * Requires the Google provider to be configured in Supabase (Authentication >
+ * Providers) with real OAuth credentials — see SETUP.md. Until that's done
+ * this errors clearly rather than silently doing nothing.
+ */
+export async function signInWithGoogle(): Promise<SignInResult> {
+  if (!isConfigured()) {
+    return { ok: false, message: "Google sign-in isn't available in demo mode." };
+  }
+
+  const { error } = await browserClient().auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: `${window.location.origin}/v2/welcome` },
+  });
+
+  if (error) {
+    return { ok: false, message: "Google sign-in isn't set up yet — use email and password." };
+  }
+  // On success the browser is already navigating away to Google.
+  return { ok: true };
+}
+
+/** Sends a password-reset email via Supabase's own mailer — no extra service needed. */
+export async function requestPasswordReset(email: string): Promise<SignInResult> {
+  if (!isConfigured()) {
+    return { ok: false, message: "Password reset isn't available in demo mode." };
+  }
+
+  const { error } = await browserClient().auth.resetPasswordForEmail(email.trim(), {
+    redirectTo: `${window.location.origin}/v2/reset-password/confirm`,
+  });
+
+  if (error) {
+    // Supabase deliberately doesn't reveal whether the email exists, to avoid
+    // leaking which addresses have accounts — so this only fires for actual
+    // failures (rate limits, malformed email), not "not found."
+    return { ok: false, message: "Something went wrong sending that email. Try again shortly." };
+  }
+  return { ok: true };
+}
+
+/** Sets a new password once the user has followed the reset-email link. */
+export async function confirmPasswordReset(password: string): Promise<SignInResult> {
+  if (!isConfigured()) {
+    return { ok: false, message: "Password reset isn't available in demo mode." };
+  }
+
+  const { error } = await browserClient().auth.updateUser({ password });
+  if (error) {
+    return { ok: false, message: "Couldn't set that password — try a longer one." };
+  }
+  return { ok: true };
+}
+
 export async function signOut() {
   if (isConfigured()) {
     await browserClient().auth.signOut();
@@ -70,6 +125,27 @@ export async function signOut() {
   } catch {
     /* nothing to clear */
   }
+}
+
+/**
+ * True once the signed-in user has actually been onboarded — i.e. has a
+ * `profiles` row linking them to an organization. A brand-new Google login
+ * has none yet, which is exactly the signal that sends them to /v2/onboarding
+ * instead of a dashboard full of zeros.
+ */
+export async function hasProfile(): Promise<boolean> {
+  if (!isConfigured()) return true; // demo mode has no real profiles table
+
+  const { data } = await browserClient().auth.getUser();
+  if (!data.user) return false;
+
+  const { data: profile } = await browserClient()
+    .from("profiles")
+    .select("id")
+    .eq("id", data.user.id)
+    .maybeSingle();
+
+  return Boolean(profile);
 }
 
 /**

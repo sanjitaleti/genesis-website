@@ -56,7 +56,7 @@ const testimonials = [
 const tierTeasers = [
   { name: "Lunar", price: "$750", unit: "setup · $250/mo", color: "#4cc9f0" },
   { name: "Orbit", price: "$825", unit: "setup · $315/mo", color: "#ff8a00" },
-  { name: "Nova", price: "Optional", unit: "add on when ready", color: "#c77dff" },
+  { name: "Nova", price: "Custom", unit: "add on when ready", color: "#c77dff" },
 ];
 
 export default function V2Landing() {

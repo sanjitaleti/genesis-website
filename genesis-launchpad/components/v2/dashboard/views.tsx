@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Sparkline, VolumeChart, RadarChart, DonutChart, ColumnChart } from "../charts";
-import { IconSearch, IconDownload, IconTrend, IconCheck } from "../icons";
+import { IconSearch } from "../icons";
 import {
   radarAxes,
   radarNow,
@@ -12,7 +12,9 @@ import {
   type Range,
   type CallStatus,
 } from "@/lib/v2/data";
-import { usePortalData } from "./PortalData";
+import { usePortalData, usePortalBundle, useTheme } from "./PortalData";
+import { ThemeSwatches } from "../ThemeSwatches";
+import type { Accent, Mode } from "@/lib/v2/theme";
 
 /* ================================================================ overview */
 
@@ -152,7 +154,7 @@ const toneFor = (s: CallStatus) =>
   s === "Booked" ? "book" : s === "Quoted" ? "quote" : s === "Handled" ? "handled" : "passed";
 
 export function CallsView() {
-  const { calls } = usePortalData();
+  const { allCalls: calls } = usePortalData();
   const [q, setQ] = useState("");
   const [status, setStatus] = useState<CallStatus | "All">("All");
 
@@ -253,7 +255,7 @@ export function CallsView() {
 /* =============================================================== customers */
 
 export function CustomersView() {
-  const { customers } = usePortalData();
+  const { allCustomers: customers } = usePortalData();
   const [q, setQ] = useState("");
 
   const rows = useMemo(() => {
@@ -308,7 +310,9 @@ export function CustomersView() {
                     <td>
                       <span className="v2-table-who">
                         <span className="v2-avatar v2-avatar--sm" aria-hidden>
-                          {c.name.split(" ").map((n) => n[0]).join("")}
+                          {/^[\d()+\- ]+$/.test(c.name)
+                            ? c.name.replace(/\D/g, "").slice(-2)
+                            : c.name.split(" ").map((n) => n[0]).join("")}
                         </span>
                         <span>
                           <span className="v2-table-strong">{c.name}</span>
@@ -342,31 +346,23 @@ export function CustomersView() {
 
 /* ================================================================= reports */
 
-const summary = [
-  { label: "Revenue recovered", value: "$47,320", note: "jobs booked from calls you'd have missed" },
-  { label: "Hours given back", value: "63h", note: "time not spent on the phone" },
-  { label: "Answer rate", value: "100%", note: "every call picked up" },
-  { label: "Cost per booking", value: "$4.10", note: "retainer ÷ jobs booked" },
-];
-
 export function ReportsView() {
-  const { volume: vol } = usePortalData();
+  // Pinned to the 30d slice regardless of whatever range is selected on
+  // Overview, so the "last 30 days" label below is never stale.
+  const { allTimeSummary } = usePortalData();
+  const vol = usePortalBundle()["30d"].volume;
   return (
     <div className="v2-dash-stack">
       <section className="v2-dash-card">
-        <header className="v2-dash-card-head v2-dash-card-head--tools">
+        <header className="v2-dash-card-head">
           <div>
-            <h4>Monthly summary</h4>
-            <p>What your receptionist earned back</p>
+            <h4>All-time summary</h4>
+            <p>Every real figure this receptionist has produced</p>
           </div>
-          <button type="button" className="v2-btn-ghost v2-btn-ghost--sm">
-            <IconDownload style={{ width: 16, height: 16 }} />
-            Export PDF
-          </button>
         </header>
 
         <div className="v2-report-grid">
-          {summary.map((s) => (
+          {allTimeSummary.map((s) => (
             <div key={s.label} className="v2-report-cell">
               <span className="v2-report-label">{s.label}</span>
               <span className="v2-report-value">{s.value}</span>
@@ -376,42 +372,15 @@ export function ReportsView() {
         </div>
       </section>
 
-      <div className="v2-dash-row v2-dash-row--split">
-        <section className="v2-dash-card">
-          <header className="v2-dash-card-head">
-            <div>
-              <h4>Twelve week trend</h4>
-              <p>The line that matters</p>
-            </div>
-            <span className="v2-dash-note">
-              <IconTrend style={{ width: 15, height: 15 }} /> up 63% since launch
-            </span>
-          </header>
-          <VolumeChart a={vol.a} b={vol.b} labels={vol.labels} id="repVol" height={210} />
-        </section>
-
-        <section className="v2-dash-card">
-          <header className="v2-dash-card-head">
-            <div>
-              <h4>What we changed</h4>
-              <p>Tuning done for you this month</p>
-            </div>
-          </header>
-          <ul className="v2-changes">
-            {[
-              "Taught it your after-hours emergency rates",
-              "Added the new Elm St service area",
-              "Shortened the greeting by 4 seconds",
-              "Routes commercial callers straight to you",
-            ].map((t) => (
-              <li key={t}>
-                <IconCheck />
-                {t}
-              </li>
-            ))}
-          </ul>
-        </section>
-      </div>
+      <section className="v2-dash-card">
+        <header className="v2-dash-card-head">
+          <div>
+            <h4>Call volume trend</h4>
+            <p>Answered vs. booked, last 30 days</p>
+          </div>
+        </header>
+        <VolumeChart a={vol.a} b={vol.b} labels={vol.labels} id="repVol" height={210} />
+      </section>
     </div>
   );
 }
@@ -420,8 +389,66 @@ export function ReportsView() {
 
 export function SettingsView() {
   const { business, plan } = usePortalData();
+  const { accent, mode, setTheme } = useTheme();
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  // Only the most recent save request should ever be allowed to win — without
+  // this, clicking two swatches quickly races their PATCH requests, and
+  // whichever response happens to land last silently overwrites the theme
+  // the user actually asked for.
+  const inFlight = useRef<AbortController | null>(null);
+
+  const applyTheme = async (nextAccent: Accent, nextMode: Mode) => {
+    setTheme(nextAccent, nextMode); // instant — don't make the user wait on the network to see it
+    setSaved(false);
+    setSaving(true);
+
+    inFlight.current?.abort();
+    const controller = new AbortController();
+    inFlight.current = controller;
+
+    try {
+      await fetch("/api/settings/theme", {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ accent: nextAccent, mode: nextMode }),
+        signal: controller.signal,
+      });
+      if (inFlight.current === controller) {
+        setSaved(true);
+        setSaving(false);
+      }
+    } catch (err) {
+      if ((err as Error).name !== "AbortError" && inFlight.current === controller) {
+        setSaving(false);
+      }
+      // An aborted request was superseded by a newer one, which owns the
+      // saving/saved state now — nothing to update here.
+    }
+  };
+
   return (
     <div className="v2-dash-stack">
+      <section className="v2-dash-card">
+        <header className="v2-dash-card-head">
+          <div>
+            <h4>Appearance</h4>
+            <p>How your dashboard looks — just for you, changeable anytime</p>
+          </div>
+          {saving ? (
+            <span className="v2-dash-note">Saving…</span>
+          ) : saved ? (
+            <span className="v2-dash-note">Saved</span>
+          ) : null}
+        </header>
+        <ThemeSwatches
+          accent={accent}
+          mode={mode}
+          onAccent={(a) => applyTheme(a, mode)}
+          onMode={(m) => applyTheme(accent, m)}
+        />
+      </section>
+
       <section className="v2-dash-card">
         <header className="v2-dash-card-head">
           <div>

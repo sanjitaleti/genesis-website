@@ -58,7 +58,7 @@ const tiers = [
     key: "nova",
     name: "Nova",
     desc: "More of your busywork automated, not just the phone.",
-    price: "Optional",
+    price: "Custom",
     unit: "add on when you're ready",
     retainer: null,
     perks: [
@@ -279,11 +279,11 @@ export function PricingStage() {
 
                   <div className="v2-tier-cta">
                     {t.featured ? (
-                      <Link href="/v2/contact" className="v2-btn v2-btn--block">
+                      <Link href={`/v2/get-started/${t.key}`} className="v2-btn v2-btn--block">
                         {t.cta}
                       </Link>
                     ) : (
-                      <Link href="/v2/contact" className="v2-btn-ghost" style={{ width: "100%" }}>
+                      <Link href={`/v2/get-started/${t.key}`} className="v2-btn-ghost" style={{ width: "100%" }}>
                         {t.cta}
                       </Link>
                     )}

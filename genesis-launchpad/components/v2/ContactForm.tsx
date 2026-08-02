@@ -4,6 +4,8 @@ import { useState } from "react";
 
 export function ContactForm() {
   const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
 
   if (sent) {
     return (
@@ -17,16 +19,36 @@ export function ContactForm() {
     );
   }
 
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (busy) return;
+    setBusy(true);
+    setError("");
+
+    const form = new FormData(e.currentTarget);
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          kind: "contact",
+          name: form.get("name"),
+          business: form.get("business"),
+          email: form.get("email"),
+          phone: form.get("phone"),
+          message: form.get("message"),
+        }),
+      });
+      if (!res.ok) throw new Error("request failed");
+      setSent(true);
+    } catch {
+      setError("Something went wrong sending that. Try again, or email us directly.");
+      setBusy(false);
+    }
+  };
+
   return (
-    <form
-      className="v2-in"
-      style={{ ["--d" as string]: "0.22s" }}
-      onSubmit={(e) => {
-        e.preventDefault();
-        setSent(true);
-      }}
-      noValidate
-    >
+    <form className="v2-in" style={{ ["--d" as string]: "0.22s" }} onSubmit={submit} noValidate>
       <div style={{ display: "grid", gap: 0, gridTemplateColumns: "1fr 1fr", columnGap: 14 }}>
         <div className="v2-field">
           <label htmlFor="name">Name</label>
@@ -70,8 +92,14 @@ export function ContactForm() {
         </div>
       </div>
 
-      <button type="submit" className="v2-btn v2-btn--block v2-btn--lg">
-        Send it over
+      {error ? (
+        <p className="v2-auth-error" role="alert">
+          {error}
+        </p>
+      ) : null}
+
+      <button type="submit" className="v2-btn v2-btn--block v2-btn--lg" disabled={busy}>
+        {busy ? "Sending…" : "Send it over"}
       </button>
     </form>
   );

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { IconEye, IconEyeOff, IconGoogle } from "./icons";
-import { signInWith } from "@/lib/v2/session";
+import { signInWith, signInWithGoogle } from "@/lib/v2/session";
 import { isConfigured } from "@/lib/v2/supabase";
 
 export function SignInForm() {
@@ -14,6 +14,7 @@ export function SignInForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [googleBusy, setGoogleBusy] = useState(false);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,9 +117,9 @@ export function SignInForm() {
             <span className="v2-check-box" aria-hidden />
             Keep me signed in
           </label>
-          <a href="#reset" className="v2-link">
+          <Link href="/v2/reset-password" className="v2-link">
             Reset password
-          </a>
+          </Link>
         </div>
 
         <button type="submit" className="v2-btn v2-btn--block v2-btn--lg" disabled={busy}>
@@ -133,9 +134,24 @@ export function SignInForm() {
 
         <div className="v2-or">Or continue with</div>
 
-        <button type="button" className="v2-google">
+        <button
+          type="button"
+          className="v2-google"
+          disabled={googleBusy}
+          onClick={async () => {
+            setGoogleBusy(true);
+            setError("");
+            const result = await signInWithGoogle();
+            // On success the page is already navigating to Google — nothing
+            // left to do here. Only a failure returns control to this code.
+            if (!result.ok) {
+              setError(result.message);
+              setGoogleBusy(false);
+            }
+          }}
+        >
           <IconGoogle />
-          Continue with Google
+          {googleBusy ? "Redirecting…" : "Continue with Google"}
         </button>
 
         <p
