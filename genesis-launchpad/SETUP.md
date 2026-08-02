@@ -38,6 +38,9 @@ caller → Twilio number → ElevenLabs agent answers
    - `slug` — anything unique, e.g. `riverside-plumbing`
    - `plan` — `Lunar`, `Orbit`, or `Nova`
    - `elevenlabs_agent_id` — **leave blank for now**, filled in at step 2.4
+   - `paid` — `true` (they're a real onboarded client added by hand here, not
+     through the paid-customer flow in step 8, so nothing else will set this
+     for them — leaving it `false` locks their dashboard behind the paywall)
 4. Create their login under **Authentication → Users → Add user**. Use their
    real email and a password you share with them.
 5. Link that user to the org: **Table Editor → profiles → Insert row**

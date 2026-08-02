@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -89,18 +89,31 @@ function DashboardShell({
   const router = useRouter();
   const data = usePortalData();
   const { accent, mode } = useTheme();
+  const lockCardRef = useRef<HTMLDivElement>(null);
 
   const t = titles[view];
   const showRange = view === "overview";
+  const locked = !data.paid;
+
+  useEffect(() => {
+    if (locked) lockCardRef.current?.focus();
+  }, [locked]);
 
   return (
-    <div className="v2-dash" data-accent={accent} data-mode={mode} data-locked={!data.paid}>
+    <div className="v2-dash" data-accent={accent} data-mode={mode} data-locked={locked}>
       <div className="v2-dash-glow" aria-hidden />
 
-      {!data.paid ? (
+      {locked ? (
         <div className="v2-lock-overlay">
-          <div className="v2-lock-card">
-            <h2>Choose a plan to unlock your dashboard</h2>
+          <div
+            className="v2-lock-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="v2-lock-title"
+            tabIndex={-1}
+            ref={lockCardRef}
+          >
+            <h2 id="v2-lock-title">Choose a plan to unlock your dashboard</h2>
             <p>
               This is a preview of what {data.business} will see once a plan is active. Talk to
               us and we&rsquo;ll get you set up.
@@ -113,7 +126,7 @@ function DashboardShell({
       ) : null}
 
       {/* ------------------------------------------------------- sidebar */}
-      <aside className="v2-dash-side">
+      <aside className="v2-dash-side" inert={locked}>
         <Link href="/v2" className="v2-dash-brand">
           <span className="v2-dash-brand-mark" aria-hidden />
           Genesis LP
@@ -168,7 +181,7 @@ function DashboardShell({
       </aside>
 
       {/* ---------------------------------------------------------- main */}
-      <div className="v2-dash-main">
+      <div className="v2-dash-main" inert={locked}>
         <header className="v2-dash-top">
           <div className="v2-dash-top-id">
             <h1>{t.h}</h1>

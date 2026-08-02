@@ -18,16 +18,25 @@ create table if not exists public.customers (
   -- set once an account claims this row (either because the account
   -- already existed when marked paid, or because onboarding matched it
   -- later) — makes re-running "mark as paid" for the same email safe.
-  claimed_org_id uuid references public.organizations,
+  claimed_org_id uuid references public.organizations on delete set null,
   created_at timestamptz not null default now()
 );
 
 alter table public.customers enable row level security;
 -- Deliberately no policies: only the service-role key touches this table.
 
-alter table public.organizations
-  add column if not exists paid boolean not null default false;
-
--- Grandfather in every org that exists today (Green City, any existing
--- test orgs) so this change doesn't lock out current clients.
-update public.organizations set paid = true where paid = false;
+-- Add the `paid` column once, and only on that first run, grandfather in
+-- every org that exists today (Green City, any existing test orgs) so this
+-- change doesn't lock out current clients. Wrapped in a DO block so
+-- re-pasting this whole file later (staging setup, double-checking a step)
+-- is a safe no-op instead of silently unlocking every org again.
+do $$
+begin
+  if not exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public' and table_name = 'organizations' and column_name = 'paid'
+  ) then
+    alter table public.organizations add column paid boolean not null default false;
+    update public.organizations set paid = true;
+  end if;
+end $$;

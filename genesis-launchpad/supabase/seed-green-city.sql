@@ -4,14 +4,15 @@
 -- already attached, so incoming webhooks and the backfill script immediately
 -- know which client a call belongs to — no manual Table Editor step needed.
 
-insert into public.organizations (name, slug, plan, phone, service_area, elevenlabs_agent_id)
+insert into public.organizations (name, slug, plan, phone, service_area, elevenlabs_agent_id, paid)
 values (
   'Green City Window Door & Siding',
   'green-city-window-door-siding',
   'Orbit',
   '(425) 200-9191',
   'Bothell and Western Washington',
-  'agent_5601ksgq55vweba9sh07bpz151x9'
+  'agent_5601ksgq55vweba9sh07bpz151x9',
+  true
 )
 on conflict (elevenlabs_agent_id) do nothing
 returning id, name;

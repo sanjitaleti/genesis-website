@@ -28,16 +28,32 @@ export function checkAdminPassword(candidate: string): boolean {
   return timingSafeStringEqual(sha256(candidate), sha256(expected));
 }
 
+const SESSION_SECONDS = 60 * 60 * 8; // 8 hours
+
 /**
  * Derived from the password itself, so no separate signing secret is
  * needed — only someone who already knows ADMIN_PASSWORD can produce this
  * value. httpOnly keeps it out of reach of any client-side script.
+ *
+ * The value encodes `<expiryUnixSeconds>.<hmac>`, where the hmac binds the
+ * expiry to the password. This means (a) a captured cookie by itself isn't
+ * a bare password hash sitting in a public/predictable format, and (b) the
+ * server actually enforces expiry itself — the cookie's `maxAge` is only a
+ * client-side hint and would otherwise be accepted forever.
  */
+function hmacFor(expiry: number): string {
+  return sha256(`v2-admin:${process.env.ADMIN_PASSWORD ?? ""}:${expiry}`);
+}
+
 export function adminCookieValue(): string {
-  return sha256(`v2-admin:${process.env.ADMIN_PASSWORD ?? ""}`);
+  const expiry = Math.floor(Date.now() / 1000) + SESSION_SECONDS;
+  return `${expiry}.${hmacFor(expiry)}`;
 }
 
 export function isValidAdminCookie(value: string | undefined): boolean {
   if (!value || !adminPasswordConfigured()) return false;
-  return timingSafeStringEqual(value, adminCookieValue());
+  const [expiryStr, mac] = value.split(".");
+  const expiry = Number(expiryStr);
+  if (!Number.isFinite(expiry) || expiry < Math.floor(Date.now() / 1000)) return false;
+  return timingSafeStringEqual(mac ?? "", hmacFor(expiry));
 }
