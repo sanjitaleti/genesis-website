@@ -33,6 +33,7 @@ export type SummaryStat = { label: string; value: string; note: string };
 
 export type PortalData = {
   live: boolean;
+  paid: boolean;
   business: string;
   plan: string;
   themeAccent: Accent;
@@ -124,6 +125,7 @@ type CallRow = {
 function demoData(range: Range): PortalData {
   return {
     live: false,
+    paid: true,
     business: account.business,
     plan: account.plan,
     themeAccent: DEFAULT_ACCENT,
@@ -217,7 +219,7 @@ function buildVolume(rows: CallRow[], range: Range) {
 }
 
 type LiveSource = {
-  org: { name?: string; plan?: string; theme_accent?: string; theme_mode?: string } | null;
+  org: { name?: string; plan?: string; theme_accent?: string; theme_mode?: string; paid?: boolean } | null;
   rows: CallRow[];
   appts: Record<string, unknown>[];
 };
@@ -238,7 +240,7 @@ async function fetchLive(): Promise<LiveSource | null> {
 
   // RLS restricts every one of these to the caller's own organisation.
   const [{ data: org }, { data: callRows }, { data: apptRows }] = await Promise.all([
-    db.from("organizations").select("name, plan, theme_accent, theme_mode").maybeSingle(),
+    db.from("organizations").select("name, plan, theme_accent, theme_mode, paid").maybeSingle(),
     db
       .from("calls")
       .select("conversation_id, started_at, duration_secs, caller_name, caller_phone, reason, outcome, value_cents, summary")
@@ -301,6 +303,7 @@ function buildLive(src: LiveSource, range: Range): PortalData {
 
   return {
     live: true,
+    paid: true,
     business: org?.name ?? "Your business",
     plan: org?.plan ?? "Lunar",
     themeAccent: (["mono", "punch", "cyan", "citrus"].includes(org?.theme_accent ?? "")
@@ -338,6 +341,27 @@ function buildLive(src: LiveSource, range: Range): PortalData {
       text: r.summary ?? r.reason ?? "Handled a call",
       tone: r.outcome === "booked" ? "book" : r.outcome === "quoted" ? "quote" : "handled",
     })),
+  };
+}
+
+/**
+ * An unpaid org's dashboard: their real business name, plan, and chosen
+ * theme, but demo content underneath — the caller (DashboardShell) is
+ * responsible for actually blurring it and showing the paywall overlay.
+ * Never touches `src.rows`/`src.appts`, so an unpaid org's real call data
+ * is never rendered anywhere, even blurred.
+ */
+function buildLocked(org: LiveSource["org"], range: Range): PortalData {
+  const demo = demoData(range);
+  return {
+    ...demo,
+    paid: false,
+    business: org?.name ?? demo.business,
+    plan: org?.plan ?? demo.plan,
+    themeAccent: (["mono", "punch", "cyan", "citrus"].includes(org?.theme_accent ?? "")
+      ? org!.theme_accent
+      : DEFAULT_ACCENT) as Accent,
+    themeMode: (["dark", "light"].includes(org?.theme_mode ?? "") ? org!.theme_mode : DEFAULT_MODE) as Mode,
   };
 }
 
@@ -390,6 +414,9 @@ export async function getPortalBundle(): Promise<Record<Range, PortalData>> {
   try {
     const src = await fetchLive();
     if (!src) return demoBundle();
+    if (src.org && src.org.paid === false) {
+      return Object.fromEntries(RANGES.map((r) => [r, buildLocked(src.org, r)])) as Record<Range, PortalData>;
+    }
     return Object.fromEntries(RANGES.map((r) => [r, buildLive(src, r)])) as Record<Range, PortalData>;
   } catch (err) {
     console.error("[portal] falling back to demo data:", err);
