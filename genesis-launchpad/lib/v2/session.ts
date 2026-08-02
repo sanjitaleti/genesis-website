@@ -83,6 +83,28 @@ export async function signInWithGoogle(): Promise<SignInResult> {
   return { ok: true };
 }
 
+/**
+ * Email/password self-serve signup. Supabase's "Confirm email" setting must
+ * be turned off (see SETUP.md) for the returned session to be usable
+ * immediately — otherwise this succeeds but the user can't sign in until
+ * they click a confirmation link.
+ */
+export async function createAccount(email: string, password: string): Promise<SignInResult> {
+  if (!isConfigured()) {
+    return { ok: false, message: "Account creation isn't available in demo mode." };
+  }
+
+  const { error } = await browserClient().auth.signUp({
+    email: email.trim(),
+    password,
+  });
+
+  if (error) {
+    return { ok: false, message: "Couldn't create that account — try a different email or a longer password." };
+  }
+  return { ok: true };
+}
+
 /** Sends a password-reset email via Supabase's own mailer — no extra service needed. */
 export async function requestPasswordReset(email: string): Promise<SignInResult> {
   if (!isConfigured()) {

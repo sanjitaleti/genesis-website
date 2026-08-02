@@ -163,9 +163,14 @@ export function SignInForm() {
           }}
         >
           New to Genesis LP?{" "}
+          <Link href="/v2/create-account" className="v2-link">
+            Create an account
+          </Link>{" "}
+          or{" "}
           <Link href="/v2/contact" className="v2-link">
-            Talk to us
+            talk to us
           </Link>
+          .
         </p>
       </div>
     </form>
