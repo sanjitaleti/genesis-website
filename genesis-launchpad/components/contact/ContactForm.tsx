@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 /** Submissions are forwarded to this inbox via FormSubmit (no backend needed). */
-const FORM_ENDPOINT = "https://formsubmit.co/ajax/meridiansocial01@gmail.com";
+const FORM_ENDPOINT = "https://formsubmit.co/ajax/hello@genesislp.ai";
 
 const fieldBase =
   "w-full border-0 border-b border-rule-2 bg-transparent px-0 py-3 text-[1.05rem] text-ink placeholder:text-ink-3 transition-colors duration-200 focus:border-accent focus:outline-none focus:ring-0";
@@ -84,8 +84,8 @@ export function ContactForm() {
         {error && (
           <p className="text-sm text-flag" role="alert">
             Something went wrong — email us directly at{" "}
-            <a href="mailto:meridiansocial01@gmail.com" className="underline underline-offset-4">
-              meridiansocial01@gmail.com
+            <a href="mailto:hello@genesislp.ai" className="underline underline-offset-4">
+              hello@genesislp.ai
             </a>
             .
           </p>

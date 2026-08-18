@@ -4,6 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: { absolute: "Terms & Conditions · Genesis LP" },
   description: "The terms that govern your use of Genesis LP's AI receptionist service.",
+  alternates: { canonical: "/v2/terms" },
 };
 
 const sections = [
@@ -113,8 +114,8 @@ export default function TermsPage() {
               <h2 style={{ margin: "0 0 10px", fontSize: "1.2rem", fontWeight: 600 }}>12. Contact us</h2>
               <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, color: "var(--text-dim)" }}>
                 Questions about these terms? Reach us at{" "}
-                <a href="mailto:meridiansocial01@gmail.com" className="v2-link">
-                  meridiansocial01@gmail.com
+                <a href="mailto:hello@genesislp.ai" className="v2-link">
+                  hello@genesislp.ai
                 </a>{" "}
                 or through our{" "}
                 <Link href="/v2/contact" className="v2-link">

@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { SiteChrome } from "@/components/SiteChrome";
+import StructuredData from "./structured-data";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,20 +26,32 @@ const jetbrains = JetBrains_Mono({
   variable: "--font-mono",
 });
 
+const TITLE = "AI Receptionist for Service Businesses | Genesis LP";
+const DESC =
+  "An AI receptionist that answers every call 24/7, books the job into your " +
+  "calendar, and shows you what it recovered. Built for trades, clinics and " +
+  "salons of 5-75 people.";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://genesislp.ai"),
-  title: {
-    default: "Genesis LP: AI automation & workflow agency",
-    template: "%s · Genesis LP",
-  },
-  description:
-    "Genesis LP replaces the manual work clogging your operations with systems that run themselves. Audit, build, run, in weeks, not quarters.",
+  metadataBase: new URL("https://www.genesislp.ai"),
+  title: { default: TITLE, template: "%s | Genesis LP" },
+  description: DESC,
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "Genesis LP",
-    description:
-      "AI automation & workflow agency. Custom systems that kill busywork for 5–75 person businesses.",
     type: "website",
+    url: "/",
+    siteName: "Genesis LP",
+    title: TITLE,
+    description: DESC,
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Genesis LP - never miss another call" }],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESC,
+    images: ["/og.png"],
+  },
+  icons: { icon: "/favicon.ico", apple: "/apple-touch-icon.png" },
 };
 
 export const viewport: Viewport = {
@@ -57,6 +70,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className="min-h-screen bg-paper font-body text-ink antialiased"
       >
+        <StructuredData />
         <SiteChrome>
           <Navbar />
         </SiteChrome>

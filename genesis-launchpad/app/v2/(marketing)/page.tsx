@@ -318,8 +318,8 @@ export default function V2Landing() {
           >
             <span>© {new Date().getFullYear()} Genesis LP</span>
             <div style={{ display: "flex", gap: 22, alignItems: "center" }}>
-              <a href="mailto:meridiansocial01@gmail.com" className="v2-link">
-                meridiansocial01@gmail.com
+              <a href="mailto:hello@genesislp.ai" className="v2-link">
+                hello@genesislp.ai
               </a>
               <Link href="/v2/privacy" className="v2-link">
                 Privacy

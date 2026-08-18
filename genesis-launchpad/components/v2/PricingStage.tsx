@@ -178,6 +178,7 @@ export function PricingStage() {
 
         {/* beat one: nothing but the invitation */}
         <div className="v2-stage-intro" ref={introRef}>
+          <h1 className="v2-sr-only">AI Receptionist Pricing</h1>
           <h2 className="v2-display v2-stage-title">Straightforward pricing.</h2>
           <p className="v2-stage-sub">
             Fixed scope, fixed price, no long contracts. Keep scrolling.

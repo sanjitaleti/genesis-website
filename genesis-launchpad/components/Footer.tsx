@@ -21,7 +21,7 @@ export function Footer() {
               team — tested on your real data, running on tools you own.
             </p>
             <Link href="/contact" className="link mt-6 inline-flex text-sm text-accent">
-              meridiansocial01@gmail.com
+              hello@genesislp.ai
             </Link>
           </div>
 

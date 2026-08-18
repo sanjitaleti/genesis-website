@@ -6,6 +6,7 @@ import { IconArrow } from "@/components/v2/icons";
 export const metadata: Metadata = {
   title: { absolute: "Portal · Genesis LP" },
   description: "The dashboard you get with your Genesis LP AI receptionist: every call, booking, and dollar it earned you.",
+  alternates: { canonical: "/v2/portal" },
 };
 
 export default function PortalPage() {

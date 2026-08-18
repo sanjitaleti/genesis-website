@@ -29,6 +29,7 @@ export async function generateMetadata({
   return {
     title: { absolute: info ? `Get started with ${info.label} · Genesis LP` : "Get started · Genesis LP" },
     description: "Tell us about your business so we can scope your AI receptionist.",
+    alternates: { canonical: `/v2/get-started/${plan}` },
   };
 }
 
@@ -96,11 +97,11 @@ export default async function GetStartedPage({ params }: { params: Promise<{ pla
             <div className="v2-panel" style={{ padding: "20px 22px" }}>
               <h3 style={{ margin: 0, fontSize: 15, fontWeight: 600 }}>Prefer email?</h3>
               <a
-                href="mailto:meridiansocial01@gmail.com"
+                href="mailto:hello@genesislp.ai"
                 className="v2-link"
                 style={{ display: "inline-block", marginTop: 8, fontSize: 14 }}
               >
-                meridiansocial01@gmail.com
+                hello@genesislp.ai
               </a>
             </div>
           </aside>

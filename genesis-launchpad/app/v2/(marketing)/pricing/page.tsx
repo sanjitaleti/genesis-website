@@ -6,8 +6,9 @@ import { GalaxyLayer } from "@/components/v2/GalaxyLayer";
 import { IconArrow } from "@/components/v2/icons";
 
 export const metadata: Metadata = {
-  title: { absolute: "Pricing · Genesis LP" },
+  title: { absolute: "AI Receptionist Pricing - From $250/mo | Genesis LP" },
   description: "Fixed scope, fixed price, no long contracts. Genesis LP pricing for AI receptionists and automation.",
+  alternates: { canonical: "/v2/pricing" },
 };
 
 export default async function PricingPage({

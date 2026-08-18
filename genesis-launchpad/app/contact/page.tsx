@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const details = [
-  ["Email", "meridiansocial01@gmail.com"],
+  ["Email", "hello@genesislp.ai"],
   ["Response", "Within one business day"],
   ["Best fit", "Teams of 5–75 people"],
 ];

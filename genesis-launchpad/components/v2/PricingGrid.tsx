@@ -11,9 +11,9 @@ import { tiers } from "@/lib/v2/pricing-tiers";
 export function PricingGrid() {
   return (
     <section className="v2-wrap v2-pricing-grid" style={{ paddingBlock: "clamp(104px, 15vh, 150px) 60px" }}>
-      <h2 className="v2-display" style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", maxWidth: "22ch" }}>
+      <h1 className="v2-display" style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", maxWidth: "22ch" }}>
         Choose a plan <span className="v2-grad-text">to unlock your dashboard.</span>
-      </h2>
+      </h1>
 
       <div className="v2-pricing-grid-cards">
         {tiers.map((t) => (

@@ -5,6 +5,7 @@ import { IconClock, IconShield, IconCheck } from "@/components/v2/icons";
 export const metadata: Metadata = {
   title: { absolute: "Contact · Genesis LP" },
   description: "Book a free 20-minute call with Genesis LP about your AI receptionist.",
+  alternates: { canonical: "/v2/contact" },
 };
 
 const points = [
@@ -61,11 +62,11 @@ export default function ContactPage() {
             <div className="v2-panel" style={{ padding: "20px 22px" }}>
               <h3 style={{ margin: 0, fontSize: 15, fontWeight: 600 }}>Prefer email?</h3>
               <a
-                href="mailto:meridiansocial01@gmail.com"
+                href="mailto:hello@genesislp.ai"
                 className="v2-link"
                 style={{ display: "inline-block", marginTop: 8, fontSize: 14 }}
               >
-                meridiansocial01@gmail.com
+                hello@genesislp.ai
               </a>
             </div>
           </aside>

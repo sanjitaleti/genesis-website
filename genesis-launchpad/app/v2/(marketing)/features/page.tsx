@@ -3,8 +3,9 @@ import Link from "next/link";
 import { IconArrow, IconShield, IconClock, IconChart, IconCheck } from "@/components/v2/icons";
 
 export const metadata: Metadata = {
-  title: { absolute: "Features · Genesis LP" },
+  title: { absolute: "What the AI Receptionist Handles | Genesis LP" },
   description: "Everything your Genesis LP AI receptionist handles, in plain English.",
+  alternates: { canonical: "/v2/features" },
 };
 
 const facts = [
