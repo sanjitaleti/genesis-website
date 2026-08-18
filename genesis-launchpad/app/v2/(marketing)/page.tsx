@@ -321,6 +321,12 @@ export default function V2Landing() {
               <a href="mailto:meridiansocial01@gmail.com" className="v2-link">
                 meridiansocial01@gmail.com
               </a>
+              <Link href="/v2/privacy" className="v2-link">
+                Privacy
+              </Link>
+              <Link href="/v2/terms" className="v2-link">
+                Terms
+              </Link>
               <Link href="/v2/sign-in" className="v2-link">
                 Client sign in
               </Link>
