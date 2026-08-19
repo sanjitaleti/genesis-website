@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { GalaxyLayer } from "@/components/v2/GalaxyLayer";
 import {
   IconArrow,
@@ -30,27 +29,21 @@ const facts = [
   },
 ];
 
-const testimonials = [
+const steps = [
   {
-    name: "Dana Morales",
-    handle: "Morales Plumbing & Heating",
-    photo: "/testimonials/dana-morales.jpg",
-    quote:
-      "We used to lose two or three jobs a week to voicemail. Now every call gets answered, and I know exactly what got booked.",
+    n: "01",
+    title: "A call comes in",
+    body: "Your existing number, no new hardware. The AI picks up before the second ring.",
   },
   {
-    name: "Priya Anand",
-    handle: "Brightside Family Dental",
-    photo: "/testimonials/priya-anand.jpg",
-    quote:
-      "Patients used to call after hours and just hang up. Now they get an answer and a next-day slot before we even open.",
+    n: "02",
+    title: "It has the conversation",
+    body: "Answers questions, checks availability, and books the job the way your team would.",
   },
   {
-    name: "Marcus Webb",
-    handle: "The Fade Room",
-    photo: "/testimonials/marcus-webb.jpg",
-    quote:
-      "It sounds like one of my own staff answering, not a machine. Clients honestly can't tell the difference.",
+    n: "03",
+    title: "It shows up in your dashboard",
+    body: "The call, the booking, the outcome: logged and waiting for you, no chasing required.",
   },
 ];
 
@@ -130,26 +123,39 @@ export default function V2Landing() {
           </p>
         </section>
 
-        {/* ---------------------------------------------- testimonials */}
+        {/* ---------------------------------------------- how it works */}
         <section className="v2-wrap" style={{ paddingBlock: "20px 100px" }}>
           <h2 className="v2-display" style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", maxWidth: "18ch" }}>
-            Businesses like yours, already running on it.
+            How a call actually moves through it.
           </h2>
 
-          <div className="v2-testi-grid" style={{ marginTop: 36 }}>
-            {testimonials.map((t) => (
-              <article key={t.name} className="v2-panel v2-testi-card">
-                <div className="v2-testi-head">
-                  <div className="v2-testi-av">
-                    <Image src={t.photo} alt={t.name} width={40} height={40} />
-                  </div>
-                  <div>
-                    <p className="v2-testi-name">{t.name}</p>
-                    <p className="v2-testi-handle">{t.handle}</p>
-                  </div>
-                </div>
-                <p className="v2-testi-body">&ldquo;{t.quote}&rdquo;</p>
-              </article>
+          <div
+            style={{
+              marginTop: 36,
+              display: "grid",
+              gap: 18,
+              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+            }}
+          >
+            {steps.map((s) => (
+              <div key={s.n} className="v2-panel" style={{ padding: "28px 26px" }}>
+                <span
+                  style={{
+                    fontFamily: "var(--font-mono, monospace)",
+                    fontSize: 13,
+                    letterSpacing: "0.08em",
+                    color: "var(--text-faint)",
+                  }}
+                >
+                  {s.n}
+                </span>
+                <h3 style={{ margin: "14px 0 0", fontSize: 18, fontWeight: 600, letterSpacing: "-0.01em" }}>
+                  {s.title}
+                </h3>
+                <p style={{ margin: "9px 0 0", fontSize: 14.5, lineHeight: 1.65, color: "var(--text-dim)" }}>
+                  {s.body}
+                </p>
+              </div>
             ))}
           </div>
         </section>

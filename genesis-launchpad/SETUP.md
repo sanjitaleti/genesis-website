@@ -304,10 +304,8 @@ intake form falls back to plain "we'll reply within a business day" copy.
 
 ## Before the site goes public
 
-Two placeholders are still in the marketing copy and should be replaced or
-removed — they read as real and aren't:
+One placeholder is still in the marketing copy and should be replaced or
+removed — it reads as real and isn't:
 
-- **`app/(marketing)/page.tsx`** — three invented testimonials (Dana
-  Morales, Priya Anand, Marcus Webb) attributed to businesses that don't exist.
 - **`lib/v2/data.ts`** — the demo figures. Harmless while the badge is showing,
   but worth swapping for a real client's numbers once you have consent.

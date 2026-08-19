@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { AuroraField } from "@/components/v2/AuroraField";
 import { SignInForm } from "@/components/v2/SignInForm";
 import { SpaceScene } from "@/components/v2/SpaceScene";
@@ -56,23 +55,6 @@ export default function V2SignIn() {
           <aside className="v2-auth-art">
             <SpaceScene />
             <div className="v2-auth-art-grain" aria-hidden />
-
-            <figure className="v2-quote">
-              <div className="v2-quote-head">
-                <div className="v2-quote-av">
-                  <Image src="/testimonials/dana-morales.jpg" alt="Dana Morales" width={42} height={42} />
-                </div>
-                <div>
-                  <p className="v2-quote-name">Dana Morales</p>
-                  <p className="v2-quote-handle">Morales Plumbing &amp; Heating</p>
-                </div>
-              </div>
-              <blockquote className="v2-quote-body">
-                &ldquo;We used to lose two or three jobs a week to voicemail. Now
-                every call gets picked up, and I can see exactly what it booked
-                while I was under a sink.&rdquo;
-              </blockquote>
-            </figure>
           </aside>
         </div>
       </div>
