@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+// Root layout sets a site-wide canonical of "/" — override it here so the
+// 404 doesn't declare a canonical to a different URL (reads as a soft 404).
+export const metadata: Metadata = {
+  alternates: {},
+};
 
 export default function NotFound() {
   return (

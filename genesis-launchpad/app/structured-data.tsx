@@ -8,7 +8,7 @@ const graph = {
       "@id": `${BASE}/#org`,
       name: "Genesis LP",
       url: BASE,
-      logo: `${BASE}/logo.png`,
+      logo: `${BASE}/icon.svg`,
       email: "hello@genesislp.ai",
       description: "AI receptionist and automation for small service businesses.",
       sameAs: [],

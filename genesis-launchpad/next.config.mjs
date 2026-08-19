@@ -31,6 +31,10 @@ const nextConfig = {
     return [
       { source: "/v2", destination: "/", permanent: true },
       { source: "/v2/:path*", destination: "/:path*", permanent: true },
+      // /about and /solutions returned 200 before the consolidation and now
+      // 404 — redirect any existing links/citations to their replacements.
+      { source: "/about", destination: "/", permanent: true },
+      { source: "/solutions", destination: "/features", permanent: true },
     ];
   },
 };

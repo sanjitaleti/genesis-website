@@ -4,7 +4,7 @@ import { PortalPreview } from "@/components/v2/PortalPreview";
 import { IconArrow } from "@/components/v2/icons";
 
 export const metadata: Metadata = {
-  title: { absolute: "Portal · Genesis LP" },
+  title: { absolute: "Client Dashboard | Genesis LP" },
   description: "The dashboard you get with your Genesis LP AI receptionist: every call, booking, and dollar it earned you.",
   alternates: { canonical: "/portal" },
 };
