@@ -108,11 +108,11 @@ export default function V2Landing() {
               marginTop: 38,
             }}
           >
-            <Link href="/v2/contact" className="v2-btn v2-btn--lg">
+            <Link href="/contact" className="v2-btn v2-btn--lg">
               Book a free 20-minute call
               <IconArrow style={{ width: 18, height: 18 }} />
             </Link>
-            <Link href="/v2/features" className="v2-btn-ghost">
+            <Link href="/features" className="v2-btn-ghost">
               See how it works
             </Link>
           </div>
@@ -163,7 +163,7 @@ export default function V2Landing() {
             >
               What it does, in plain English.
             </h2>
-            <Link href="/v2/features" className="v2-btn-ghost">
+            <Link href="/features" className="v2-btn-ghost">
               See everything it does
               <IconArrow style={{ width: 16, height: 16 }} />
             </Link>
@@ -210,7 +210,7 @@ export default function V2Landing() {
                 it earned you, no spreadsheets, no reports to chase.
               </p>
             </div>
-            <Link href="/v2/portal" className="v2-btn v2-btn--lg">
+            <Link href="/portal" className="v2-btn v2-btn--lg">
               Peek inside the dashboard
               <IconArrow style={{ width: 18, height: 18 }} />
             </Link>
@@ -223,7 +223,7 @@ export default function V2Landing() {
             <h2 className="v2-display" style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)", maxWidth: "16ch" }}>
               Straightforward pricing.
             </h2>
-            <Link href="/v2/pricing" className="v2-btn-ghost">
+            <Link href="/pricing" className="v2-btn-ghost">
               See full pricing
               <IconArrow style={{ width: 16, height: 16 }} />
             </Link>
@@ -240,7 +240,7 @@ export default function V2Landing() {
             {tierTeasers.map((t) => (
               <Link
                 key={t.name}
-                href="/v2/pricing"
+                href="/pricing"
                 className="v2-panel"
                 style={{ padding: "26px 24px", textDecoration: "none", color: "inherit" }}
               >
@@ -296,7 +296,7 @@ export default function V2Landing() {
               this is worth doing for your business.
             </p>
             <div style={{ marginTop: 30, display: "flex", justifyContent: "center" }}>
-              <Link href="/v2/contact" className="v2-btn v2-btn--lg">
+              <Link href="/contact" className="v2-btn v2-btn--lg">
                 Book a free 20-minute call
                 <IconArrow style={{ width: 18, height: 18 }} />
               </Link>
@@ -321,13 +321,13 @@ export default function V2Landing() {
               <a href="mailto:hello@genesislp.ai" className="v2-link">
                 hello@genesislp.ai
               </a>
-              <Link href="/v2/privacy" className="v2-link">
+              <Link href="/privacy" className="v2-link">
                 Privacy
               </Link>
-              <Link href="/v2/terms" className="v2-link">
+              <Link href="/terms" className="v2-link">
                 Terms
               </Link>
-              <Link href="/v2/sign-in" className="v2-link">
+              <Link href="/sign-in" className="v2-link">
                 Client sign in
               </Link>
             </div>

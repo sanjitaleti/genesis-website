@@ -38,7 +38,7 @@ export function CreateAccountForm() {
       return;
     }
 
-    router.push("/v2/welcome");
+    router.push("/welcome");
   };
 
   return (
@@ -135,7 +135,7 @@ export function CreateAccountForm() {
 
         <p style={{ textAlign: "center", margin: "30px 0 0", fontSize: 14, color: "var(--text-faint)" }}>
           Already have an account?{" "}
-          <Link href="/v2/sign-in" className="v2-link">
+          <Link href="/sign-in" className="v2-link">
             Sign in
           </Link>
         </p>

@@ -29,7 +29,7 @@ export async function generateMetadata({
   return {
     title: { absolute: info ? `Get started with ${info.label} · Genesis LP` : "Get started · Genesis LP" },
     description: "Tell us about your business so we can scope your AI receptionist.",
-    alternates: { canonical: `/v2/get-started/${plan}` },
+    alternates: { canonical: `/get-started/${plan}` },
   };
 }
 

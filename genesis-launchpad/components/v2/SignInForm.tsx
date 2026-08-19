@@ -30,7 +30,7 @@ export function SignInForm() {
       return;
     }
 
-    router.push("/v2/welcome");
+    router.push("/welcome");
   };
 
   return (
@@ -117,7 +117,7 @@ export function SignInForm() {
             <span className="v2-check-box" aria-hidden />
             Keep me signed in
           </label>
-          <Link href="/v2/reset-password" className="v2-link">
+          <Link href="/reset-password" className="v2-link">
             Reset password
           </Link>
         </div>
@@ -163,11 +163,11 @@ export function SignInForm() {
           }}
         >
           New to Genesis LP?{" "}
-          <Link href="/v2/create-account" className="v2-link">
+          <Link href="/create-account" className="v2-link">
             Create an account
           </Link>{" "}
           or{" "}
-          <Link href="/v2/contact" className="v2-link">
+          <Link href="/contact" className="v2-link">
             talk to us
           </Link>
           .

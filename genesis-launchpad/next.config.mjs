@@ -22,12 +22,16 @@ const nextConfig = {
   turbopack: {
     root: __dirname,
   },
-  // Now that genesislp.ai points at this deployment, the root path should be
-  // the finished v2 site rather than the original placeholder homepage — the
-  // old page still exists (nothing was deleted), it's just no longer the
-  // default landing experience.
+  // The old placeholder site and the /v2 concept routes have both been
+  // retired now that the receptionist positioning is the whole site — /v2/*
+  // content moved to the plain paths. Permanent (301), since this isn't
+  // temporary: anyone who still has an old /v2 link should be forwarded for
+  // good, and search engines should transfer ranking signal to the new URL.
   async redirects() {
-    return [{ source: "/", destination: "/v2", permanent: false }];
+    return [
+      { source: "/v2", destination: "/", permanent: true },
+      { source: "/v2/:path*", destination: "/:path*", permanent: true },
+    ];
   },
 };
 

@@ -40,14 +40,14 @@ export function Welcome() {
       const signedIn = await isSignedIn();
       if (!alive) return;
       if (!signedIn) {
-        router.replace("/v2/sign-in");
+        router.replace("/sign-in");
         return;
       }
 
       const onboarded = await hasProfile();
       if (!alive) return;
       if (!onboarded) {
-        router.replace("/v2/onboarding");
+        router.replace("/onboarding");
         return;
       }
 
@@ -82,7 +82,7 @@ export function Welcome() {
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     timer.current = window.setTimeout(
-      () => router.push("/v2/dashboard"),
+      () => router.push("/dashboard"),
       reduce ? 200 : 2100,
     );
   };

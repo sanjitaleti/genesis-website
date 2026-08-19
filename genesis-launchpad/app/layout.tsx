@@ -1,30 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-import { SiteChrome } from "@/components/SiteChrome";
+import "./v2.css";
 import StructuredData from "./structured-data";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  display: "swap",
-  variable: "--font-display",
-});
-
-const jetbrains = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  display: "swap",
-  variable: "--font-mono",
-});
 
 const TITLE = "AI Receptionist for Service Businesses | Genesis LP";
 const DESC =
@@ -62,22 +39,10 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrains.variable}`}
-    >
-      <body
-        suppressHydrationWarning
-        className="min-h-screen bg-paper font-body text-ink antialiased"
-      >
+    <html lang="en">
+      <body suppressHydrationWarning>
         <StructuredData />
-        <SiteChrome>
-          <Navbar />
-        </SiteChrome>
-        <main>{children}</main>
-        <SiteChrome>
-          <Footer />
-        </SiteChrome>
+        <div className="v2">{children}</div>
       </body>
     </html>
   );

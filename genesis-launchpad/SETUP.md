@@ -22,7 +22,7 @@ caller → Twilio number → ElevenLabs agent answers
                       Supabase: calls + appointments
                               │
                               ▼
-                    /v2/dashboard  (reads only your org's rows)
+                    /dashboard  (reads only your org's rows)
 ```
 
 ---
@@ -119,7 +119,7 @@ webhooks, holds secrets, and reads per-user data behind a login, none of which
 static files can do.
 
 Marketing pages are still prerendered at build time, so nothing gets slower.
-Only `/v2/dashboard` and `/api/*` are dynamic.
+Only `/dashboard` and `/api/*` are dynamic.
 
 Deploy to any Node host. Vercel is the least friction:
 
@@ -140,7 +140,7 @@ Make one real call to the Twilio number and hang up. Within a few seconds:
 
 - **ElevenLabs → Conversations** shows the call and the fields it extracted
 - **Supabase → Table Editor → calls** shows a new row
-- **`/v2/dashboard`** shows it in Calls and Live activity, with the badge gone
+- **`/dashboard`** shows it in Calls and Live activity, with the badge gone
 
 If nothing arrives, check in this order:
 
@@ -193,7 +193,7 @@ but it'll show that address as the sender rather than something at
 
 ### 6.5 Checking it works
 Submit the contact form or a "Get started" intake at
-`/v2/get-started/lunar`. Within a few seconds:
+`/get-started/lunar`. Within a few seconds:
 - **Supabase → Table Editor → leads** shows the new row
 - Your inbox gets the notification email (check spam the first time — sandbox
   sender addresses sometimes land there until your own domain is verified)
@@ -234,15 +234,15 @@ setup.
 ### 7.3 Allow the redirect back to your site
 Supabase → **Authentication → URL Configuration**:
 - **Site URL**: `https://genesislp.ai`
-- **Redirect URLs**: add `https://genesislp.ai/v2/welcome` (and
-  `https://www.genesislp.ai/v2/welcome`, since both resolve)
+- **Redirect URLs**: add `https://genesislp.ai/welcome` (and
+  `https://www.genesislp.ai/welcome`, since both resolve)
 
 Without this step Google sign-in will authenticate but then fail to redirect
 back into the app.
 
 ### 7.4 Checking it works
-Click "Continue with Google" on `/v2/sign-in` — it should take you to a real
-Google account picker, then land you on `/v2/welcome` signed in. Note: a
+Click "Continue with Google" on `/sign-in` — it should take you to a real
+Google account picker, then land you on `/welcome` signed in. Note: a
 Google login created this way has no matching `profiles` row automatically —
 follow the same steps as adding any client (SETUP.md step 1.4–1.5) to link
 that Google account to an organization, or it'll sign in to an empty
@@ -264,13 +264,13 @@ current clients aren't affected.
 
 ### 8.2 Turn off "Confirm email"
 
-So a freshly created account (via `/v2/create-account`) can sign in
+So a freshly created account (via `/create-account`) can sign in
 immediately instead of waiting on a confirmation email: go to **Authentication → Sign In / Providers** (not "Providers" alone — Supabase's current dashboard nests this under a "Sign In / Providers" page). Under the **User Signups** section, make sure **"Allow new users to sign up"** is on, then turn off **"Confirm email"** (it's a separate toggle in that same section, described as "Users will need to confirm their email address before signing in for the first time"). Also confirm the **Email** provider itself is enabled under the **Auth Providers** section on the same page — if it's off, email/password sign-in and sign-up won't work at all regardless of the Confirm-email setting. Click **Save changes** after any change on this page.
 
 ### 8.3 Set an admin password
 
 Add `ADMIN_PASSWORD` to `.env.local` (and to Vercel's environment
-variables) — any strong password. This gates `/v2/admin`, the internal page
+variables) — any strong password. This gates `/admin`, the internal page
 for marking a client paid after a Calendly call closes. Leaving it unset
 makes that page entirely unreachable.
 
@@ -285,19 +285,19 @@ intake form falls back to plain "we'll reply within a business day" copy.
 
 1. A lead fills out the pricing intake form and books a call via the
    embedded Calendly widget.
-2. If the call closes, go to `/v2/admin`, sign in with `ADMIN_PASSWORD`,
+2. If the call closes, go to `/admin`, sign in with `ADMIN_PASSWORD`,
    and enter their email + plan.
 3. If they already have an account, their dashboard unlocks immediately.
    If not, it unlocks automatically the moment they create an account
-   (`/v2/create-account`) or sign in with Google using that same email and
+   (`/create-account`) or sign in with Google using that same email and
    finish onboarding.
 
 ### 8.6 Checking it works
 
 - Sign in as an account with no matching `customers` row → onboard → the
   dashboard should be visibly blurred with a "Choose a plan" link to
-  `/v2/pricing`.
-- Mark that same email as paid from `/v2/admin` → refresh the dashboard →
+  `/pricing`.
+- Mark that same email as paid from `/admin` → refresh the dashboard →
   it should unlock immediately, still showing their real theme.
 
 ---
@@ -307,7 +307,7 @@ intake form falls back to plain "we'll reply within a business day" copy.
 Two placeholders are still in the marketing copy and should be replaced or
 removed — they read as real and aren't:
 
-- **`app/v2/(marketing)/page.tsx`** — three invented testimonials (Dana
+- **`app/(marketing)/page.tsx`** — three invented testimonials (Dana
   Morales, Priya Anand, Marcus Webb) attributed to businesses that don't exist.
 - **`lib/v2/data.ts`** — the demo figures. Harmless while the badge is showing,
   but worth swapping for a real client's numbers once you have consent.

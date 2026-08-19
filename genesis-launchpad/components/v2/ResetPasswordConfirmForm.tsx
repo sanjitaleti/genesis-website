@@ -23,7 +23,7 @@ export function ResetPasswordConfirmForm() {
         <p style={{ margin: "14px 0 30px", fontSize: "1.02rem", lineHeight: 1.6, color: "var(--text-dim)" }}>
           Sign in with your new password whenever you&rsquo;re ready.
         </p>
-        <button type="button" className="v2-btn v2-btn--lg" onClick={() => router.push("/v2/sign-in")}>
+        <button type="button" className="v2-btn v2-btn--lg" onClick={() => router.push("/sign-in")}>
           Go to sign in
         </button>
       </div>

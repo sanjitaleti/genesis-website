@@ -6,7 +6,7 @@ import { IconArrow } from "@/components/v2/icons";
 export const metadata: Metadata = {
   title: { absolute: "Portal · Genesis LP" },
   description: "The dashboard you get with your Genesis LP AI receptionist: every call, booking, and dollar it earned you.",
-  alternates: { canonical: "/v2/portal" },
+  alternates: { canonical: "/portal" },
 };
 
 export default function PortalPage() {
@@ -53,11 +53,11 @@ export default function PortalPage() {
             us about what your version would look like.
           </p>
           <div style={{ marginTop: 26, display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
-            <Link href="/v2/pricing" className="v2-btn v2-btn--lg">
+            <Link href="/pricing" className="v2-btn v2-btn--lg">
               See pricing
               <IconArrow style={{ width: 18, height: 18 }} />
             </Link>
-            <Link href="/v2/contact" className="v2-btn-ghost">
+            <Link href="/contact" className="v2-btn-ghost">
               Talk to us
             </Link>
           </div>

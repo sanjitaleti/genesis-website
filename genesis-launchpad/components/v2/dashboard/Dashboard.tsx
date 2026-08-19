@@ -49,7 +49,7 @@ export function Dashboard({ bundle }: { bundle: Record<Range, PortalData> }) {
     let alive = true;
     isSignedIn().then((ok) => {
       if (!alive) return;
-      if (!ok) router.replace("/v2/sign-in");
+      if (!ok) router.replace("/sign-in");
       else setReady(true);
     });
     return () => {
@@ -118,7 +118,7 @@ function DashboardShell({
               This is a preview of what {data.business} will see once a plan is active. Talk to
               us and we&rsquo;ll get you set up.
             </p>
-            <Link href="/v2/pricing?locked=1" className="v2-btn v2-btn--lg">
+            <Link href="/pricing?locked=1" className="v2-btn v2-btn--lg">
               See pricing
             </Link>
           </div>
@@ -127,7 +127,7 @@ function DashboardShell({
 
       {/* ------------------------------------------------------- sidebar */}
       <aside className="v2-dash-side" inert={locked}>
-        <Link href="/v2" className="v2-dash-brand">
+        <Link href="/" className="v2-dash-brand">
           <span className="v2-dash-brand-mark" aria-hidden />
           Genesis LP
         </Link>
@@ -171,7 +171,7 @@ function DashboardShell({
               aria-label="Sign out"
               onClick={async () => {
                 await signOut();
-                router.push("/v2/sign-in");
+                router.push("/sign-in");
               }}
             >
               <IconLogout />

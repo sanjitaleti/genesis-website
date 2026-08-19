@@ -5,7 +5,7 @@ import { IconArrow, IconShield, IconClock, IconChart, IconCheck } from "@/compon
 export const metadata: Metadata = {
   title: { absolute: "What the AI Receptionist Handles | Genesis LP" },
   description: "Everything your Genesis LP AI receptionist handles, in plain English.",
-  alternates: { canonical: "/v2/features" },
+  alternates: { canonical: "/features" },
 };
 
 const facts = [
@@ -163,7 +163,7 @@ export default function FeaturesPage() {
               ))}
             </ul>
           </div>
-          <Link href="/v2/contact" className="v2-btn v2-btn--lg">
+          <Link href="/contact" className="v2-btn v2-btn--lg">
             Book a free 20-minute call
             <IconArrow style={{ width: 18, height: 18 }} />
           </Link>

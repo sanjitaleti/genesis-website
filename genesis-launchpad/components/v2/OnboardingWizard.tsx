@@ -24,14 +24,14 @@ export function OnboardingWizard() {
       const signedIn = await isSignedIn();
       if (!alive) return;
       if (!signedIn) {
-        router.replace("/v2/sign-in");
+        router.replace("/sign-in");
         return;
       }
       const onboarded = await hasProfile();
       if (!alive) return;
       if (onboarded) {
         // Already set up — onboarding isn't something to redo by URL.
-        router.replace("/v2/dashboard");
+        router.replace("/dashboard");
         return;
       }
       setReady(true);
@@ -53,7 +53,7 @@ export function OnboardingWizard() {
         body: JSON.stringify({ name, business, accent, mode }),
       });
       if (!res.ok) throw new Error("request failed");
-      router.push("/v2/welcome");
+      router.push("/welcome");
     } catch {
       setError("Something went wrong setting that up. Try again.");
       setBusy(false);

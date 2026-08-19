@@ -2,17 +2,31 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <section className="wrap grid min-h-[70vh] content-center pt-36">
-      <div className="meta">Error 404</div>
-      <h1 className="mt-5 max-w-2xl text-[clamp(2.5rem,5vw,4.5rem)] font-semibold leading-[1.02] tracking-tighter2">
-        This page never shipped.
-      </h1>
-      <p className="mt-5 max-w-md text-lg leading-relaxed text-ink-2">
-        The page you&apos;re after doesn&apos;t exist — or hasn&apos;t been built yet.
-      </p>
-      <Link href="/" className="btn-primary mt-8 w-fit">
-        Back to home <span aria-hidden>→</span>
-      </Link>
-    </section>
+    <div className="v2-content">
+      <section className="v2-wrap" style={{ paddingBlock: "clamp(140px, 22vh, 220px) 120px", textAlign: "center" }}>
+        <p className="v2-eyebrow" style={{ display: "inline-flex", marginBottom: 18 }}>
+          Error 404
+        </p>
+        <h1 className="v2-display" style={{ fontSize: "clamp(2.4rem, 5vw, 3.6rem)", maxWidth: "20ch", margin: "0 auto" }}>
+          This page never shipped.
+        </h1>
+        <p
+          style={{
+            margin: "16px auto 0",
+            maxWidth: "44ch",
+            fontSize: "1.02rem",
+            lineHeight: 1.65,
+            color: "var(--text-dim)",
+          }}
+        >
+          The page you&rsquo;re after doesn&rsquo;t exist, or hasn&rsquo;t been built yet.
+        </p>
+        <div style={{ marginTop: 30, display: "flex", justifyContent: "center" }}>
+          <Link href="/" className="v2-btn v2-btn--lg">
+            Back to home
+          </Link>
+        </div>
+      </section>
+    </div>
   );
 }

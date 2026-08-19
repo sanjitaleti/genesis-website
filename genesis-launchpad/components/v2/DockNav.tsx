@@ -6,10 +6,10 @@ import { IconHome, IconSpark, IconChart, IconCard, IconUser } from "./icons";
 
 /** Floating dock. Icons only; the active item expands to show its label. */
 const items = [
-  { href: "/v2", label: "Home", Icon: IconHome },
-  { href: "/v2/features", label: "Features", Icon: IconSpark },
-  { href: "/v2/portal", label: "Portal", Icon: IconChart },
-  { href: "/v2/pricing", label: "Pricing", Icon: IconCard },
+  { href: "/", label: "Home", Icon: IconHome },
+  { href: "/features", label: "Features", Icon: IconSpark },
+  { href: "/portal", label: "Portal", Icon: IconChart },
+  { href: "/pricing", label: "Pricing", Icon: IconCard },
 ];
 
 export function DockNav() {
@@ -19,7 +19,7 @@ export function DockNav() {
     <div className="v2-dock-shell">
       <nav className="v2-dock" aria-label="Site">
         {items.map(({ href, label, Icon }) => {
-          const active = href === "/v2" ? pathname === "/v2" : pathname?.startsWith(href);
+          const active = href === "/" ? pathname === "/" : pathname?.startsWith(href);
           return (
             <Link
               key={href}
@@ -35,9 +35,9 @@ export function DockNav() {
           );
         })}
         <Link
-          href="/v2/sign-in"
+          href="/sign-in"
           className="v2-dock-item"
-          data-active={pathname?.startsWith("/v2/sign-in")}
+          data-active={pathname?.startsWith("/sign-in")}
           aria-label="Sign in"
         >
           <IconUser />

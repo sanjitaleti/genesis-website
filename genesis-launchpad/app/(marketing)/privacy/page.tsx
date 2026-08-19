@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: { absolute: "Privacy Policy · Genesis LP" },
   description: "How Genesis LP collects, uses, and protects your information.",
-  alternates: { canonical: "/v2/privacy" },
+  alternates: { canonical: "/privacy" },
 };
 
 const sections = [
@@ -115,11 +115,11 @@ export default function PrivacyPage() {
                   hello@genesislp.ai
                 </a>{" "}
                 or through our{" "}
-                <Link href="/v2/contact" className="v2-link">
+                <Link href="/contact" className="v2-link">
                   contact page
                 </Link>
                 . See also our{" "}
-                <Link href="/v2/terms" className="v2-link">
+                <Link href="/terms" className="v2-link">
                   Terms & Conditions
                 </Link>
                 .

@@ -61,7 +61,7 @@ export async function signInWith(email: string, password: string): Promise<SignI
 }
 
 /**
- * Redirects to Google, then back to /v2/welcome once Supabase has a session.
+ * Redirects to Google, then back to /welcome once Supabase has a session.
  * Requires the Google provider to be configured in Supabase (Authentication >
  * Providers) with real OAuth credentials — see SETUP.md. Until that's done
  * this errors clearly rather than silently doing nothing.
@@ -73,7 +73,7 @@ export async function signInWithGoogle(): Promise<SignInResult> {
 
   const { error } = await browserClient().auth.signInWithOAuth({
     provider: "google",
-    options: { redirectTo: `${window.location.origin}/v2/welcome` },
+    options: { redirectTo: `${window.location.origin}/welcome` },
   });
 
   if (error) {
@@ -112,7 +112,7 @@ export async function requestPasswordReset(email: string): Promise<SignInResult>
   }
 
   const { error } = await browserClient().auth.resetPasswordForEmail(email.trim(), {
-    redirectTo: `${window.location.origin}/v2/reset-password/confirm`,
+    redirectTo: `${window.location.origin}/reset-password/confirm`,
   });
 
   if (error) {
@@ -152,7 +152,7 @@ export async function signOut() {
 /**
  * True once the signed-in user has actually been onboarded — i.e. has a
  * `profiles` row linking them to an organization. A brand-new Google login
- * has none yet, which is exactly the signal that sends them to /v2/onboarding
+ * has none yet, which is exactly the signal that sends them to /onboarding
  * instead of a dashboard full of zeros.
  */
 export async function hasProfile(): Promise<boolean> {

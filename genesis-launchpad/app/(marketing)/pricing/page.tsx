@@ -8,7 +8,7 @@ import { IconArrow } from "@/components/v2/icons";
 export const metadata: Metadata = {
   title: { absolute: "AI Receptionist Pricing - From $250/mo | Genesis LP" },
   description: "Fixed scope, fixed price, no long contracts. Genesis LP pricing for AI receptionists and automation.",
-  alternates: { canonical: "/v2/pricing" },
+  alternates: { canonical: "/pricing" },
 };
 
 export default async function PricingPage({
@@ -58,7 +58,7 @@ export default async function PricingPage({
             one makes sense, or if none of them do yet.
           </p>
           <div style={{ marginTop: 30, display: "flex", justifyContent: "center" }}>
-            <Link href="/v2/contact" className="v2-btn v2-btn--lg">
+            <Link href="/contact" className="v2-btn v2-btn--lg">
               Book a free 20-minute call
               <IconArrow style={{ width: 18, height: 18 }} />
             </Link>

@@ -50,11 +50,11 @@ export function PricingGrid() {
 
               <div className="v2-tier-cta">
                 {t.featured ? (
-                  <Link href={`/v2/get-started/${t.key}`} className="v2-btn v2-btn--block">
+                  <Link href={`/get-started/${t.key}`} className="v2-btn v2-btn--block">
                     {t.cta}
                   </Link>
                 ) : (
-                  <Link href={`/v2/get-started/${t.key}`} className="v2-btn-ghost" style={{ width: "100%" }}>
+                  <Link href={`/get-started/${t.key}`} className="v2-btn-ghost" style={{ width: "100%" }}>
                     {t.cta}
                   </Link>
                 )}

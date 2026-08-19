@@ -20,7 +20,7 @@ export function ResetPasswordForm() {
           If <strong style={{ color: "var(--text)" }}>{email}</strong> has an account, a reset link is
           on its way. It expires after a while, so use it soon.
         </p>
-        <Link href="/v2/sign-in" className="v2-link" style={{ display: "inline-block", marginTop: 24 }}>
+        <Link href="/sign-in" className="v2-link" style={{ display: "inline-block", marginTop: 24 }}>
           Back to sign in
         </Link>
       </div>
@@ -82,7 +82,7 @@ export function ResetPasswordForm() {
       </button>
 
       <Link
-        href="/v2/sign-in"
+        href="/sign-in"
         className="v2-link"
         style={{ display: "block", textAlign: "center", marginTop: 20 }}
       >

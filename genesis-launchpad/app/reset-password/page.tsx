@@ -1,20 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AuroraField } from "@/components/v2/AuroraField";
-import { ResetPasswordConfirmForm } from "@/components/v2/ResetPasswordConfirmForm";
+import { ResetPasswordForm } from "@/components/v2/ResetPasswordForm";
 import { IconX } from "@/components/v2/icons";
 
 export const metadata: Metadata = {
-  title: { absolute: "Set new password · Genesis LP" },
-  description: "Set a new Genesis LP password.",
+  title: { absolute: "Reset password · Genesis LP" },
+  description: "Reset your Genesis LP password.",
 };
 
-export default function ResetPasswordConfirmPage() {
+export default function ResetPasswordPage() {
   return (
     <>
       <AuroraField />
 
-      <Link href="/v2/sign-in" className="v2-auth-close" aria-label="Close and go back">
+      <Link href="/sign-in" className="v2-auth-close" aria-label="Close and go back">
         <IconX />
       </Link>
 
@@ -22,7 +22,7 @@ export default function ResetPasswordConfirmPage() {
         <div className="v2-auth" style={{ gridTemplateColumns: "1fr" }}>
           <div className="v2-auth-form" style={{ margin: "0 auto", maxWidth: 460 }}>
             <Link
-              href="/v2"
+              href="/"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -41,7 +41,7 @@ export default function ResetPasswordConfirmPage() {
               Genesis LP
             </Link>
 
-            <ResetPasswordConfirmForm />
+            <ResetPasswordForm />
           </div>
         </div>
       </div>

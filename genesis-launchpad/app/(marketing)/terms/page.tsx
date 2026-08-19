@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: { absolute: "Terms & Conditions · Genesis LP" },
   description: "The terms that govern your use of Genesis LP's AI receptionist service.",
-  alternates: { canonical: "/v2/terms" },
+  alternates: { canonical: "/terms" },
 };
 
 const sections = [
@@ -118,11 +118,11 @@ export default function TermsPage() {
                   hello@genesislp.ai
                 </a>{" "}
                 or through our{" "}
-                <Link href="/v2/contact" className="v2-link">
+                <Link href="/contact" className="v2-link">
                   contact page
                 </Link>
                 . See also our{" "}
-                <Link href="/v2/privacy" className="v2-link">
+                <Link href="/privacy" className="v2-link">
                   Privacy Policy
                 </Link>
                 .

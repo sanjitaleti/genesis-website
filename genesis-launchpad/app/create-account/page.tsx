@@ -16,7 +16,7 @@ export default function V2CreateAccount() {
     <>
       <AuroraField />
 
-      <Link href="/v2" className="v2-auth-close" aria-label="Close and go back">
+      <Link href="/" className="v2-auth-close" aria-label="Close and go back">
         <IconX />
       </Link>
 
@@ -24,7 +24,7 @@ export default function V2CreateAccount() {
         <div className="v2-auth">
           <div className="v2-auth-form">
             <Link
-              href="/v2"
+              href="/"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
