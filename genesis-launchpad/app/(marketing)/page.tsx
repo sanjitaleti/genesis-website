@@ -119,7 +119,11 @@ export default function V2Landing() {
               color: "var(--text-faint)",
             }}
           >
-            Built for trades, clinics, salons, and firms of 5–75 people.
+            Built for{" "}
+            <Link href="/ai-receptionist/hvac" className="v2-link" style={{ fontSize: "inherit" }}>
+              trades
+            </Link>
+            , clinics, salons, and firms of 5–75 people.
           </p>
         </section>
 
