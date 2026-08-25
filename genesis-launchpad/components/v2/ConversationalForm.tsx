@@ -284,29 +284,70 @@ function MultiSelect({
   );
 }
 
+type VoiceFilters = { search: string; gender: string; age: string };
+
 function VoicePicker({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const [filters, setFilters] = useState<VoiceFilters>({ search: "", gender: "", age: "" });
   const [voices, setVoices] = useState<ConfiguratorVoice[] | null>(null);
+  const [hasMore, setHasMore] = useState(false);
+  const [page, setPage] = useState(0);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [playingId, setPlayingId] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  const fetchVoices = (f: VoiceFilters, targetPage: number) => {
+    const params = new URLSearchParams({ page: String(targetPage) });
+    if (f.search) params.set("search", f.search);
+    if (f.gender) params.set("gender", f.gender);
+    if (f.age) params.set("age", f.age);
+    return fetch(`/api/voices?${params}`).then((r) => r.json()) as Promise<{
+      voices: ConfiguratorVoice[];
+      hasMore: boolean;
+      error: string | null;
+    }>;
+  };
+
+  // Debounced re-search whenever a filter changes.
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/voices")
-      .then((r) => r.json())
-      .then((data: { voices: ConfiguratorVoice[]; error: string | null }) => {
-        if (cancelled) return;
-        setVoices(data.voices);
-        if (data.error) setFetchError(data.error);
-      })
-      .catch(() => {
-        if (!cancelled) setFetchError("upstream_error");
-      });
+    setFetchError(null);
+    const timer = setTimeout(
+      () => {
+        fetchVoices(filters, 0)
+          .then((data) => {
+            if (cancelled) return;
+            setVoices(data.voices);
+            setHasMore(data.hasMore);
+            setPage(0);
+            if (data.error) setFetchError(data.error);
+          })
+          .catch(() => {
+            if (!cancelled) setFetchError("upstream_error");
+          });
+      },
+      filters.search ? 450 : 0,
+    );
     return () => {
       cancelled = true;
-      audioRef.current?.pause();
+      clearTimeout(timer);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters.search, filters.gender, filters.age]);
+
+  useEffect(() => () => audioRef.current?.pause(), []);
+
+  const loadMore = () => {
+    setLoadingMore(true);
+    fetchVoices(filters, page + 1)
+      .then((data) => {
+        setVoices((prev) => [...(prev ?? []), ...data.voices]);
+        setHasMore(data.hasMore);
+        setPage((p) => p + 1);
+      })
+      .catch(() => setFetchError("upstream_error"))
+      .finally(() => setLoadingMore(false));
+  };
 
   const togglePreview = (voice: ConfiguratorVoice) => {
     if (!voice.previewUrl) return;
@@ -322,7 +363,7 @@ function VoicePicker({ value, onChange }: { value: string; onChange: (v: string)
     setPlayingId(voice.id);
   };
 
-  if (fetchError || (voices && voices.length === 0)) {
+  if (fetchError === "not_configured" || fetchError === "missing_permission") {
     return (
       <div className="v2-voice-empty">
         <p>
@@ -333,35 +374,77 @@ function VoicePicker({ value, onChange }: { value: string; onChange: (v: string)
     );
   }
 
-  if (!voices) {
-    return <div className="v2-voice-empty">Loading voices…</div>;
-  }
-
   return (
-    <div className="v2-voice-grid">
-      {voices.map((v) => {
-        const active = value === v.id;
-        const playing = playingId === v.id;
-        return (
-          <div key={v.id} className="v2-voice-card" data-active={active}>
-            <button
-              type="button"
-              className="v2-voice-play"
-              onClick={() => togglePreview(v)}
-              aria-label={playing ? `Pause ${v.name} preview` : `Play ${v.name} preview`}
-              disabled={!v.previewUrl}
-            >
-              {playing ? <IconPause style={{ width: 16, height: 16 }} /> : <IconPlay style={{ width: 16, height: 16 }} />}
-            </button>
-            <button type="button" className="v2-voice-select" onClick={() => onChange(v.id)}>
-              <span className="v2-voice-name">{v.name}</span>
-              <span className="v2-voice-meta">
-                {[v.gender, v.accent, v.age].filter(Boolean).join(" · ") || "ElevenLabs voice"}
-              </span>
-            </button>
+    <div>
+      <div className="v2-voice-filters">
+        <input
+          type="text"
+          className="v2-input"
+          placeholder="Search voices…"
+          value={filters.search}
+          onChange={(e) => setFilters((f) => ({ ...f, search: e.target.value }))}
+        />
+        <select
+          className="v2-input"
+          value={filters.gender}
+          onChange={(e) => setFilters((f) => ({ ...f, gender: e.target.value }))}
+          aria-label="Filter by gender"
+        >
+          <option value="">Any gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+        <select
+          className="v2-input"
+          value={filters.age}
+          onChange={(e) => setFilters((f) => ({ ...f, age: e.target.value }))}
+          aria-label="Filter by age"
+        >
+          <option value="">Any age</option>
+          <option value="young">Young</option>
+          <option value="middle_aged">Middle-aged</option>
+          <option value="old">Old</option>
+        </select>
+      </div>
+
+      {!voices ? (
+        <div className="v2-voice-empty">Loading voices…</div>
+      ) : voices.length === 0 ? (
+        <div className="v2-voice-empty">No voices match that — try loosening the filters.</div>
+      ) : (
+        <>
+          <div className="v2-voice-grid">
+            {voices.map((v) => {
+              const active = value === v.id;
+              const playing = playingId === v.id;
+              return (
+                <div key={v.id} className="v2-voice-card" data-active={active}>
+                  <button
+                    type="button"
+                    className="v2-voice-play"
+                    onClick={() => togglePreview(v)}
+                    aria-label={playing ? `Pause ${v.name} preview` : `Play ${v.name} preview`}
+                    disabled={!v.previewUrl}
+                  >
+                    {playing ? <IconPause style={{ width: 16, height: 16 }} /> : <IconPlay style={{ width: 16, height: 16 }} />}
+                  </button>
+                  <button type="button" className="v2-voice-select" onClick={() => onChange(v.id)}>
+                    <span className="v2-voice-name">{v.name}</span>
+                    <span className="v2-voice-meta">
+                      {[v.gender, v.accent, v.age].filter(Boolean).join(" · ") || "ElevenLabs voice"}
+                    </span>
+                  </button>
+                </div>
+              );
+            })}
           </div>
-        );
-      })}
+          {hasMore ? (
+            <button type="button" className="v2-btn-ghost v2-voice-more" onClick={loadMore} disabled={loadingMore}>
+              {loadingMore ? "Loading…" : "Load more voices"}
+            </button>
+          ) : null}
+        </>
+      )}
     </div>
   );
 }
