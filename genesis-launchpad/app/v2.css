@@ -1485,6 +1485,33 @@
 }
 
 /* ---------------------------------------------------------------
+   Configurator portal — its own minimal surface: no nav copy, no
+   sidebar, no hero. Just the question, centered, dock nav and the
+   Ask Genesis fab float over it as normal.
+   --------------------------------------------------------------- */
+
+.v2-configurator-portal {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(90px, 12vh, 140px) 24px 140px;
+}
+
+.v2-configurator-stage {
+  width: 100%;
+  max-width: 560px;
+}
+
+.v2-configurator-credit {
+  margin: 28px 0 0;
+  font-size: 12.5px;
+  color: var(--text-faint);
+  text-align: center;
+}
+
+/* ---------------------------------------------------------------
    Sign-in feedback
    --------------------------------------------------------------- */
 

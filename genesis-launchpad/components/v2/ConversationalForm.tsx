@@ -46,6 +46,7 @@ export type CFField =
 export function ConversationalForm({
   fields,
   onSubmit,
+  onValuesChange,
   submitLabel = "Send it over",
   successTitle = "Got it, thanks.",
   successBody,
@@ -53,6 +54,7 @@ export function ConversationalForm({
 }: {
   fields: CFField[];
   onSubmit: (values: Record<string, string>) => Promise<{ ok: boolean; message?: string }>;
+  onValuesChange?: (values: Record<string, string>) => void;
   submitLabel?: string;
   successTitle?: string;
   successBody: string;
@@ -76,6 +78,11 @@ export function ConversationalForm({
   useEffect(() => {
     if (step !== clampedStep) setStep(clampedStep);
   }, [step, clampedStep]);
+
+  useEffect(() => {
+    onValuesChange?.(values);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values]);
 
   useEffect(() => {
     if (field?.type === "text" || field?.type === "email" || field?.type === "tel" || field?.type === "url" || field?.type === "textarea") {
