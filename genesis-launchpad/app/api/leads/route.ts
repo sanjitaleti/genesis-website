@@ -13,7 +13,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 type LeadPayload = {
-  kind: "contact" | "intake";
+  kind: "contact" | "intake" | "configurator";
   plan?: string;
   name?: string;
   business?: string;
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "invalid json" }, { status: 400 });
   }
 
-  const kind = body.kind === "intake" ? "intake" : "contact";
+  const kind = body.kind === "intake" || body.kind === "configurator" ? body.kind : "contact";
   const name = body.name?.trim();
   const email = body.email?.trim();
 
@@ -75,17 +75,26 @@ export async function POST(req: Request) {
     ["Message", body.message],
   ].filter(([, v]) => v);
 
+  const titles = {
+    intake: "New pricing intake",
+    configurator: "New configurator submission",
+    contact: "New contact form submission",
+  } as const;
+
   const html = `
-    <h2>${kind === "intake" ? "New pricing intake" : "New contact form submission"}</h2>
+    <h2>${titles[kind]}</h2>
     <table cellpadding="6" style="border-collapse:collapse">
       ${rows.map(([k, v]) => `<tr><td style="font-weight:600">${k}</td><td>${v}</td></tr>`).join("")}
     </table>
   `;
 
-  const sent = await sendLeadEmail(
-    kind === "intake" ? `New intake: ${body.plan ?? "unspecified plan"} — ${name}` : `New contact form: ${name}`,
-    html,
-  );
+  const subjects = {
+    intake: `New intake: ${body.plan ?? "unspecified plan"} — ${name}`,
+    configurator: `New configurator lead: ${name}`,
+    contact: `New contact form: ${name}`,
+  } as const;
+
+  const sent = await sendLeadEmail(subjects[kind], html);
 
   if (sent) {
     await db.from("leads").update({ email_sent: true }).eq("id", row.id);

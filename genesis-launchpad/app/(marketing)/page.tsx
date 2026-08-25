@@ -305,10 +305,21 @@ export default function V2Landing() {
               Twenty minutes on the phone and we&rsquo;ll tell you honestly whether
               this is worth doing for your business.
             </p>
-            <div style={{ marginTop: 30, display: "flex", justifyContent: "center" }}>
+            <div
+              style={{
+                marginTop: 30,
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 14,
+                justifyContent: "center",
+              }}
+            >
               <Link href="/contact" className="v2-btn v2-btn--lg">
                 Book a free 20-minute call
                 <IconArrow style={{ width: 18, height: 18 }} />
+              </Link>
+              <Link href="/configurator" className="v2-btn-ghost">
+                Build your agent first
               </Link>
             </div>
           </div>
@@ -326,7 +337,10 @@ export default function V2Landing() {
               color: "var(--text-faint)",
             }}
           >
-            <span>© {new Date().getFullYear()} Genesis LP</span>
+            <span style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
+              <span>© {new Date().getFullYear()} Genesis LP</span>
+              <span style={{ opacity: 0.6 }}>Voices powered by ElevenLabs</span>
+            </span>
             <div style={{ display: "flex", gap: 22, alignItems: "center" }}>
               <a href="mailto:hello@genesislp.ai" className="v2-link">
                 hello@genesislp.ai

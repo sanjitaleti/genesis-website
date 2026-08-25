@@ -240,3 +240,23 @@ export const IconGoogle = (p: P) => (
     />
   </svg>
 );
+
+export const IconPlay = (p: P) => (
+  <svg {...base} {...p}>
+    <path d="M6.5 4.6v14.8a.7.7 0 0 0 1.06.6l12-7.4a.7.7 0 0 0 0-1.2l-12-7.4a.7.7 0 0 0-1.06.6Z" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+export const IconPause = (p: P) => (
+  <svg {...base} {...p}>
+    <path d="M7 4.5h3v15H7z" fill="currentColor" stroke="none" />
+    <path d="M14 4.5h3v15h-3z" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+export const IconBadgeCheck = (p: P) => (
+  <svg {...base} {...p}>
+    <path d="M12 3.2 14.2 5l2.85-.35 1 2.7 2.5 1.55-.9 2.75.9 2.75-2.5 1.55-1 2.7-2.85-.35L12 20.8l-2.2-1.8-2.85.35-1-2.7-2.5-1.55.9-2.75-.9-2.75 2.5-1.55 1-2.7L9.8 5 12 3.2Z" />
+    <path d="m8.7 12.3 2.2 2.2 4.4-4.7" />
+  </svg>
+);

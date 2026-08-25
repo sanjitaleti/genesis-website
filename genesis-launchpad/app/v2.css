@@ -2425,6 +2425,113 @@
   color: var(--text-faint);
 }
 
+.v2-cform-info {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  white-space: pre-line;
+}
+
+/* multiselect — used for the configurator's "what do you need it to do" step */
+.v2-multiselect {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.v2-multiselect-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line-2);
+  background: rgba(18, 10, 31, 0.4);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+}
+.v2-multiselect-item:hover { border-color: rgba(255, 214, 255, 0.35); }
+.v2-multiselect-item[data-active="true"] {
+  border-color: var(--magenta-soft);
+  background: rgba(236, 48, 19, 0.14);
+  color: #fff;
+}
+.v2-multiselect-check {
+  display: inline-flex;
+  width: 13px;
+  height: 13px;
+  color: var(--magenta-soft);
+}
+
+/* voice picker — pulls verified voices from ElevenLabs */
+.v2-voice-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.v2-voice-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  padding: 10px 14px;
+  transition: border-color 0.2s var(--ease);
+}
+.v2-voice-card[data-active="true"] { border-color: var(--magenta-soft); }
+.v2-voice-play {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line-2);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+.v2-voice-play:hover { border-color: var(--magenta-soft); }
+.v2-voice-play:disabled { opacity: 0.4; cursor: not-allowed; }
+.v2-voice-select {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+}
+.v2-voice-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14.5px;
+  font-weight: 600;
+}
+.v2-voice-meta {
+  font-size: 12.5px;
+  color: var(--text-faint);
+  text-transform: capitalize;
+}
+.v2-voice-empty {
+  font-size: 14px;
+  color: var(--text-faint);
+  padding: 18px 0;
+}
+
 /* ---------------------------------------------------------------
    Paywall lock — unpaid orgs see their real theme, blurred, with a
    non-blurred overlay pointing at pricing
