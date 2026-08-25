@@ -2,19 +2,28 @@ import { NextResponse } from "next/server";
 
 /**
  * Server-side only: the ElevenLabs API key never reaches the client.
- * Returns just the voices with a verified badge (voice_verification.is_verified),
- * trimmed to what the configurator's voice picker needs.
+ * Returns ElevenLabs' own curated voices — "premade" (their standard
+ * library) and "professional" (studio-recorded) — trimmed to what the
+ * configurator's voice picker needs.
+ *
+ * Originally scoped to voice_verification.is_verified only, but that badge
+ * turned out to be near-empty on a typical account (0 of 31 voices here) —
+ * it's reserved for licensed/celebrity-tier voices, not the standard
+ * library. Category-based filtering still excludes user-uploaded clones,
+ * which is the property that actually mattered.
  */
 
 export const runtime = "nodejs";
 export const revalidate = 3600;
+
+const ALLOWED_CATEGORIES = new Set(["premade", "professional"]);
 
 type ElevenLabsVoice = {
   voice_id: string;
   name: string;
   preview_url?: string | null;
   labels?: Record<string, string>;
-  voice_verification?: { is_verified?: boolean } | null;
+  category?: string;
 };
 
 export type ConfiguratorVoice = {
@@ -49,7 +58,7 @@ export async function GET() {
 
   const data = (await res.json()) as { voices?: ElevenLabsVoice[] };
   const voices: ConfiguratorVoice[] = (data.voices ?? [])
-    .filter((v) => v.voice_verification?.is_verified === true && v.preview_url)
+    .filter((v) => v.category && ALLOWED_CATEGORIES.has(v.category) && v.preview_url)
     .map((v) => ({
       id: v.voice_id,
       name: v.name,

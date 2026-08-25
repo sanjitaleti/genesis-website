@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { IconArrow, IconCheck, IconPlay, IconPause, IconBadgeCheck } from "./icons";
+import { IconArrow, IconCheck, IconPlay, IconPause } from "./icons";
 import type { ConfiguratorVoice } from "@/app/api/voices/route";
 
 /**
@@ -354,12 +354,9 @@ function VoicePicker({ value, onChange }: { value: string; onChange: (v: string)
               {playing ? <IconPause style={{ width: 16, height: 16 }} /> : <IconPlay style={{ width: 16, height: 16 }} />}
             </button>
             <button type="button" className="v2-voice-select" onClick={() => onChange(v.id)}>
-              <span className="v2-voice-name">
-                {v.name}
-                <IconBadgeCheck style={{ width: 14, height: 14, color: "var(--magenta-soft)" }} />
-              </span>
+              <span className="v2-voice-name">{v.name}</span>
               <span className="v2-voice-meta">
-                {[v.gender, v.accent, v.age].filter(Boolean).join(" · ") || "Verified voice"}
+                {[v.gender, v.accent, v.age].filter(Boolean).join(" · ") || "ElevenLabs voice"}
               </span>
             </button>
           </div>
