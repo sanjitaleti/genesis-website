@@ -70,7 +70,7 @@ function buildFields(analysis: Analysis): CFField[] {
     { id: "name", type: "text", label: "What's your name?", placeholder: "Jane Rivera", required: true, autoComplete: "name" },
     { id: "business", type: "text", label: "And your business?", placeholder: "Rivera Plumbing", required: true, autoComplete: "organization" },
     { id: "email", type: "email", label: "Best email to reach you?", placeholder: "you@yourcompany.com", required: true, autoComplete: "email" },
-    { id: "phone", type: "tel", label: "Phone number?", placeholder: "(555) 010-0199", autoComplete: "tel" },
+    { id: "phone", type: "tel", label: "Phone number?", placeholder: "(555) 010-0199", required: true, autoComplete: "tel" },
 
     {
       id: "industry",
@@ -85,6 +85,7 @@ function buildFields(analysis: Analysis): CFField[] {
       type: "text",
       label: "What kind of business, roughly?",
       placeholder: "e.g. auto repair, pest control...",
+      required: true,
       showIf: isOtherIndustry,
     },
 
@@ -93,12 +94,14 @@ function buildFields(analysis: Analysis): CFField[] {
       type: "text",
       label: "What's your service area or radius?",
       placeholder: "e.g. 20 miles around Austin, TX",
+      required: true,
     },
 
     {
       id: "jobTypes",
       type: "multiselect",
       label: "What kinds of jobs do you take?",
+      required: true,
       showIf: isHvac,
       options: [
         { value: "Repairs", label: "Repairs" },
@@ -127,6 +130,7 @@ function buildFields(analysis: Analysis): CFField[] {
       type: "textarea",
       label: "What counts as an emergency for your team?",
       placeholder: "e.g. no heat, no AC in extreme weather, a burst pipe...",
+      required: true,
     },
 
     {
@@ -143,6 +147,7 @@ function buildFields(analysis: Analysis): CFField[] {
       type: "select",
       label: "What happens to calls after hours right now?",
       placeholder: "Pick one",
+      required: true,
       options: [
         { value: "Goes to voicemail", label: "Goes to voicemail" },
         { value: "Goes unanswered", label: "Goes unanswered" },
@@ -156,6 +161,7 @@ function buildFields(analysis: Analysis): CFField[] {
       type: "text",
       label: "Who should a real emergency get escalated to?",
       placeholder: "e.g. me, whoever's on call",
+      required: true,
     },
 
     {
@@ -163,6 +169,7 @@ function buildFields(analysis: Analysis): CFField[] {
       type: "select",
       label: "What do you use for scheduling or booking jobs today?",
       placeholder: "Pick one",
+      required: true,
       options: [
         { value: "Google Calendar", label: "Google Calendar" },
         { value: "Calendly", label: "Calendly" },
@@ -179,6 +186,7 @@ function buildFields(analysis: Analysis): CFField[] {
       type: "text",
       label: "What do you use for scheduling?",
       placeholder: "Tool name",
+      required: true,
       showIf: isOtherTool,
     },
 
@@ -187,6 +195,7 @@ function buildFields(analysis: Analysis): CFField[] {
       type: "select",
       label: "Roughly how many calls do you get in a week?",
       placeholder: "Pick one",
+      required: true,
       options: [
         { value: "Under 20", label: "Under 20" },
         { value: "20–50", label: "20–50" },
@@ -200,6 +209,7 @@ function buildFields(analysis: Analysis): CFField[] {
       id: "voice",
       type: "voice",
       label: "Pick a voice for your agent.",
+      required: true,
     },
 
     {

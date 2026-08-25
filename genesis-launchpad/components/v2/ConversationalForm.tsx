@@ -308,6 +308,14 @@ function VoicePicker({ value, onChange }: { value: string; onChange: (v: string)
     }>;
   };
 
+  // If the picker can't load (misconfigured key, ElevenLabs outage, network
+  // blip), the field is marked required upstream but there's no value the
+  // user can actually set here — auto-fill a note instead of trapping them
+  // on this step. Never overwrites a real selection.
+  useEffect(() => {
+    if (fetchError && !value) onChange("Not available — will pick together on the call");
+  }, [fetchError, value, onChange]);
+
   // Debounced re-search whenever a filter changes.
   useEffect(() => {
     let cancelled = false;
@@ -363,12 +371,11 @@ function VoicePicker({ value, onChange }: { value: string; onChange: (v: string)
     setPlayingId(voice.id);
   };
 
-  if (fetchError === "not_configured" || fetchError === "missing_permission") {
+  if (fetchError) {
     return (
       <div className="v2-voice-empty">
         <p>
-          Voice picker isn&rsquo;t hooked up yet on this preview — we&rsquo;ll pick a voice together on the call
-          instead.
+          Voice picker isn&rsquo;t available right now — we&rsquo;ll pick a voice together on the call instead.
         </p>
       </div>
     );
