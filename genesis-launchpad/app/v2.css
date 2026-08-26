@@ -1203,6 +1203,30 @@
    rules keep the look while giving the compositor a cheaper job.
    --------------------------------------------------------------- */
 
+/* ---------------------------------------------------------------
+   Magnetic scroll
+   Native CSS scroll-snap on the document, `proximity` (not `mandatory`)
+   so it only pulls a section into place once the user has basically
+   stopped there — a gentle magnetic settle, never a scroll-jack that
+   fights a fast flick or traps the wheel. Sections keep their normal
+   in-flow scroll the rest of the time.
+   --------------------------------------------------------------- */
+html {
+  scroll-snap-type: y proximity;
+}
+
+.v2-content > section {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+  scroll-margin-top: 64px; /* clears the fixed navbar */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-snap-type: none;
+  }
+}
+
 /* off-screen sections skip layout, style and paint entirely */
 .v2-content > section {
   content-visibility: auto;
