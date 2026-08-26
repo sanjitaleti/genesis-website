@@ -71,7 +71,12 @@ export default function V2Landing() {
     <>
       <div className="v2-content">
         {/* ---------------------------------------------- hero */}
-        <section className="v2-wrap" style={{ paddingBlock: "clamp(120px, 16vh, 168px) 60px", textAlign: "center" }}>
+        <section
+          className="v2-wrap"
+          style={{ position: "relative", paddingBlock: "clamp(120px, 16vh, 168px) 60px", textAlign: "center" }}
+        >
+          <div className="v2-glow-bg" aria-hidden />
+          <div style={{ position: "relative", zIndex: 1 }}>
           <div className="v2-in" style={{ ["--d" as string]: "0.05s", display: "flex", justifyContent: "center" }}>
             <span className="v2-eyebrow">
               <IconShield style={{ width: 14, height: 14 }} />
@@ -143,6 +148,7 @@ export default function V2Landing() {
             </Link>
             , clinics, salons, and firms of 5–75 people.
           </p>
+          </div>
         </section>
 
         {/* ---------------------------------------------- dashboard showcase */}

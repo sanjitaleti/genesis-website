@@ -19,16 +19,24 @@
   --line: rgba(250, 250, 250, 0.1);
   --line-2: #262626;
 
-  /* legacy accent names, aliased to the monochrome palette — no color
-     accent in this reference, everything reads in ink/text tones */
-  --violet: var(--text);
-  --violet-deep: var(--ink-2);
-  --violet-lift: var(--text-dim);
-  --magenta: var(--text);
-  --magenta-soft: var(--text);
-  --blush: var(--text);
-  --grad-brand: var(--text);
-  --grad-text: var(--text);
+  /* the one accent — red-orange, used sparingly as a backlight/glow
+     behind key elements, never as a second competing hue */
+  --accent: #ff4d1f;
+  --accent-soft: #ff7a45;
+  --accent-deep: #b3220a;
+  --accent-rgb: 255, 77, 31;
+  --glow-accent: radial-gradient(circle at 50% 50%, rgba(var(--accent-rgb), 0.55) 0%, rgba(var(--accent-rgb), 0) 70%);
+
+  /* legacy accent names, aliased to the red-orange accent */
+  --violet: var(--accent-deep);
+  --violet-deep: var(--accent-deep);
+  --violet-lift: var(--accent-soft);
+  --magenta: var(--accent);
+  --magenta-soft: var(--accent-soft);
+  --magenta-rgb: var(--accent-rgb);
+  --blush: var(--accent-soft);
+  --grad-brand: var(--accent);
+  --grad-text: var(--accent);
 
   --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -65,11 +73,13 @@
 }
 
 /* the single script-font accent word — replaces the old rainbow
-   gradient-clip-text treatment everywhere it was used */
+   gradient-clip-text treatment everywhere it was used. Red-orange,
+   with a soft glow behind it for depth. */
 .v2-grad-text {
   font-family: var(--font-script);
   font-weight: 400;
-  color: var(--text);
+  color: var(--accent-soft);
+  text-shadow: 0 0 40px rgba(var(--accent-rgb), 0.5);
 }
 
 
@@ -91,6 +101,22 @@
 @media (min-width: 768px) {
   .v2-wrap { padding-inline: 40px; }
 }
+
+/* ambient backlight — drop this behind a hero/section for depth. Sits
+   absolutely inside a position:relative ancestor, z-index below content. */
+.v2-glow-bg {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(900px, 140vw);
+  height: 560px;
+  background: radial-gradient(ellipse 50% 50% at 50% 30%, rgba(var(--accent-rgb), 0.28) 0%, rgba(var(--accent-rgb), 0.08) 45%, transparent 72%);
+  filter: blur(10px);
+}
+.v2-glow-bg--sm { width: min(600px, 120vw); height: 360px; }
 
 .v2-display {
   font-weight: 600;
@@ -157,9 +183,14 @@
   white-space: nowrap;
   text-decoration: none;
   background: var(--text);
-  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+  box-shadow: 0 8px 30px -6px rgba(var(--accent-rgb), 0.45);
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), box-shadow 0.3s var(--ease);
 }
-.v2-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.v2-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 40px -6px rgba(var(--accent-rgb), 0.65);
+}
 .v2-btn:active { transform: translateY(0) scale(0.985); }
 
 .v2-btn--block { width: 100%; }
@@ -198,7 +229,20 @@
   border: 1px solid var(--line-2);
   background: var(--ink);
   overflow: hidden;
+  transition: border-color 0.3s var(--ease);
 }
+/* backlight — a soft accent glow bleeding in from one corner, for depth */
+.v2-panel::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  right: -30%;
+  width: 70%;
+  height: 90%;
+  background: radial-gradient(circle at 70% 20%, rgba(var(--accent-rgb), 0.16) 0%, transparent 65%);
+  pointer-events: none;
+}
+.v2-panel:hover { border-color: rgba(var(--accent-rgb), 0.4); }
 
 /* ---------------------------------------------------------------
    Navbar — plain fixed black bar, no blur, matches the reference
@@ -604,7 +648,8 @@
   background: var(--ink);
 }
 .v2-tier.is-featured {
-  border-color: var(--text-faint);
+  border-color: rgba(var(--accent-rgb), 0.55);
+  box-shadow: 0 0 60px -12px rgba(var(--accent-rgb), 0.35), inset 0 0 60px -30px rgba(var(--accent-rgb), 0.25);
 }
 
 /* the reference has no per-card glow — this is now a no-op */
