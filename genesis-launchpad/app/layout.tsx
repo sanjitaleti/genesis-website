@@ -1,7 +1,15 @@
 import type { Metadata, Viewport } from "next";
+import { Pacifico } from "next/font/google";
 import "./globals.css";
 import "./v2.css";
 import StructuredData from "./structured-data";
+
+const pacifico = Pacifico({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-pacifico",
+  display: "swap",
+});
 
 const TITLE = "AI Receptionist for Service Businesses | Genesis LP";
 const DESC =
@@ -29,14 +37,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#060809",
+  themeColor: "#0a0a0a",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={pacifico.variable}>
       <body suppressHydrationWarning>
         <StructuredData />
         <div className="v2">{children}</div>

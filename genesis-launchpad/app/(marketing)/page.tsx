@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GalaxyLayer } from "@/components/v2/GalaxyLayer";
+import { PortalPreview } from "@/components/v2/PortalPreview";
 import {
   IconArrow,
   IconClock,
@@ -53,34 +53,51 @@ const tierTeasers = [
   { name: "Nova", price: "Custom", unit: "add on when ready", color: "#c77dff" },
 ];
 
+const dashboardSpecs = [
+  {
+    Icon: IconChart,
+    title: "Every call, logged automatically",
+    body: "No manual entry. Each call lands in the dashboard the moment it ends, with the outcome already tagged.",
+  },
+  {
+    Icon: IconClock,
+    title: "Live, not end-of-day",
+    body: "Bookings and revenue update in real time, so what you see is what actually happened today.",
+  },
+];
+
 export default function V2Landing() {
   return (
     <>
-      <GalaxyLayer triggerId="tiers-teaser" />
-
       <div className="v2-content">
         {/* ---------------------------------------------- hero */}
-        <section className="v2-wrap" style={{ paddingBlock: "clamp(104px, 15vh, 168px) 90px" }}>
-          <div>
-            <h1
-              className="v2-display v2-in"
-              style={{
-                ["--d" as string]: "0.1s",
-                fontSize: "clamp(2.9rem, 7.2vw, 5.6rem)",
-                maxWidth: "12ch",
-              }}
-            >
-              Never miss{" "}
-              <span className="v2-grad-text">another call.</span>
-            </h1>
+        <section className="v2-wrap" style={{ paddingBlock: "clamp(120px, 16vh, 168px) 60px", textAlign: "center" }}>
+          <div className="v2-in" style={{ ["--d" as string]: "0.05s", display: "flex", justifyContent: "center" }}>
+            <span className="v2-eyebrow">
+              <IconShield style={{ width: 14, height: 14 }} />
+              AI Receptionist
+            </span>
           </div>
+
+          <h1
+            className="v2-display v2-in"
+            style={{
+              ["--d" as string]: "0.1s",
+              fontSize: "clamp(2.9rem, 7.2vw, 5.6rem)",
+              maxWidth: "16ch",
+              margin: "22px auto 0",
+            }}
+          >
+            Never miss{" "}
+            <span className="v2-grad-text">another call.</span>
+          </h1>
 
           <p
             className="v2-in"
             style={{
               ["--d" as string]: "0.3s",
               maxWidth: "44ch",
-              marginTop: 30,
+              margin: "24px auto 0",
               fontSize: "clamp(1.05rem, 1.4vw, 1.3rem)",
               lineHeight: 1.6,
               color: "var(--text-dim)",
@@ -98,7 +115,8 @@ export default function V2Landing() {
               display: "flex",
               flexWrap: "wrap",
               gap: 14,
-              marginTop: 38,
+              marginTop: 34,
+              justifyContent: "center",
             }}
           >
             <Link href="/contact" className="v2-btn v2-btn--lg">
@@ -114,7 +132,7 @@ export default function V2Landing() {
             className="v2-in"
             style={{
               ["--d" as string]: "0.55s",
-              marginTop: 34,
+              marginTop: 22,
               fontSize: 14,
               color: "var(--text-faint)",
             }}
@@ -125,6 +143,32 @@ export default function V2Landing() {
             </Link>
             , clinics, salons, and firms of 5–75 people.
           </p>
+        </section>
+
+        {/* ---------------------------------------------- dashboard showcase */}
+        <section className="v2-wrap" style={{ paddingBlock: "0 100px" }}>
+          <PortalPreview />
+
+          <div
+            style={{
+              marginTop: 18,
+              display: "grid",
+              gap: 14,
+              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            }}
+          >
+            {dashboardSpecs.map((s) => (
+              <div key={s.title} className="v2-panel" style={{ padding: "22px 24px", display: "flex", gap: 14 }}>
+                <s.Icon style={{ width: 20, height: 20, color: "var(--text)", flexShrink: 0, marginTop: 2 }} />
+                <div>
+                  <h3 style={{ margin: 0, fontSize: 15, fontWeight: 600 }}>{s.title}</h3>
+                  <p style={{ margin: "6px 0 0", fontSize: 13.5, lineHeight: 1.55, color: "var(--text-dim)" }}>
+                    {s.body}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* ---------------------------------------------- how it works */}

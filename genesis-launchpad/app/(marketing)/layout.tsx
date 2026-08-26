@@ -1,16 +1,14 @@
-import { AuroraField } from "@/components/v2/AuroraField";
-import { DockNav } from "@/components/v2/DockNav";
+import { Navbar } from "@/components/v2/Navbar";
 import { AiDock } from "@/components/v2/AiDock";
 
-/** Chrome shared by every marketing page: ambient background, floating dock, AI panel. */
+/** Chrome shared by every marketing page: fixed top nav, page content, AI panel. */
 export default function MarketingLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <>
-      <AuroraField />
+      <Navbar />
       {children}
-      <DockNav />
       <AiDock />
     </>
   );

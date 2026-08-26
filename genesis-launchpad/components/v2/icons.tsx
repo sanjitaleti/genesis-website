@@ -178,6 +178,14 @@ export const IconSearch = (p: P) => (
   </svg>
 );
 
+export const IconMenu = (p: P) => (
+  <svg {...base} {...p}>
+    <path d="M4 7h16" />
+    <path d="M4 12h16" />
+    <path d="M4 17h16" />
+  </svg>
+);
+
 export const IconBell = (p: P) => (
   <svg {...base} {...p}>
     <path d="M18 16.4V11a6 6 0 1 0-12 0v5.4L4.4 18.6h15.2z" />
