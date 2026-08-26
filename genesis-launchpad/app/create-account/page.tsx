@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AuroraField } from "@/components/v2/AuroraField";
 import { CreateAccountForm } from "@/components/v2/CreateAccountForm";
-import { SpaceScene } from "@/components/v2/SpaceScene";
+import { GenesisLogo } from "@/components/v2/GenesisLogo";
 import { IconX } from "@/components/v2/icons";
 
 export const metadata: Metadata = {
@@ -13,7 +12,6 @@ export const metadata: Metadata = {
 export default function V2CreateAccount() {
   return (
     <>
-      <AuroraField />
 
       <Link href="/" className="v2-auth-close" aria-label="Close and go back">
         <IconX />
@@ -42,9 +40,8 @@ export default function V2CreateAccount() {
             <CreateAccountForm />
           </div>
 
-          <aside className="v2-auth-art">
-            <SpaceScene />
-            <div className="v2-auth-art-grain" aria-hidden />
+          <aside className="v2-auth-art" style={{ display: "flex", alignItems: "center", justifyContent: "center", background: "var(--ink-1)" }}>
+            <GenesisLogo size={64} />
           </aside>
         </div>
       </div>
