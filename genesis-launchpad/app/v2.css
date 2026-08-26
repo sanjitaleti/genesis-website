@@ -314,7 +314,9 @@
 }
 @media (min-width: 700px) {
   .v2-bento { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .v2-bento > :nth-child(4) { grid-column: span 1; }
+  /* asymmetric bento: first card is the hero tile, one mid-grid card
+     stretches wide — matches the varied-size reference layout */
+  .v2-bento > :nth-child(1) { grid-column: span 2; grid-row: span 2; }
   .v2-bento > :nth-child(5) { grid-column: span 2; }
 }
 
@@ -327,15 +329,16 @@
   gap: 18px;
   transition: border-color 0.35s var(--ease), transform 0.35s var(--ease);
 }
-.v2-fact:hover { border-color: rgba(250, 250, 250, 0.28); transform: translateY(-3px); }
+.v2-fact:hover { border-color: rgba(var(--accent-rgb), 0.4); transform: translateY(-3px); }
 .v2-fact h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
 .v2-fact p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--text-dim); }
+.v2-fact:first-child h3 { font-size: 22px; }
 
 .v2-fact-icon {
   width: 34px;
   height: 34px;
-  color: var(--blush);
-  filter: drop-shadow(0 0 14px rgba(250, 250, 250, 0.45));
+  color: var(--accent-soft);
+  filter: drop-shadow(0 0 14px rgba(var(--accent-rgb), 0.45));
 }
 
 .v2-ring {
