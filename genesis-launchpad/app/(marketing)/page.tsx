@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { DashboardStage } from "@/components/v2/DashboardStage";
+import { PortalPreview } from "@/components/v2/PortalPreview";
 import {
   IconArrow,
   IconClock,
@@ -162,8 +162,8 @@ export default function V2Landing() {
           </div>
         </section>
 
-        {/* ---------------------------------------------- dashboard showcase intro */}
-        <section className="v2-wrap" style={{ paddingBlock: "20px 20px" }}>
+        {/* ---------------------------------------------- dashboard showcase */}
+        <section className="v2-wrap" style={{ paddingBlock: "20px 100px" }}>
           <div style={{ maxWidth: "40ch" }}>
             <h2 className="v2-display" style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)" }}>
               Built for how service businesses actually run.
@@ -173,15 +173,14 @@ export default function V2Landing() {
               happens, not reconstructed at the end of the day.
             </p>
           </div>
-        </section>
 
-        {/* full-bleed scroll-pinned dashboard reveal — must sit outside
-            .v2-wrap so it can actually fill the viewport */}
-        <DashboardStage />
+          <div style={{ marginTop: 32 }}>
+            <PortalPreview />
+          </div>
 
-        <section className="v2-wrap" style={{ paddingBlock: "20px 100px" }}>
           <div
             style={{
+              marginTop: 32,
               display: "grid",
               gap: 24,
               gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",

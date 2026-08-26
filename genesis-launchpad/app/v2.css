@@ -303,34 +303,6 @@
 /* legacy dock classes kept as harmless no-ops for routes not yet migrated */
 .v2-dock-shell { display: none; }
 
-/* Scroll-pinned dashboard reveal — the card grows to fill the screen
-   flat-on, holds, then tilts the other way and shrinks back down as you
-   scroll out. Same runway/sticky-stage technique as .v2-stage-runway. */
-.v2-dash-runway { position: relative; height: 260vh; }
-
-.v2-dash-stage {
-  position: sticky;
-  top: 0;
-  height: 100svh;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
-
-.v2-dash-card {
-  width: min(1100px, 92vw);
-  transform-origin: 50% 50%;
-  box-shadow: 0 60px 120px -40px rgba(0, 0, 0, 0.7), 0 0 100px -30px rgba(var(--accent-rgb), 0.3);
-  overflow: hidden;
-  will-change: transform;
-}
-
-@media (max-width: 900px) {
-  .v2-dash-runway { height: auto; }
-  .v2-dash-stage { position: static; height: auto; }
-  .v2-dash-card { transform: none !important; box-shadow: none; }
-}
-
 /* ---------------------------------------------------------------
    Bento facts
    --------------------------------------------------------------- */
@@ -1242,8 +1214,7 @@
 }
 /* nor the pricing runway: it drives a pinned stage, so its full height has
    to stay in play for the sticky child and the scroll maths to work */
-.v2-content > .v2-stage-runway,
-.v2-content > .v2-dash-runway {
+.v2-content > .v2-stage-runway {
   content-visibility: visible;
   contain-intrinsic-size: none;
 }
