@@ -303,26 +303,32 @@
 /* legacy dock classes kept as harmless no-ops for routes not yet migrated */
 .v2-dock-shell { display: none; }
 
-/* 3D tilt stage — the dashboard mockup floats in perspective space,
-   matching the reference's skewed hero-image treatment. Pure CSS, no
-   scroll-driven JS. */
-.v2-tilt-stage {
-  position: relative;
-  margin: 40px -16px 60px;
-  padding: 12px;
-  border-radius: calc(var(--radius) * 2);
+/* Scroll-pinned dashboard reveal — the card grows to fill the screen
+   flat-on, holds, then tilts the other way and shrinks back down as you
+   scroll out. Same runway/sticky-stage technique as .v2-stage-runway. */
+.v2-dash-runway { position: relative; height: 260vh; }
+
+.v2-dash-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
 }
-.v2-tilt-inner { perspective: 1400px; }
-.v2-tilt-tilted {
-  transform: rotateX(8deg) rotateZ(-1deg) scale(0.96);
-  transform-origin: 50% 100%;
+
+.v2-dash-card {
+  width: min(1100px, 92vw);
+  transform-origin: 50% 50%;
   box-shadow: 0 60px 120px -40px rgba(0, 0, 0, 0.7), 0 0 100px -30px rgba(var(--accent-rgb), 0.3);
-  transition: transform 0.5s var(--ease);
+  overflow: hidden;
+  will-change: transform;
 }
-.v2-tilt-stage:hover .v2-tilt-tilted { transform: rotateX(2deg) rotateZ(0deg) scale(0.99); }
-@media (max-width: 700px) {
-  .v2-tilt-tilted { transform: none; }
-  .v2-tilt-stage:hover .v2-tilt-tilted { transform: none; }
+
+@media (max-width: 900px) {
+  .v2-dash-runway { height: auto; }
+  .v2-dash-stage { position: static; height: auto; }
+  .v2-dash-card { transform: none !important; box-shadow: none; }
 }
 
 /* ---------------------------------------------------------------
@@ -1236,7 +1242,8 @@
 }
 /* nor the pricing runway: it drives a pinned stage, so its full height has
    to stay in play for the sticky child and the scroll maths to work */
-.v2-content > .v2-stage-runway {
+.v2-content > .v2-stage-runway,
+.v2-content > .v2-dash-runway {
   content-visibility: visible;
   contain-intrinsic-size: none;
 }
