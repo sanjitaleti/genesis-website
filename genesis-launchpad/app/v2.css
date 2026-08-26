@@ -303,6 +303,28 @@
 /* legacy dock classes kept as harmless no-ops for routes not yet migrated */
 .v2-dock-shell { display: none; }
 
+/* 3D tilt stage — the dashboard mockup floats in perspective space,
+   matching the reference's skewed hero-image treatment. Pure CSS, no
+   scroll-driven JS. */
+.v2-tilt-stage {
+  position: relative;
+  margin: 40px -16px 60px;
+  padding: 12px;
+  border-radius: calc(var(--radius) * 2);
+}
+.v2-tilt-inner { perspective: 1400px; }
+.v2-tilt-tilted {
+  transform: rotateX(8deg) rotateZ(-1deg) scale(0.96);
+  transform-origin: 50% 100%;
+  box-shadow: 0 60px 120px -40px rgba(0, 0, 0, 0.7), 0 0 100px -30px rgba(var(--accent-rgb), 0.3);
+  transition: transform 0.5s var(--ease);
+}
+.v2-tilt-stage:hover .v2-tilt-tilted { transform: rotateX(2deg) rotateZ(0deg) scale(0.99); }
+@media (max-width: 700px) {
+  .v2-tilt-tilted { transform: none; }
+  .v2-tilt-stage:hover .v2-tilt-tilted { transform: none; }
+}
+
 /* ---------------------------------------------------------------
    Bento facts
    --------------------------------------------------------------- */

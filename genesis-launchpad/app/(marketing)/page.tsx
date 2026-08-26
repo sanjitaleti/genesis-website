@@ -5,6 +5,7 @@ import {
   IconClock,
   IconShield,
   IconChart,
+  IconMic,
 } from "@/components/v2/icons";
 
 const facts = [
@@ -55,14 +56,24 @@ const tierTeasers = [
 
 const dashboardSpecs = [
   {
-    Icon: IconChart,
-    title: "Every call, logged automatically",
-    body: "No manual entry. Each call lands in the dashboard the moment it ends, with the outcome already tagged.",
+    Icon: IconClock,
+    title: "Live",
+    body: "Bookings and revenue update in real time, not end of day.",
   },
   {
-    Icon: IconClock,
-    title: "Live, not end-of-day",
-    body: "Bookings and revenue update in real time, so what you see is what actually happened today.",
+    Icon: IconChart,
+    title: "Logged",
+    body: "Every call lands here automatically, outcome already tagged.",
+  },
+  {
+    Icon: IconShield,
+    title: "Yours",
+    body: "Your data, your dashboard — nobody else's numbers mixed in.",
+  },
+  {
+    Icon: IconMic,
+    title: "Honest",
+    body: "What it shows you is what actually happened on the call.",
   },
 ];
 
@@ -152,26 +163,39 @@ export default function V2Landing() {
         </section>
 
         {/* ---------------------------------------------- dashboard showcase */}
-        <section className="v2-wrap" style={{ paddingBlock: "0 100px" }}>
-          <PortalPreview />
+        <section className="v2-wrap" style={{ paddingBlock: "20px 100px" }}>
+          <div style={{ maxWidth: "40ch" }}>
+            <h2 className="v2-display" style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)" }}>
+              Built for how service businesses actually run.
+            </h2>
+            <p style={{ marginTop: 16, fontSize: "1.05rem", lineHeight: 1.65, color: "var(--text-dim)" }}>
+              Every call, booking, and dollar it earned you — logged the moment it
+              happens, not reconstructed at the end of the day.
+            </p>
+          </div>
+
+          <div className="v2-tilt-stage">
+            <div className="v2-tilt-inner">
+              <div className="v2-tilt-tilted">
+                <PortalPreview />
+              </div>
+            </div>
+          </div>
 
           <div
             style={{
-              marginTop: 18,
               display: "grid",
-              gap: 14,
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+              gap: 24,
+              gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
             }}
           >
             {dashboardSpecs.map((s) => (
-              <div key={s.title} className="v2-panel" style={{ padding: "22px 24px", display: "flex", gap: 14 }}>
-                <s.Icon style={{ width: 20, height: 20, color: "var(--text)", flexShrink: 0, marginTop: 2 }} />
-                <div>
-                  <h3 style={{ margin: 0, fontSize: 15, fontWeight: 600 }}>{s.title}</h3>
-                  <p style={{ margin: "6px 0 0", fontSize: 13.5, lineHeight: 1.55, color: "var(--text-dim)" }}>
-                    {s.body}
-                  </p>
+              <div key={s.title} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <s.Icon style={{ width: 16, height: 16, color: "var(--accent-soft)" }} />
+                  <h3 style={{ margin: 0, fontSize: 14, fontWeight: 600 }}>{s.title}</h3>
                 </div>
+                <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.55, color: "var(--text-dim)" }}>{s.body}</p>
               </div>
             ))}
           </div>
