@@ -11,12 +11,12 @@ export default function Image() {
         style={{
           width: "100%",
           height: "100%",
-          background: "#0a0a0a",
+          background: "#ffffff",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           padding: "90px",
-          color: "#fafafa",
+          color: "#0a0a0a",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
@@ -25,7 +25,7 @@ export default function Image() {
               width: 30,
               height: 30,
               display: "flex",
-              background: "#fafafa",
+              background: "#ff4d1f",
               clipPath:
                 "polygon(50% 0%, 58% 38%, 100% 50%, 58% 62%, 50% 100%, 42% 62%, 0% 50%, 42% 38%)",
             }}
