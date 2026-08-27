@@ -31,7 +31,7 @@ export function Navbar() {
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <Link href="/sign-in" className="v2-btn-ghost" style={{ padding: "8px 18px", fontSize: 14 }}>
+          <Link href="/sign-in" className="v2-btn-ghost v2-nav-signin" style={{ padding: "8px 18px", fontSize: 14 }}>
             Sign in
           </Link>
           <Link href="/contact" className="v2-btn" style={{ padding: "8px 18px", fontSize: 14 }}>

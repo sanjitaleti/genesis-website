@@ -2,8 +2,8 @@ import Link from "next/link";
 import { PortalPreview } from "@/components/v2/PortalPreview";
 import {
   IconArrow,
-  IconClock,
   IconShield,
+  IconClock,
   IconChart,
   IconMic,
 } from "@/components/v2/icons";
@@ -135,12 +135,9 @@ export default function V2Landing() {
               justifyContent: "center",
             }}
           >
-            <Link href="/contact" className="v2-btn v2-btn--lg">
-              Book a free 20-minute call
+            <Link href="/configurator" className="v2-btn v2-btn--lg">
+              Build your own agent now
               <IconArrow style={{ width: 18, height: 18 }} />
-            </Link>
-            <Link href="/features" className="v2-btn-ghost">
-              See how it works
             </Link>
           </div>
 
@@ -164,7 +161,7 @@ export default function V2Landing() {
 
         {/* ---------------------------------------------- dashboard showcase */}
         <section className="v2-wrap" style={{ paddingBlock: "20px 100px" }}>
-          <div style={{ maxWidth: "40ch" }}>
+          <div style={{ maxWidth: "60ch", marginInline: "auto", textAlign: "center" }}>
             <h2 className="v2-display" style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)" }}>
               Built for how service businesses actually run.
             </h2>

@@ -108,15 +108,27 @@
   position: absolute;
   z-index: 0;
   pointer-events: none;
-  top: -10%;
+  top: -18%;
   left: 50%;
   transform: translateX(-50%);
-  width: min(900px, 140vw);
-  height: 560px;
-  background: radial-gradient(ellipse 50% 50% at 50% 30%, rgba(var(--accent-rgb), 0.28) 0%, rgba(var(--accent-rgb), 0.08) 45%, transparent 72%);
-  filter: blur(10px);
+  width: min(1150px, 165vw);
+  height: 720px;
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 30%,
+    rgba(var(--accent-rgb), 0.34) 0%,
+    rgba(var(--accent-rgb), 0.16) 32%,
+    rgba(var(--accent-rgb), 0.06) 56%,
+    rgba(var(--accent-rgb), 0) 82%
+  );
+  filter: blur(70px);
+  mix-blend-mode: screen;
+  animation: v2-glow-breathe 11s ease-in-out infinite;
 }
-.v2-glow-bg--sm { width: min(600px, 120vw); height: 360px; }
+.v2-glow-bg--sm { width: min(750px, 145vw); height: 460px; }
+@keyframes v2-glow-breathe {
+  0%, 100% { opacity: 0.82; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.07); }
+}
 
 .v2-display {
   font-weight: 600;
@@ -183,13 +195,13 @@
   white-space: nowrap;
   text-decoration: none;
   background: var(--text);
-  box-shadow: 0 8px 30px -6px rgba(var(--accent-rgb), 0.45);
+  box-shadow: 0 0 26px -4px rgba(var(--accent-rgb), 0.4);
   transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), box-shadow 0.3s var(--ease);
 }
 .v2-btn:hover {
   opacity: 0.92;
   transform: translateY(-1px);
-  box-shadow: 0 12px 40px -6px rgba(var(--accent-rgb), 0.65);
+  box-shadow: 0 0 36px -4px rgba(var(--accent-rgb), 0.55);
 }
 .v2-btn:active { transform: translateY(0) scale(0.985); }
 
@@ -216,7 +228,7 @@
 }
 .v2-btn-ghost:hover {
   border-color: var(--text-faint);
-  background: var(--ink-1);
+  background: var(--line);
 }
 
 /* ---------------------------------------------------------------
@@ -231,18 +243,7 @@
   overflow: hidden;
   transition: border-color 0.3s var(--ease);
 }
-/* backlight — a soft accent glow bleeding in from one corner, for depth */
-.v2-panel::before {
-  content: "";
-  position: absolute;
-  top: -40%;
-  right: -30%;
-  width: 70%;
-  height: 90%;
-  background: radial-gradient(circle at 70% 20%, rgba(var(--accent-rgb), 0.16) 0%, transparent 65%);
-  pointer-events: none;
-}
-.v2-panel:hover { border-color: rgba(var(--accent-rgb), 0.4); }
+.v2-panel:hover { border-color: var(--text-faint); }
 
 /* ---------------------------------------------------------------
    Navbar — plain fixed black bar, no blur, matches the reference
@@ -272,6 +273,13 @@
 }
 @media (min-width: 820px) {
   .v2-nav-links { display: flex; }
+}
+
+/* keep the mobile bar to one clean row: logo, Get Started, menu —
+   Sign in reappears once there's room for it without wrapping */
+.v2-nav-signin { display: none; }
+@media (min-width: 560px) {
+  .v2-nav-signin { display: inline-flex; }
 }
 
 .v2-nav-item {
@@ -329,7 +337,7 @@
   gap: 18px;
   transition: border-color 0.35s var(--ease), transform 0.35s var(--ease);
 }
-.v2-fact:hover { border-color: rgba(var(--accent-rgb), 0.4); transform: translateY(-3px); }
+.v2-fact:hover { border-color: var(--text-faint); transform: translateY(-3px); }
 .v2-fact h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
 .v2-fact p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--text-dim); }
 .v2-fact:first-child h3 { font-size: 22px; }
@@ -355,8 +363,53 @@
     conic-gradient(from 180deg, var(--violet), var(--magenta), var(--blush), var(--violet));
   animation: v2-spin 14s linear infinite;
 }
-.v2-ring span { animation: v2-spin 14s linear infinite reverse; }
+.v2-ring span {
+  color: #fafafa;
+  animation: v2-spin 14s linear infinite reverse;
+}
 @keyframes v2-spin { to { transform: rotate(360deg); } }
+
+/* every icon's small continuous motion — see components/v2/icons.tsx.
+   Kept as a shared, small vocabulary of shapes (breathe / draw / bar /
+   pulse / nudge / jiggle) so the whole set reads as one consistent
+   voice rather than a dozen unrelated effects. */
+@keyframes v2-breathe {
+  0%, 100% { opacity: 0.82; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+@keyframes v2-draw {
+  0%, 100% { stroke-dashoffset: var(--dash-len); opacity: 0; }
+  15% { opacity: 1; }
+  45% { stroke-dashoffset: 0; opacity: 1; }
+  75% { stroke-dashoffset: 0; opacity: 1; }
+  92% { opacity: 0; }
+}
+@keyframes v2-bar {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.45); }
+}
+@keyframes v2-pulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.92); }
+  50% { opacity: 1; transform: scale(1); }
+}
+@keyframes v2-nudge-x {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(2.5px); }
+}
+@keyframes v2-nudge-neg-x {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-2.5px); }
+}
+@keyframes v2-nudge-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(2.5px); }
+}
+@keyframes v2-ring {
+  0%, 88%, 100% { transform: rotate(0deg); }
+  91% { transform: rotate(-9deg); }
+  94% { transform: rotate(8deg); }
+  97% { transform: rotate(-4deg); }
+}
 
 .v2-wave {
   display: flex;
@@ -651,8 +704,7 @@
   background: var(--ink);
 }
 .v2-tier.is-featured {
-  border-color: rgba(var(--accent-rgb), 0.55);
-  box-shadow: 0 0 60px -12px rgba(var(--accent-rgb), 0.35), inset 0 0 60px -30px rgba(var(--accent-rgb), 0.25);
+  border-color: var(--text-faint);
 }
 
 /* the reference has no per-card glow — this is now a no-op */
@@ -782,7 +834,7 @@
   background: var(--grad-brand);
   background-size: 220% 220%;
   animation: v2-btn-float 8s ease-in-out infinite;
-  box-shadow: 0 16px 40px -14px rgba(250, 250, 250, 0.85);
+  box-shadow: 0 16px 40px -14px rgba(var(--accent-rgb), 0.65);
   transition: transform 0.25s var(--ease);
 }
 .v2-ai-fab:hover { transform: translateY(-2px) scale(1.02); }
@@ -1205,17 +1257,18 @@
 
 /* ---------------------------------------------------------------
    Magnetic scroll
-   Native CSS scroll-snap on the document, `proximity` (not `mandatory`)
-   so it only pulls a section into place once the user has basically
-   stopped there — a gentle magnetic settle, never a scroll-jack that
-   fights a fast flick or traps the wheel. Sections keep their normal
-   in-flow scroll the rest of the time.
+   Native CSS scroll-snap, `proximity` (not `mandatory`) so it only
+   pulls into place once the user has basically stopped — never a
+   scroll-jack that fights a flick or traps the wheel. Only the hero
+   is a snap point: one clean landing as you leave it, then normal
+   free scroll the rest of the page. Snapping every section made the
+   whole page feel like it kept grabbing the wheel.
    --------------------------------------------------------------- */
 html {
   scroll-snap-type: y proximity;
 }
 
-.v2-content > section {
+.v2-content > section:first-child {
   scroll-snap-align: start;
   scroll-snap-stop: normal;
   scroll-margin-top: 64px; /* clears the fixed navbar */

@@ -3,6 +3,7 @@ import { Pacifico } from "next/font/google";
 import "./globals.css";
 import "./v2.css";
 import StructuredData from "./structured-data";
+import { Starfield } from "@/components/v2/Starfield";
 
 const pacifico = Pacifico({
   subsets: ["latin"],
@@ -47,7 +48,10 @@ export default function RootLayout({
     <html lang="en" className={pacifico.variable}>
       <body suppressHydrationWarning>
         <StructuredData />
-        <div className="v2">{children}</div>
+        <div className="v2">
+          <Starfield />
+          {children}
+        </div>
       </body>
     </html>
   );
