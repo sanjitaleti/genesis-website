@@ -37,25 +37,25 @@ export type Tile = {
 
 export const tilesByRange: Record<Range, Tile[]> = {
   "24h": [
-    { label: "Calls answered", value: "19", delta: "+3", up: true, tone: "#f72585", pts: [1, 2, 1, 3, 2, 3, 2, 4, 3, 4], hint: "vs. yesterday" },
-    { label: "Estimates booked", value: "7", delta: "+2", up: true, tone: "#c77dff", pts: [0, 1, 1, 1, 2, 1, 2, 2, 3, 3], hint: "vs. yesterday" },
-    { label: "Outside hours", value: "6", delta: "+2", up: true, tone: "#4cc9f0", pts: [0, 1, 0, 1, 1, 2, 1, 2, 2, 3], hint: "before 8a, after 5p" },
-    { label: "Avg. pickup", value: "1.1s", delta: "−0.2s", up: true, tone: "#ff8a00", pts: [18, 17, 16, 15, 14, 13, 13, 12, 11, 11], hint: "time to answer" },
-    { label: "Missed calls", value: "0", delta: "held", up: true, tone: "#5ea87a", pts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], hint: "nothing dropped" },
+    { label: "Calls answered", value: "19", delta: "+3", up: true, tone: "#d62828", pts: [1, 2, 1, 3, 2, 3, 2, 4, 3, 4], hint: "vs. yesterday" },
+    { label: "Estimates booked", value: "7", delta: "+2", up: true, tone: "#ff4d1f", pts: [0, 1, 1, 1, 2, 1, 2, 2, 3, 3], hint: "vs. yesterday" },
+    { label: "Outside hours", value: "6", delta: "+2", up: true, tone: "#ff8a00", pts: [0, 1, 0, 1, 1, 2, 1, 2, 2, 3], hint: "before 8a, after 5p" },
+    { label: "Avg. pickup", value: "1.1s", delta: "−0.2s", up: true, tone: "#ffb703", pts: [18, 17, 16, 15, 14, 13, 13, 12, 11, 11], hint: "time to answer" },
+    { label: "Missed calls", value: "0", delta: "held", up: true, tone: "#f4a300", pts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], hint: "nothing dropped" },
   ],
   "7d": [
-    { label: "Calls answered", value: "127", delta: "+9.2%", up: true, tone: "#f72585", pts: [12, 15, 13, 18, 16, 21, 19, 24, 22, 26], hint: "vs. last week" },
-    { label: "Estimates booked", value: "44", delta: "+13%", up: true, tone: "#c77dff", pts: [4, 6, 5, 7, 7, 9, 8, 11, 10, 12], hint: "vs. last week" },
-    { label: "Outside hours", value: "38", delta: "+18%", up: true, tone: "#4cc9f0", pts: [3, 4, 4, 6, 5, 7, 7, 9, 8, 10], hint: "before 8a, after 5p" },
-    { label: "Avg. pickup", value: "1.2s", delta: "−0.3s", up: true, tone: "#ff8a00", pts: [22, 21, 20, 18, 17, 16, 15, 14, 13, 12], hint: "time to answer" },
-    { label: "Missed calls", value: "0", delta: "held", up: true, tone: "#5ea87a", pts: [2, 1, 1, 0, 0, 0, 0, 0, 0, 0], hint: "nothing dropped" },
+    { label: "Calls answered", value: "127", delta: "+9.2%", up: true, tone: "#d62828", pts: [12, 15, 13, 18, 16, 21, 19, 24, 22, 26], hint: "vs. last week" },
+    { label: "Estimates booked", value: "44", delta: "+13%", up: true, tone: "#ff4d1f", pts: [4, 6, 5, 7, 7, 9, 8, 11, 10, 12], hint: "vs. last week" },
+    { label: "Outside hours", value: "38", delta: "+18%", up: true, tone: "#ff8a00", pts: [3, 4, 4, 6, 5, 7, 7, 9, 8, 10], hint: "before 8a, after 5p" },
+    { label: "Avg. pickup", value: "1.2s", delta: "−0.3s", up: true, tone: "#ffb703", pts: [22, 21, 20, 18, 17, 16, 15, 14, 13, 12], hint: "time to answer" },
+    { label: "Missed calls", value: "0", delta: "held", up: true, tone: "#f4a300", pts: [2, 1, 1, 0, 0, 0, 0, 0, 0, 0], hint: "nothing dropped" },
   ],
   "30d": [
-    { label: "Calls answered", value: "516", delta: "+7.4%", up: true, tone: "#f72585", pts: [24, 29, 27, 34, 32, 38, 36, 43, 41, 48], hint: "vs. last month" },
-    { label: "Estimates booked", value: "178", delta: "+11%", up: true, tone: "#c77dff", pts: [9, 12, 11, 15, 14, 17, 16, 20, 19, 23], hint: "vs. last month" },
-    { label: "Outside hours", value: "149", delta: "+16%", up: true, tone: "#4cc9f0", pts: [7, 9, 8, 12, 11, 14, 13, 17, 16, 20], hint: "before 8a, after 5p" },
-    { label: "Avg. pickup", value: "1.2s", delta: "−0.4s", up: true, tone: "#ff8a00", pts: [26, 24, 25, 21, 20, 18, 17, 15, 14, 12], hint: "time to answer" },
-    { label: "Missed calls", value: "0", delta: "held", up: true, tone: "#5ea87a", pts: [4, 3, 2, 2, 1, 1, 0, 0, 0, 0], hint: "nothing dropped" },
+    { label: "Calls answered", value: "516", delta: "+7.4%", up: true, tone: "#d62828", pts: [24, 29, 27, 34, 32, 38, 36, 43, 41, 48], hint: "vs. last month" },
+    { label: "Estimates booked", value: "178", delta: "+11%", up: true, tone: "#ff4d1f", pts: [9, 12, 11, 15, 14, 17, 16, 20, 19, 23], hint: "vs. last month" },
+    { label: "Outside hours", value: "149", delta: "+16%", up: true, tone: "#ff8a00", pts: [7, 9, 8, 12, 11, 14, 13, 17, 16, 20], hint: "before 8a, after 5p" },
+    { label: "Avg. pickup", value: "1.2s", delta: "−0.4s", up: true, tone: "#ffb703", pts: [26, 24, 25, 21, 20, 18, 17, 15, 14, 12], hint: "time to answer" },
+    { label: "Missed calls", value: "0", delta: "held", up: true, tone: "#f4a300", pts: [4, 3, 2, 2, 1, 1, 0, 0, 0, 0], hint: "nothing dropped" },
   ],
 };
 
@@ -82,17 +82,17 @@ export const radarNow = [94, 88, 71, 90, 84, 66];
 export const radarPrev = [76, 70, 58, 79, 61, 55];
 
 export const funnel = [
-  { label: "Calls received", n: "516", pct: 100, tone: "#4cc9f0" },
-  { label: "Answered", n: "516", pct: 100, tone: "#7b2cbf" },
-  { label: "Qualified", n: "311", pct: 60, tone: "#c77dff" },
-  { label: "Estimate booked", n: "178", pct: 34, tone: "#f72585" },
+  { label: "Calls received", n: "516", pct: 100, tone: "#ffb703" },
+  { label: "Answered", n: "516", pct: 100, tone: "#ff8a00" },
+  { label: "Qualified", n: "311", pct: 60, tone: "#ff4d1f" },
+  { label: "Estimate booked", n: "178", pct: 34, tone: "#d62828" },
 ];
 
 export const resolution = [
-  { label: "Estimate booked", value: 178, tone: "#f72585" },
-  { label: "Priced over phone", value: 133, tone: "#c77dff" },
-  { label: "Answered question", value: 142, tone: "#7b2cbf" },
-  { label: "Passed to you", value: 63, tone: "#4cc9f0" },
+  { label: "Estimate booked", value: 178, tone: "#d62828" },
+  { label: "Priced over phone", value: 133, tone: "#ff4d1f" },
+  { label: "Answered question", value: 142, tone: "#ff8a00" },
+  { label: "Passed to you", value: 63, tone: "#ffb703" },
 ];
 
 export const hourly = [2, 1, 1, 0, 1, 4, 14, 33, 48, 57, 62, 58, 51, 60, 55, 49, 41, 34, 22, 15, 9, 6, 4, 3];

@@ -72,11 +72,19 @@ export function PortalPreview() {
               <p>Answered vs. booked, by week</p>
             </div>
             <div className="v2-legend">
-              <span><i style={{ background: "#f72585" }} />Answered</span>
-              <span><i style={{ background: "#7b2cbf" }} />Booked</span>
+              <span><i style={{ background: "#d62828" }} />Answered</span>
+              <span><i style={{ background: "#ff4d1f" }} />Booked</span>
             </div>
           </header>
-          <VolumeChart a={vol.a} b={vol.b} labels={vol.labels} id="previewVol" />
+          <VolumeChart
+            a={vol.a}
+            b={vol.b}
+            labels={vol.labels}
+            id="previewVol"
+            colorA="#d62828"
+            colorB="#ff4d1f"
+            dotColor="#ffb703"
+          />
         </section>
 
         <section className="v2-tile">
@@ -86,7 +94,7 @@ export function PortalPreview() {
               <p>This month vs. last</p>
             </div>
           </header>
-          <RadarChart axes={radarAxes} now={radarNow} prev={radarPrev} />
+          <RadarChart axes={radarAxes} now={radarNow} prev={radarPrev} nowColor="#d62828" prevColor="#ff8a00" />
         </section>
       </div>
 
