@@ -18,24 +18,37 @@ radial blooms, shaders) is explicitly banned — that is the slop we're leaving.
 
 All pages share the tokens, type, nav, footer, and CTA voice below.
 
-## Theme (dark, cool-tinted)
-- `--color-paper`    oklch(15% 0.012 240)   /* cool near-black — NOT #000 */
-- `--color-paper-2`  oklch(20% 0.012 240)   /* raised surface */
-- `--color-paper-3`  oklch(25% 0.012 240)   /* hover surface */
-- `--color-ink`      oklch(96% 0.005 230)   /* near-white text */
-- `--color-ink-2`    oklch(72% 0.010 230)   /* muted */
-- `--color-ink-3`    oklch(52% 0.010 230)   /* faint / meta */
-- `--color-rule`     oklch(30% 0.012 235)   /* visible thin border */
-- `--color-rule-2`   oklch(38% 0.014 235)   /* stronger border */
-- `--color-accent`   oklch(84% 0.14 200)    /* cyan #00E5FF — the ONE signal */
-- `--color-accent-ink` oklch(18% 0.03 230)  /* dark text on cyan fills */
-- `--color-flag`     oklch(70% 0.20 5)      /* pink #FF4D8D — RARE state only */
-- `--color-focus`    oklch(84% 0.14 200)    /* cyan */
+## Theme (light, warm-tinted) — AMENDED
 
-Accent discipline: cyan appears on links, focus rings, the single primary CTA, and
-one or two functional marks per view — never as a background flood, gradient, or glow.
-Pink is a *flag*: at most one instance per page (a single status marker). Never blend
-cyan→pink. No purple, ever.
+Superseded the original dark cool-tinted register on two axes, both direct user
+calls. Everything else about the system is unchanged. Live values are in
+`app/v2.css` under `.v2`.
+
+- `--ink`        oklch(99% 0.0025 60)   /* warm near-white paper — NOT #fff */
+- `--ink-1`      oklch(97.2% 0.004 60)  /* raised surface */
+- `--ink-2`      oklch(95% 0.005 60)    /* hover surface */
+- `--text`       oklch(21% 0.008 55)    /* warm near-black — NOT #000 */
+- `--text-dim`   oklch(45% 0.009 55)    /* muted */
+- `--text-faint` oklch(60% 0.008 55)    /* faint / meta */
+- `--line`       oklch(91% 0.005 60)    /* visible hairline */
+- `--line-2`     oklch(86% 0.006 60)    /* stronger border */
+- `--accent`     oklch(63% 0.208 34)    /* red-orange #ff4d1f — the ONE signal */
+- `--accent-deep` oklch(48% 0.17 32)    /* pressed / text-on-wash */
+- `--accent-ink` oklch(99% 0.002 60)    /* text on accent fills */
+- `--accent-wash` oklch(96.5% 0.02 45)  /* the one tinted surface, status only */
+
+**Amendment 1 — paper is light.** The register is a warm near-white, never pure
+`#fff` (flat and synthetic). Neutrals carry the accent's hue at very low chroma so
+the page reads lit rather than blank.
+
+**Amendment 2 — the signal accent is red-orange, not cyan.** Cyan and the pink
+flag are both retired; the palette is one hue plus warm neutrals.
+
+Accent discipline is otherwise **unchanged and still binding**: the accent appears
+on links, focus rings, and one or two functional marks per view — never as a
+background flood, gradient, or glow. The primary CTA is ink-filled rather than
+accent-filled, which keeps the accent budget under 5% and reserves the colour for
+signal. No purple, ever.
 
 ## Typography
 - Display: Space Grotesk, weight 500–600, style normal (roman ONLY — no italic headers).
@@ -60,9 +73,10 @@ Vary section padding deliberately — never every section identical.
 - Focus rings appear instantly, cyan, ≥3:1.
 
 ## CTA voice
-- Primary: solid cyan fill, dark ink text, 6px radius, one per page. Copy = a verb-first
-  action ("Book a discovery audit"), never "Get started".
-- Secondary: text link with a drawn cyan underline on hover. No second filled button.
+- Primary: solid **ink** fill, paper text, 6px radius (999px in the nav pill), one per
+  page. Hover shifts the fill to the accent — one signal, never scale + shadow + glow.
+  Copy = a verb-first action ("Book a call", "Build your own agent"), never "Get started".
+- Secondary: text link with a drawn accent underline. No second filled button.
 
 ## Nav & footer
 - Nav: floating, content-sized, detached from edges, subtle backdrop. Mono links.
@@ -71,8 +85,24 @@ Vary section padding deliberately — never every section identical.
   NOT four columns of links, NOT a giant hollow wordmark.
 
 ## What pages MUST share
-wordmark · cyan accent + its ≤5% placement · Space Grotesk/Inter/JetBrains trio ·
+wordmark · red-orange accent + its ≤5% placement · Space Grotesk/Inter/JetBrains trio ·
 CTA voice · ruled-row rhythm · no eyebrows, no italic headers, no hanging labels.
+
+## Implemented archetypes
+- Nav: **N5 floating pill** — content-sized, detached, mono links. Must stay under
+  ~720px wide or it becomes a full-width bar with rounded ends.
+- Footer: **Ft5 statement** — one closing line, then contact + minimal links in mono
+  meta beneath a rule.
+- Home: **14 · Narrative Workflow** — numbered stages (`1.0 ANSWER` → `4.0 REPORT`).
+- Pricing / Features: **F3 tabular spec sheet** — ruled rows, mono figures, tabular
+  numerics, one accent mark for "included".
+
+## Tells removed (do not reintroduce)
+Pacifico script accent word · radial hero glow / `mix-blend-mode` bloom · full-width
+nav with hairline border-bottom · centred full-viewport hero · 3-and-4-up icon-card
+feature grids · asymmetric bento · staggered fade-and-rise reveal on ~69 elements ·
+perpetual per-icon animation · 380vh scroll-pinned pricing stage with gradient skies ·
+"Get Started" CTA copy · pink/purple/cyan status-tag holdovers.
 
 ## What pages MAY differ on
 macrostructure within the family · section ordering · presence of the process ledger.
