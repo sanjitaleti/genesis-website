@@ -658,6 +658,16 @@
   .v2-bento > :nth-child(5) { grid-column: span 2; }
 }
 
+/* Two-up variant, for sections with an even card count. The base 3-column
+   bento leaves a 4th card orphaned alone on its own row; a 2x2 block reads
+   as deliberate instead of short. Opt-in so existing 3- and 6-card
+   sections are untouched. */
+@media (min-width: 700px) {
+  .v2-bento--pairs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .v2-bento--pairs > :nth-child(4),
+  .v2-bento--pairs > :nth-child(5) { grid-column: auto; }
+}
+
 .v2-fact {
   padding: 26px;
   min-height: 178px;

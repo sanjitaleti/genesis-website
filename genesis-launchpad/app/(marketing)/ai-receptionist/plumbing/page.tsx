@@ -291,8 +291,10 @@ export default function PlumbingPage() {
         </div>
       </section>
 
-      {/* ---------------------------------------------- signature: the call timeline */}
-      <section className="v2-wrap" style={{ paddingBlock: "20px 100px" }}>
+      {/* ---------------------------------------------- signature: the call timeline
+          Given more air than its neighbours on purpose — it's the centre of
+          the page, not one of six equally-weighted blocks. */}
+      <section className="v2-wrap" style={{ paddingBlock: "44px 124px" }}>
         <h2 className="v2-display" style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", maxWidth: "20ch" }}>
           One call, minute by minute
         </h2>
@@ -328,7 +330,8 @@ export default function PlumbingPage() {
           Built for how plumbing calls actually go
         </h2>
 
-        <div className="v2-bento" style={{ marginTop: 36 }}>
+        {/* two-up: four cards in the base 3-col bento orphan the fourth */}
+        <div className="v2-bento v2-bento--pairs" style={{ marginTop: 36 }}>
           {capabilities.map((c) => (
             <article key={c.title} className="v2-panel v2-fact">
               <div>
