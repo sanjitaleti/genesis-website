@@ -245,7 +245,8 @@ export default function HvacPage() {
           Built for how HVAC calls actually go
         </h2>
 
-        <div className="v2-bento" style={{ marginTop: 36 }}>
+        {/* two-up: four cards in the base 3-col bento orphan the fourth */}
+        <div className="v2-bento v2-bento--pairs" style={{ marginTop: 36 }}>
           {capabilities.map((c) => (
             <article key={c.title} className="v2-panel v2-fact">
               <div>
