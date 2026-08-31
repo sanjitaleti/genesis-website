@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { IconHome, IconSpark, IconChart, IconCard, IconUser } from "./icons";
+import { IconHome, IconSpark, IconChart, IconCard } from "./icons";
 
 /** Floating dock. Icons only; the active item expands to show its label. */
 const items = [
@@ -34,14 +34,10 @@ export function DockNav() {
             </Link>
           );
         })}
-        <Link
-          href="/sign-in"
-          className="v2-dock-item"
-          data-active={pathname?.startsWith("/sign-in")}
-          aria-label="Sign in"
-        >
-          <IconUser />
-        </Link>
+        {/* The sign-in entry is deliberately not surfaced in the public nav.
+            /sign-in itself still works — customers reach it directly, and the
+            dashboard guard, sign-out and password-reset flows all still
+            redirect through it. */}
       </nav>
     </div>
   );

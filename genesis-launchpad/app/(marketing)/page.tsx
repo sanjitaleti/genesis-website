@@ -351,9 +351,6 @@ export default function V2Landing() {
               <Link href="/terms" className="v2-link">
                 Terms
               </Link>
-              <Link href="/sign-in" className="v2-link">
-                Client sign in
-              </Link>
             </div>
           </footer>
         </section>
