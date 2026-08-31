@@ -1,11 +1,4 @@
-/** One icon set, one stroke voice. 24×24 grid, 1.6 stroke, round caps.
- *
- *  These were previously animated — every icon carried its own perpetual
- *  loop (ticking hands, drawing checks, equalizer bars, nudging arrows).
- *  design.md allows micro-interaction only ("150–200ms colour/border
- *  shifts on hover") and bans ambient reveal outright, and a page where
- *  a dozen glyphs move forever is the opposite of restraint. The icons
- *  are static; motion, where it is earned, belongs to hover. */
+/** One icon set, one stroke voice. 24×24 grid, 1.6 stroke, round caps. */
 
 type P = { className?: string; style?: React.CSSProperties };
 
@@ -182,13 +175,6 @@ export const IconSearch = (p: P) => (
   <svg {...base} {...p}>
     <circle cx="10.8" cy="10.8" r="6.4" />
     <path d="m15.5 15.5 4.1 4.1" />
-  </svg>
-);
-
-export const IconMenu = (p: P) => (
-  <svg {...base} {...p}>
-    <path d="M4 8h16" />
-    <path d="M4 16h16" />
   </svg>
 );
 

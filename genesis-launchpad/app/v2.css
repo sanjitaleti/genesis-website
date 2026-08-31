@@ -1,92 +1,41 @@
-/* Hallmark · genre: modern-minimal · macrostructure: Narrative Workflow
- * theme: design.md system (light amendment) · enrichment: none (typography only)
- * nav: N5 floating pill · footer: Ft5 statement
- * pre-emit critique: P5 H5 E4 S5 R5 V4
- * =====================================================================
- * Genesis LP — the locked system in design.md, executed light.
- *
- * Genre is modern-minimal: cool, technical, instrument-panel. An
- * engineering consultancy, not a flashy AI startup. Restraint IS the
- * brand. Atmospheric treatment (radial blooms, glows, shaders) is
- * banned by design.md — that is the slop we left.
- *
- * Two deliberate amendments to design.md's dark register, both direct
- * user calls: the paper is LIGHT (a warm near-white, never pure #fff),
- * and the single signal accent is RED-ORANGE, not cyan. Accent
- * discipline is otherwise unchanged: links, focus rings, one primary
- * CTA, one or two functional marks per view — never a background
- * flood, never a gradient, never a glow.
- *
- * Everything is scoped under .v2 so other routes are untouched.
- * ===================================================================== */
+/* =====================================================================
+   Genesis LP — v2 direction
+   Black canvas, floating violet→magenta gradients, Apple system font.
+   Everything is scoped under .v2 so the live site is untouched.
+   ===================================================================== */
 
 .v2 {
-  /* Paper — warm near-white. Pure #fff reads flat and synthetic; this
-     carries the accent's hue at very low chroma so the page feels lit
-     rather than blank. */
-  --ink: oklch(99% 0.0025 60);
-  --ink-1: oklch(97.2% 0.004 60);
-  --ink-2: oklch(95% 0.005 60);
-  --ink-3: oklch(92.5% 0.006 60);
+  --ink: #04030a;
+  --ink-1: #0a0616;
+  --ink-2: #120a1f;
+  --ink-3: #1b0f2e;
 
-  /* Ink — warm near-black, never #000. */
-  --text: oklch(21% 0.008 55);
-  --text-dim: oklch(45% 0.009 55);
-  --text-faint: oklch(60% 0.008 55);
+  --violet-deep: #2a0f3a;
+  --violet: #5a189a;
+  --violet-lift: #7b2cbf;
+  --magenta: #f72585;
+  --magenta-soft: #ff5ca8;
+  --blush: #ffd6ff;
 
-  /* Rules — visible hairlines. The instrument-panel look is drawn with
-     rules, not shadows. */
-  --line: oklch(91% 0.005 60);
-  --line-2: oklch(86% 0.006 60);
-  --rule-hair: 1px;
+  --text: #f7f3fb;
+  --text-dim: rgba(247, 243, 251, 0.8);
+  --text-faint: rgba(247, 243, 251, 0.6);
+  --line: rgba(255, 214, 255, 0.10);
+  --line-2: rgba(255, 214, 255, 0.20);
 
-  /* The ONE signal — red-orange. ≤5% of any viewport. */
-  --accent: oklch(63% 0.208 34);
-  --accent-soft: oklch(70% 0.17 38);
-  --accent-deep: oklch(48% 0.17 32);
-  --accent-ink: oklch(99% 0.002 60);
-  --accent-rgb: 255, 77, 31;
-  --accent-wash: oklch(96.5% 0.02 45);
+  --grad-brand: linear-gradient(100deg, #5a189a 0%, #f72585 55%, #ff7ab8 100%);
+  --grad-text: linear-gradient(100deg, #c77dff 0%, #f72585 55%, #ffd6ff 100%);
 
-  /* legacy accent names, aliased so dashboard/auth/configurator keep
-     resolving without a rewrite */
-  --violet: var(--accent-deep);
-  --violet-deep: var(--accent-deep);
-  --violet-lift: var(--accent-soft);
-  --magenta: var(--accent);
-  --magenta-soft: var(--accent-soft);
-  --magenta-rgb: var(--accent-rgb);
-  --blush: var(--accent-soft);
-  --grad-brand: var(--accent);
-  --grad-text: var(--accent);
-  --glow-accent: none;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif;
 
-  /* Type — the design.md trio. Display roman only, never italic. */
-  --font-display: var(--font-space-grotesk), "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  --font-script: var(--font-display); /* script treatment retired */
-
-  /* Type scale — anchored per design.md */
-  --text-display: clamp(2.6rem, 4.4vw + 0.6rem, 4.5rem);
-  --text-display-s: clamp(2rem, 2.6vw + 0.9rem, 3rem);
-
-  /* Space — 4pt named scale */
-  --space-3xs: 0.25rem; --space-2xs: 0.5rem;  --space-xs: 0.75rem;
-  --space-sm: 1rem;     --space-md: 1.5rem;   --space-lg: 2rem;
-  --space-xl: 3rem;     --space-2xl: 4.5rem;  --space-3xl: 7rem;
-
-  --radius: 6px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --dur-micro: 160ms;
 
   position: relative;
   min-height: 100svh;
   background: var(--ink);
   color: var(--text);
   font-family: var(--font-sans);
-  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
@@ -99,26 +48,215 @@
 }
 
 .v2 ::selection {
-  background: var(--text);
-  color: var(--ink);
+  background: var(--magenta);
+  color: #fff;
 }
 
-/* focus rings appear instantly, accent, never animated */
 .v2 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--magenta-soft);
   outline-offset: 3px;
   border-radius: 4px;
 }
 
-/* The emphasis word inside a display heading. Was a Pacifico script with
-   a glow — a template tell on both counts. Emphasis is now carried by
-   colour alone, in the same roman display face as its heading. */
-.v2-grad-text {
-  font-family: inherit;
-  font-weight: inherit;
-  font-style: normal;
-  color: var(--accent);
-  text-shadow: none;
+/* ---------------------------------------------------------------
+   The living background: drifting gradient fields + grain
+   --------------------------------------------------------------- */
+
+.v2-aurora {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+}
+
+.v2-blob {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+
+.v2-blob--a {
+  width: 62vw;
+  height: 62vw;
+  min-width: 520px;
+  min-height: 520px;
+  top: -22vh;
+  left: -14vw;
+  background: radial-gradient(circle at 50% 50%, rgba(90, 24, 154, 0.5) 0%, rgba(90, 24, 154, 0.2) 38%, transparent 68%);
+  filter: blur(70px);
+  animation: v2-drift-a 26s var(--ease) infinite;
+}
+
+.v2-blob--b {
+  width: 55vw;
+  height: 55vw;
+  min-width: 460px;
+  min-height: 460px;
+  bottom: -26vh;
+  right: -12vw;
+  background: radial-gradient(circle at 50% 50%, rgba(247, 37, 133, 0.4) 0%, rgba(247, 37, 133, 0.14) 40%, transparent 70%);
+  filter: blur(80px);
+  animation: v2-drift-b 31s var(--ease) infinite;
+}
+
+.v2-blob--c {
+  width: 46vw;
+  height: 46vw;
+  min-width: 380px;
+  min-height: 380px;
+  top: 26vh;
+  left: 42vw;
+  background: radial-gradient(circle at 50% 50%, rgba(123, 44, 191, 0.3) 0%, rgba(123, 44, 191, 0.1) 45%, transparent 72%);
+  filter: blur(90px);
+  animation: v2-drift-c 22s var(--ease) infinite;
+}
+
+.v2-blob--d {
+  width: 26vw;
+  height: 26vw;
+  min-width: 240px;
+  min-height: 240px;
+  top: 8vh;
+  right: 12vw;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 214, 255, 0.18) 0%, rgba(255, 214, 255, 0.05) 45%, transparent 70%);
+  filter: blur(70px);
+  animation: v2-drift-d 19s var(--ease) infinite;
+}
+
+.v2-blob--e {
+  width: 40vw;
+  height: 40vw;
+  min-width: 320px;
+  min-height: 320px;
+  bottom: 4vh;
+  left: 8vw;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 92, 168, 0.24) 0%, rgba(255, 92, 168, 0.07) 45%, transparent 72%);
+  filter: blur(95px);
+  animation: v2-drift-e 28s var(--ease) infinite;
+}
+
+@keyframes v2-drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.5; }
+  33%      { transform: translate3d(7vw, 5vh, 0) scale(1.14); opacity: 0.72; }
+  66%      { transform: translate3d(-4vw, 9vh, 0) scale(0.94); opacity: 0.56; }
+}
+@keyframes v2-drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.7; }
+  30%      { transform: translate3d(-8vw, -6vh, 0) scale(1.1); opacity: 0.5; }
+  70%      { transform: translate3d(3vw, -11vh, 0) scale(0.92); opacity: 0.62; }
+}
+@keyframes v2-drift-c {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.52; }
+  40%      { transform: translate3d(-11vw, 6vh, 0) scale(1.18); opacity: 0.66; }
+  75%      { transform: translate3d(6vw, -5vh, 0) scale(0.9); opacity: 0.46; }
+}
+@keyframes v2-drift-d {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(-6vw, 10vh, 0) scale(1.24); }
+}
+@keyframes v2-drift-e {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  45%      { transform: translate3d(9vw, -7vh, 0) scale(1.12); }
+}
+@keyframes v2-breathe {
+  0%, 100% { opacity: 0.72; }
+  50%      { opacity: 1; }
+}
+
+/* The aurora dims as the galaxy takes over (see .v2-galaxy) */
+.v2-aurora { opacity: calc(1 - var(--galaxy, 0)); }
+
+/* ---------------------------------------------------------------
+   Galaxy — crossfades in over the pricing section
+   --------------------------------------------------------------- */
+
+.v2-galaxy {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: var(--galaxy, 0);
+  /* smooths the steps between observer thresholds */
+  transition: opacity 0.25s linear;
+  contain: strict;
+}
+
+/* true black sky: the deep layer is essentially black, so the stars carry it
+   and the violet only survives as a faint wash at the very top */
+.v2-galaxy-deep {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 100% 45% at 50% -6%, rgba(30, 6, 54, 0.55), transparent 72%),
+    linear-gradient(180deg, #04010c 0%, #000000 48%, #010008 100%);
+}
+
+.v2-galaxy-stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.v2-nebula {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+/* two faint clouds only — the sky should read black, not purple */
+.v2-nebula--1 {
+  width: 66vw; height: 42vw; min-width: 520px;
+  top: -10vh; left: -14vw;
+  background: radial-gradient(ellipse at 50% 50%, rgba(123, 44, 191, 0.26) 0%, rgba(123, 44, 191, 0) 68%);
+  filter: blur(70px);
+  animation: v2-drift-c 46s var(--ease) infinite;
+}
+.v2-nebula--2 {
+  width: 58vw; height: 38vw; min-width: 460px;
+  bottom: -12vh; right: -12vw;
+  background: radial-gradient(ellipse at 50% 50%, rgba(247, 37, 133, 0.2) 0%, rgba(247, 37, 133, 0) 70%);
+  filter: blur(76px);
+  animation: v2-drift-b 54s var(--ease) infinite;
+}
+
+/* cursor-following light — the page reacts to you */
+.v2-spot {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    540px circle at var(--mx, 50%) var(--my, 24%),
+    rgba(247, 37, 133, 0.08),
+    rgba(123, 44, 191, 0.04) 42%,
+    transparent 68%
+  );
+}
+
+.v2-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* deepen the very top and bottom so content always reads */
+.v2-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 86% 68% at 50% 44%, transparent 38%, rgba(4, 3, 10, 0.62) 100%),
+    linear-gradient(to bottom, rgba(4, 3, 10, 0.8) 0%, transparent 24%, transparent 66%, rgba(4, 3, 10, 0.9) 100%);
 }
 
 .v2-content {
@@ -140,43 +278,11 @@
   .v2-wrap { padding-inline: 40px; }
 }
 
-/* The ambient radial backlight is retired. design.md bans atmospheric
-   treatment outright ("dark-AI-tool glows, radial blooms, shaders") —
-   it was the single loudest thing on the page. Kept as an inert no-op
-   so any route still rendering the element degrades to nothing rather
-   than 404-ing on a missing class. */
-.v2-glow-bg,
-.v2-glow-bg--sm { display: none; }
-
-/* ---------------------------------------------------------------
-   Measure — the page is built on rules, not boxes
-   --------------------------------------------------------------- */
-
-.v2-rule {
-  border: 0;
-  border-top: var(--rule-hair) solid var(--line);
-  margin: 0;
-}
-
-/* mono meta line — labels, ordinals, technical texture */
-.v2-meta {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-}
-
 .v2-display {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-style: normal; /* roman only — italic headers are banned */
-  letter-spacing: -0.025em;
-  line-height: 1.04;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
   text-wrap: balance;
-  overflow-wrap: anywhere;
-  min-width: 0;
   margin: 0;
 }
 
@@ -195,38 +301,51 @@
   border: 0;
 }
 
-/* Was a bordered pill badge — the "eyebrow on every section" tell.
-   Now a bare mono label: it states a fact, it doesn't wear a chip. */
+.v2-grad-text {
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  background-size: 200% 100%;
+  animation: v2-text-flow 9s ease-in-out infinite;
+}
+@keyframes v2-text-flow {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
 .v2-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-faint);
+  gap: 9px;
+  padding: 7px 14px 7px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--line-2);
+  background: rgba(18, 10, 31, 0.55);
+  backdrop-filter: blur(14px);
+  font-size: 13px;
+  color: var(--text-dim);
   white-space: nowrap;
 }
 
 .v2-live-dot {
-  width: 5px;
-  height: 5px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--magenta);
+  box-shadow: 0 0 0 0 rgba(247, 37, 133, 0.6);
+  animation: v2-pulse 2.4s ease-out infinite;
   flex-shrink: 0;
+}
+@keyframes v2-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(247, 37, 133, 0.55); }
+  70%  { box-shadow: 0 0 0 9px rgba(247, 37, 133, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(247, 37, 133, 0); }
 }
 
 /* ---------------------------------------------------------------
-   Buttons — ink-filled primary, hairline secondary.
-   Hover is ONE signal (a colour shift), never scale + shadow + glow.
-   The accent stays reserved for links, rules and marks, so the CTA
-   doesn't spend the page's whole 5% accent budget in one control.
+   Buttons — the gradient floats and sweeps on hover
    --------------------------------------------------------------- */
 
 .v2-btn {
@@ -234,42 +353,62 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 11px 20px;
-  border: 1px solid var(--text);
-  border-radius: var(--radius);
+  gap: 9px;
+  padding: 14px 26px;
+  border: none;
+  border-radius: 999px;
   font-family: inherit;
   font-size: 15px;
-  font-weight: 500;
-  line-height: 1.2;
-  color: var(--ink);
+  font-weight: 600;
+  color: #fff;
   cursor: pointer;
   white-space: nowrap;
   text-decoration: none;
-  background: var(--text);
-  box-shadow: none;
-  transition: background var(--dur-micro) var(--ease-out),
-    border-color var(--dur-micro) var(--ease-out);
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--grad-brand);
+  background-size: 220% 220%;
+  background-position: 0% 50%;
+  box-shadow: 0 8px 26px -10px rgba(247, 37, 133, 0.55);
+  transition: box-shadow 0.45s var(--ease), transform 0.25s var(--ease);
+  animation: v2-btn-float 8s ease-in-out infinite;
+}
+@keyframes v2-btn-float {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
 }
 .v2-btn:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-ink);
+  animation-duration: 2.6s;
+  box-shadow: 0 14px 40px -10px rgba(247, 37, 133, 0.8);
+  transform: translateY(-2px);
 }
-.v2-btn:active { background: var(--accent-deep); border-color: var(--accent-deep); }
+.v2-btn:active { transform: translateY(0) scale(0.985); }
+
+/* a second gradient layer that wipes across on hover */
+.v2-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 214, 255, 0.55) 50%, transparent 80%);
+  transform: translateX(-120%);
+  transition: transform 0.85s var(--ease);
+}
+.v2-btn:hover::after { transform: translateX(120%); }
 
 .v2-btn--block { width: 100%; }
-.v2-btn--lg { padding: 13px 28px; font-size: 16px; }
+.v2-btn--lg { padding: 17px 32px; font-size: 16px; }
 
 .v2-btn-ghost {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 10px 20px;
-  border-radius: var(--radius);
+  gap: 9px;
+  padding: 14px 24px;
+  border-radius: 999px;
   border: 1px solid var(--line-2);
-  background: transparent;
+  background: rgba(18, 10, 31, 0.4);
+  backdrop-filter: blur(12px);
   color: var(--text);
   font-family: inherit;
   font-size: 15px;
@@ -277,463 +416,155 @@
   cursor: pointer;
   white-space: nowrap;
   text-decoration: none;
-  transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease), transform 0.25s var(--ease);
 }
 .v2-btn-ghost:hover {
-  border-color: var(--text);
-  background: transparent;
+  border-color: rgba(255, 214, 255, 0.42);
+  background: rgba(42, 15, 58, 0.6);
+  transform: translateY(-2px);
 }
 
 /* ---------------------------------------------------------------
-   Panels — a ruled surface, not a floating card. No shadow, no lift.
+   Glass panels
    --------------------------------------------------------------- */
 
 .v2-panel {
   position: relative;
-  border-radius: var(--radius);
-  border: var(--rule-hair) solid var(--line);
-  background: var(--ink);
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: rgba(10, 6, 22, 0.58);
+  backdrop-filter: blur(22px);
   overflow: hidden;
-  transition: border-color var(--dur-micro) var(--ease-out);
 }
-.v2-panel:hover { border-color: var(--line-2); }
+.v2-panel::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 214, 255, 0.35), transparent);
+  pointer-events: none;
+}
 
 /* ---------------------------------------------------------------
-   Nav — N5 floating pill.
-   Was the full-width bar with a wordmark hard-left, links centre and a
-   CTA hard-right over a hairline border-bottom: the single most
-   recognisable AI-nav fingerprint, and banned by name in design.md.
-   The pill is content-sized and visibly detached from every edge — if
-   the link list ever pushes it past ~720px it stops being a pill and
-   becomes the same full-width bar with rounded ends, so the link set
-   is deliberately short.
+   Floating dock nav — active item shows its label, rest are icons
    --------------------------------------------------------------- */
 
-.v2-nav-shell {
+.v2-dock-shell {
   position: fixed;
-  top: var(--space-sm);
   left: 50%;
+  bottom: 26px;
   transform: translateX(-50%);
-  z-index: 50;
-  width: max-content;
-  max-width: calc(100vw - 2 * var(--space-sm));
-  background: color-mix(in oklch, var(--ink) 82%, transparent);
-  backdrop-filter: blur(14px) saturate(120%);
-  -webkit-backdrop-filter: blur(14px) saturate(120%);
-  border: var(--rule-hair) solid var(--line-2);
-  border-radius: 999px;
-  overflow: hidden;
+  z-index: 40;
 }
-/* the pill un-rounds into a panel while the mobile menu is open */
-.v2-nav-shell[data-open="true"] { border-radius: 20px; }
 
-.v2-nav {
+.v2-dock {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: var(--space-sm);
-  height: 46px;
-  padding-inline: 6px 6px;
-  /* the pill supplies its own gutter; cancel .v2-wrap's page padding */
-  max-width: none;
-}
-
-.v2-nav-links {
-  display: none;
-  align-items: center;
-  gap: 2px;
-}
-@media (min-width: 780px) {
-  .v2-nav-links { display: flex; }
-}
-
-/* below 560px the pill keeps one row: wordmark, primary action, menu */
-.v2-nav-signin { display: none; }
-@media (min-width: 560px) {
-  .v2-nav-signin { display: inline-flex; }
-}
-
-/* mono links, per design.md */
-.v2-nav-item {
-  padding: 7px 11px;
+  gap: 4px;
+  padding: 7px;
   border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  letter-spacing: 0.01em;
-  color: var(--text-dim);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color var(--dur-micro) var(--ease-out);
+  border: 1px solid var(--line-2);
+  background: rgba(8, 5, 16, 0.82);
+  backdrop-filter: blur(20px) saturate(1.3);
+  box-shadow: 0 20px 50px -18px rgba(0, 0, 0, 0.9), 0 0 40px -20px rgba(247, 37, 133, 0.5);
 }
-.v2-nav-item:hover { color: var(--text); background: transparent; }
-.v2-nav-item[data-active="true"] { color: var(--text); }
 
-.v2-nav-icon-btn {
+.v2-dock-item {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: var(--radius);
-  border: 1px solid var(--line-2);
-  background: transparent;
-  color: var(--text);
-  cursor: pointer;
-  transition: background 0.2s var(--ease);
-}
-.v2-nav-icon-btn {
-  width: 34px;
-  height: 34px;
+  gap: 8px;
+  height: 42px;
+  padding-inline: 12px;
   border-radius: 999px;
-  border: var(--rule-hair) solid var(--line-2);
+  border: none;
+  background: transparent;
+  color: var(--text-faint);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.25s var(--ease), background 0.25s var(--ease);
 }
-.v2-nav-icon-btn:hover { background: var(--ink-1); }
-
-/* legacy dock classes kept as harmless no-ops for routes not yet migrated */
-.v2-dock-shell { display: none; }
+.v2-dock-item:hover { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+.v2-dock-item[data-active="true"] {
+  color: #fff;
+  background: var(--grad-brand);
+  background-size: 200% 200%;
+  animation: v2-btn-float 7s ease-in-out infinite;
+  box-shadow: 0 6px 20px -8px rgba(247, 37, 133, 0.7);
+}
+.v2-dock-item svg { width: 19px; height: 19px; flex-shrink: 0; }
+/* The label's width changes in one layout pass (no transition on max-width):
+   animating a layout property here would re-run layout every frame, and this
+   fires on the exact click that navigates the page. Only opacity and transform
+   are animated, which the compositor handles on its own. */
+.v2-dock-label {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.v2-dock-item[data-active="true"] .v2-dock-label {
+  max-width: 90px;
+  opacity: 1;
+  transform: none;
+}
 
 /* ---------------------------------------------------------------
-   The ledger — what replaced the bento card grid.
-
-   Three equal columns of icon-over-heading-over-body is the single
-   most-emitted AI feature section, and the asymmetric-span variant is
-   the same tell wearing a hat. design.md asks for ruled rows and mono
-   ordinals instead: a spec sheet you read down, not a set of cards you
-   scan across. No card, no border box, no hover lift.
+   Bento facts
    --------------------------------------------------------------- */
 
 .v2-bento {
-  display: block;
-  border-top: var(--rule-hair) solid var(--line);
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+@media (min-width: 700px) {
+  .v2-bento { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .v2-bento > :nth-child(4) { grid-column: span 1; }
+  .v2-bento > :nth-child(5) { grid-column: span 2; }
 }
 
 .v2-fact {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-2xs);
-  align-items: baseline;
-  padding-block: var(--space-md);
-  border: 0;
-  border-bottom: var(--rule-hair) solid var(--line);
-  border-radius: 0;
-  background: transparent;
-  overflow: visible;
-  min-height: 0;
-  transition: none;
-}
-@media (min-width: 760px) {
-  .v2-fact {
-    grid-template-columns: 4.5rem minmax(0, 22ch) minmax(0, 1fr);
-    gap: var(--space-lg);
-    align-items: start;
-    padding-block: var(--space-lg);
-  }
-}
-.v2-fact:hover { border-color: var(--line); transform: none; }
-
-/* the ordinal — mono, faint, the ledger's left rail */
-.v2-fact-n {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-faint);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.04em;
-}
-
-.v2-fact h3 {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: -0.015em;
-  line-height: 1.25;
-}
-.v2-fact p {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--text-dim);
-  max-width: 62ch;
-}
-.v2-fact:first-child h3 { font-size: 18px; }
-
-/* the ledger carries no icons — a row of glyphs down the left rail is
-   decoration pretending to be information. Kept inert for any route
-   still passing one through. */
-.v2-fact-icon { display: none; }
-
-/* "24/7" — a mono figure, not a spinning conic-gradient ring */
-.v2-ring {
-  width: auto;
-  height: auto;
-  border-radius: 0;
-  display: block;
-  background: none;
-  animation: none;
-}
-.v2-ring span {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--accent);
-  animation: none;
-}
-@keyframes v2-spin { to { transform: rotate(360deg); } }
-
-/* ---------------------------------------------------------------
-   Section rhythm.
-   design.md: "Vary section padding deliberately — never every section
-   identical." Every marketing section previously ran the same
-   20px/100px block. These three weights let the page breathe unevenly.
-   --------------------------------------------------------------- */
-
-.v2-sec        { padding-block: var(--space-2xl); }
-.v2-sec--tight { padding-block: var(--space-xl); }
-.v2-sec--open  { padding-block: var(--space-3xl); }
-
-@media (min-width: 900px) {
-  .v2-sec        { padding-block: 5.5rem; }
-  .v2-sec--tight { padding-block: 3.5rem; }
-  .v2-sec--open  { padding-block: 8rem; }
-}
-
-/* A section head. Stacked vertically — tag above, heading directly
-   underneath in the same column. The tag-left / heading-right hanging
-   pattern is banned outright (design.md, and it auto-fails the audit). */
-.v2-sec-head {
+  padding: 26px;
+  min-height: 178px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-lg);
-}
-.v2-sec-head h2 {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(1.6rem, 2vw + 0.8rem, 2.2rem);
-  letter-spacing: -0.022em;
-  line-height: 1.15;
-  margin: 0;
-  max-width: 24ch;
-}
-.v2-sec-lede {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.65;
-  color: var(--text-dim);
-  max-width: 62ch;
-}
-
-/* ---------------------------------------------------------------
-   Narrative Workflow — the home page's macrostructure.
-   A call arriving, being handled, being booked, and landing in the
-   dashboard is a genuine sequence, which is what this shape requires.
-   Numbered stages, a thick rule at each boundary, mono ordinals.
-   --------------------------------------------------------------- */
-
-.v2-stages {
-  display: block;
-  border-top: 2px solid var(--text);
-}
-
-.v2-stage-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-sm);
-  padding-block: var(--space-lg);
-  border-bottom: var(--rule-hair) solid var(--line);
-}
-@media (min-width: 820px) {
-  .v2-stage-row {
-    grid-template-columns: 8rem minmax(0, 30ch) minmax(0, 1fr);
-    gap: var(--space-xl);
-    align-items: start;
-    padding-block: var(--space-xl);
-  }
-}
-
-.v2-stage-n {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-}
-
-.v2-stage-h {
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(1.25rem, 1.2vw + 0.9rem, 1.6rem);
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-
-.v2-stage-b {
-  margin: 0;
-  font-size: 15.5px;
-  line-height: 1.65;
-  color: var(--text-dim);
-  max-width: 64ch;
-}
-
-/* ---------------------------------------------------------------
-   Ft5 · Statement footer.
-   One honest closing line, then contact + minimal links in mono meta
-   beneath a rule. Not four columns of links; not a giant hollow
-   wordmark.
-   --------------------------------------------------------------- */
-
-.v2-foot {
-  display: grid;
-  gap: var(--space-lg);
-  padding-block: var(--space-2xl) var(--space-xl);
-  border-top: 2px solid var(--text);
-}
-.v2-foot-line {
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(1.6rem, 3.4vw, 2.6rem);
-  line-height: 1.1;
-  letter-spacing: -0.025em;
-  max-width: 22ch;
-}
-.v2-foot-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-sm) var(--space-lg);
   justify-content: space-between;
-  align-items: baseline;
-  padding-top: var(--space-md);
-  border-top: var(--rule-hair) solid var(--line);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-faint);
+  gap: 18px;
+  transition: border-color 0.35s var(--ease), transform 0.35s var(--ease);
 }
-.v2-foot-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-md);
-  align-items: baseline;
-}
-.v2-foot-links a {
-  color: var(--text-dim);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color var(--dur-micro) var(--ease-out);
-}
-.v2-foot-links a:hover { color: var(--accent); }
+.v2-fact:hover { border-color: rgba(255, 214, 255, 0.28); transform: translateY(-3px); }
+.v2-fact h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+.v2-fact p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--text-dim); }
 
-/* ---------------------------------------------------------------
-   F3 · Tabular spec sheet — the pricing ledger.
-   Ruled rows, mono figures, tabular numerics. Replaces three glowing
-   price cards with the thing an operator actually wants: the plans
-   side by side, every line comparable.
-   --------------------------------------------------------------- */
+.v2-fact-icon {
+  width: 34px;
+  height: 34px;
+  color: var(--blush);
+  filter: drop-shadow(0 0 14px rgba(247, 37, 133, 0.45));
+}
 
-.v2-spec-wrap { overflow-x: auto; margin-inline: calc(-1 * var(--space-sm)); padding-inline: var(--space-sm); }
-
-.v2-spec {
-  width: 100%;
-  min-width: 34rem;
-  border-collapse: collapse;
-  font-variant-numeric: tabular-nums;
-  text-align: left;
-}
-.v2-spec th,
-.v2-spec td {
-  padding: var(--space-xs) var(--space-sm);
-  border-bottom: var(--rule-hair) solid var(--line);
-  vertical-align: baseline;
-}
-.v2-spec thead th {
-  border-bottom: 2px solid var(--text);
-  padding-block: var(--space-2xs) var(--space-xs);
-}
-/* row label column */
-.v2-spec tbody th {
-  font-family: var(--font-sans);
-  font-weight: 400;
-  font-size: 14.5px;
-  color: var(--text-dim);
-  width: 40%;
-  padding-left: 0;
-}
-.v2-spec td {
-  font-family: var(--font-mono);
-  font-size: 13.5px;
-  color: var(--text);
-  width: 20%;
-}
-.v2-spec-plan {
-  font-family: var(--font-display);
+.v2-ring {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
   font-size: 17px;
-  font-weight: 500;
-  letter-spacing: -0.015em;
-  color: var(--text);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  background:
+    radial-gradient(circle at 50% 50%, var(--ink-1) 58%, transparent 59%),
+    conic-gradient(from 180deg, var(--violet), var(--magenta), var(--blush), var(--violet));
+  animation: v2-spin 14s linear infinite;
 }
-.v2-spec-plan small {
-  display: block;
-  margin-top: 3px;
-  min-height: 1em;
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  font-weight: 400;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: var(--text-faint);
-}
-/* the one functional accent mark in the sheet */
-.v2-spec-yes { color: var(--accent); }
-.v2-spec-no { color: var(--text-faint); }
-.v2-spec-figure { font-weight: 500; }
-.v2-spec tfoot td, .v2-spec tfoot th { border-bottom: 0; padding-top: var(--space-md); }
-
-/* every icon's small continuous motion — see components/v2/icons.tsx.
-   Kept as a shared, small vocabulary of shapes (breathe / draw / bar /
-   pulse / nudge / jiggle) so the whole set reads as one consistent
-   voice rather than a dozen unrelated effects. */
-@keyframes v2-breathe {
-  0%, 100% { opacity: 0.82; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
-}
-@keyframes v2-draw {
-  0%, 100% { stroke-dashoffset: var(--dash-len); opacity: 0; }
-  15% { opacity: 1; }
-  45% { stroke-dashoffset: 0; opacity: 1; }
-  75% { stroke-dashoffset: 0; opacity: 1; }
-  92% { opacity: 0; }
-}
-@keyframes v2-bar {
-  0%, 100% { transform: scaleY(1); }
-  50% { transform: scaleY(0.45); }
-}
-@keyframes v2-pulse {
-  0%, 100% { opacity: 0.45; transform: scale(0.92); }
-  50% { opacity: 1; transform: scale(1); }
-}
-@keyframes v2-nudge-x {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(2.5px); }
-}
-@keyframes v2-nudge-neg-x {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(-2.5px); }
-}
-@keyframes v2-nudge-y {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(2.5px); }
-}
-@keyframes v2-ring {
-  0%, 88%, 100% { transform: rotate(0deg); }
-  91% { transform: rotate(-9deg); }
-  94% { transform: rotate(8deg); }
-  97% { transform: rotate(-4deg); }
-}
+.v2-ring span { animation: v2-spin 14s linear infinite reverse; }
+@keyframes v2-spin { to { transform: rotate(360deg); } }
 
 .v2-wave {
   display: flex;
@@ -782,8 +613,8 @@
 }
 .v2-chip--on {
   color: var(--text);
-  border-color: rgba(10, 10, 10, 0.35);
-  background: rgba(10, 10, 10, 0.06);
+  border-color: rgba(247, 37, 133, 0.5);
+  background: rgba(247, 37, 133, 0.14);
 }
 .v2-portal-note {
   font-size: 11.5px;
@@ -804,20 +635,20 @@
   .v2-portal-stats { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 }
 .v2-stat {
-  border-radius: var(--radius);
-  border: var(--rule-hair) solid var(--line);
-  background: var(--ink-1);
-  padding: 16px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(4, 3, 10, 0.5);
+  padding: 13px 14px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 3px;
   min-width: 0;
 }
-.v2-stat-label { font-size: 20px; font-weight: 700; color: var(--text); line-height: 1.3; }
+.v2-stat-label { font-size: 11.5px; color: var(--text-faint); }
 .v2-stat-value {
-  font-size: 34px;
-  font-weight: 700;
-  letter-spacing: -0.025em;
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
   line-height: 1.15;
 }
@@ -845,9 +676,9 @@
 }
 
 .v2-tile {
-  border-radius: var(--radius);
-  border: var(--rule-hair) solid var(--line);
-  background: var(--ink-1);
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(4, 3, 10, 0.5);
   padding: 15px 16px;
   min-width: 0;
 }
@@ -894,7 +725,7 @@
 .v2-funnel-track {
   height: 9px;
   border-radius: 999px;
-  background: rgba(10, 10, 10, 0.06);
+  background: rgba(255, 255, 255, 0.05);
   overflow: hidden;
 }
 .v2-funnel-fill { height: 100%; border-radius: 999px; }
@@ -919,12 +750,9 @@
   border-radius: 999px;
   white-space: nowrap;
 }
-/* Status tags. Were pink / purple / cyan holdovers — purple is banned
-   outright and the trio spent three hues the system doesn't have. Now
-   one accent state (booked) and two neutral ones. */
-.v2-call-tag--book { background: var(--accent-wash); color: var(--accent-deep); }
-.v2-call-tag--quote { background: var(--ink-2); color: var(--text-dim); }
-.v2-call-tag--handled { background: var(--ink-1); color: var(--text-faint); }
+.v2-call-tag--book { background: rgba(247, 37, 133, 0.16); color: #ff8dc0; }
+.v2-call-tag--quote { background: rgba(199, 125, 255, 0.16); color: #d7a8ff; }
+.v2-call-tag--handled { background: rgba(76, 201, 240, 0.14); color: #8fdcf5; }
 
 /* ---------------------------------------------------------------
    Pricing — a pinned stage the plans fly through
@@ -961,8 +789,8 @@
 }
 .v2-sky--violet {
   background:
-    radial-gradient(ellipse 62% 52% at 50% 66%, rgba(199, 125, 255, 0.55) 0%, transparent 64%),
-    radial-gradient(ellipse 110% 46% at 50% 104%, rgba(247, 37, 133, 0.45) 0%, transparent 70%);
+    radial-gradient(ellipse 62% 52% at 50% 66%, rgba(199, 125, 255, 0.75) 0%, transparent 64%),
+    radial-gradient(ellipse 110% 46% at 50% 104%, rgba(247, 37, 133, 0.66) 0%, transparent 70%);
 }
 
 /* beat one */
@@ -1026,16 +854,33 @@
   flex-direction: column;
   overflow: hidden;
   padding: 0 0 26px;
-  border-radius: var(--radius);
-  border: 1px solid var(--line-2);
-  background: var(--ink);
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: rgba(10, 6, 22, 0.72);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.9);
 }
 .v2-tier.is-featured {
-  border-color: var(--text-faint);
+  border-color: var(--edge);
+  box-shadow:
+    0 0 0 1px var(--edge),
+    0 34px 80px -30px rgba(0, 0, 0, 0.95);
 }
 
-/* the reference has no per-card glow — this is now a no-op */
-.v2-tier-crown { display: none; }
+/* the glow crowning the top of each card */
+.v2-tier-crown {
+  position: absolute;
+  left: 50%;
+  top: -54px;
+  width: 320px;
+  height: 130px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 50%, var(--glow) 0%, transparent 62%);
+  filter: blur(28px);
+  opacity: 0.8;
+  pointer-events: none;
+}
 
 .v2-tier-badge {
   position: relative;
@@ -1044,13 +889,13 @@
   margin-top: 18px;
   padding: 5px 12px;
   border-radius: 999px;
-  border: 1px solid var(--line-2);
-  background: var(--ink-1);
+  border: 1px solid var(--edge);
+  background: rgba(8, 5, 16, 0.7);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--text);
+  color: #fff;
   white-space: nowrap;
 }
 
@@ -1076,7 +921,7 @@
   margin-top: 6px;
   font-size: 13.5px;
   font-weight: 500;
-  color: var(--text-dim);
+  color: var(--edge);
 }
 .v2-tier-discount {
   display: inline-block;
@@ -1085,12 +930,12 @@
   border-radius: 999px;
   font-size: 12px;
   font-weight: 650;
-  color: var(--ink);
-  background: var(--text);
+  color: #fff;
+  background: linear-gradient(100deg, var(--edge), var(--glow2));
 }
 .v2-tier-list { list-style: none; margin: 22px 0 26px; padding: 0; display: flex; flex-direction: column; gap: 11px; }
 .v2-tier-list li { display: flex; gap: 10px; font-size: 14px; line-height: 1.5; color: var(--text-dim); }
-.v2-tier-list svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; color: var(--text); }
+.v2-tier-list svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; color: var(--edge); }
 .v2-tier-cta { margin-top: auto; }
 
 /* ---------------------------------------------------------------
@@ -1145,43 +990,35 @@
 
 .v2-ai-shell { position: fixed; right: 22px; bottom: 26px; z-index: 45; }
 
-/* The assistant launcher. Was a solid accent pill with a drifting
-   background animation and a 40px accent shadow — on a restrained page
-   it became the loudest object on screen, and it spent the whole accent
-   budget on a control that isn't the page's primary action. Now it is a
-   quiet ruled chip that matches the nav pill. */
 .v2-ai-fab {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  height: 40px;
-  padding: 0 16px 0 13px;
-  border: var(--rule-hair) solid var(--line-2);
+  gap: 10px;
+  height: 52px;
+  padding: 0 20px 0 16px;
+  border: none;
   border-radius: 999px;
   cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  color: var(--text-dim);
-  background: color-mix(in oklch, var(--ink) 86%, transparent);
-  backdrop-filter: blur(14px) saturate(120%);
-  -webkit-backdrop-filter: blur(14px) saturate(120%);
-  animation: none;
-  box-shadow: none;
-  transition: color var(--dur-micro) var(--ease-out),
-    border-color var(--dur-micro) var(--ease-out);
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--grad-brand);
+  background-size: 220% 220%;
+  animation: v2-btn-float 8s ease-in-out infinite;
+  box-shadow: 0 16px 40px -14px rgba(247, 37, 133, 0.85);
+  transition: transform 0.25s var(--ease);
 }
-.v2-ai-fab:hover { color: var(--text); border-color: var(--text-faint); transform: none; }
-.v2-ai-fab svg { width: 15px; height: 15px; color: var(--accent); }
+.v2-ai-fab:hover { transform: translateY(-2px) scale(1.02); }
+.v2-ai-fab svg { width: 19px; height: 19px; }
 
 .v2-ai-panel {
   width: min(392px, calc(100vw - 36px));
   border-radius: 18px;
   border: 1px solid var(--line-2);
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(8, 5, 16, 0.94);
   backdrop-filter: blur(24px);
-  box-shadow: 0 30px 70px -20px rgba(10, 10, 10, 0.22);
+  box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.95);
   padding: 14px;
   display: flex;
   flex-direction: column;
@@ -1213,9 +1050,9 @@
   letter-spacing: 0.02em;
   padding: 3px 8px;
   border-radius: 999px;
-  color: #c2255c;
-  background: rgba(10, 10, 10, 0.05);
-  border: 1px solid rgba(10, 10, 10, 0.14);
+  color: #ff8dc0;
+  background: rgba(247, 37, 133, 0.16);
+  border: 1px solid rgba(247, 37, 133, 0.32);
 }
 .v2-ai-x {
   display: grid;
@@ -1228,16 +1065,20 @@
   color: var(--text-faint);
   cursor: pointer;
 }
-.v2-ai-x:hover { color: var(--text); background: rgba(10, 10, 10, 0.05); }
+.v2-ai-x:hover { color: var(--text); background: rgba(255, 255, 255, 0.06); }
 .v2-ai-x svg { width: 15px; height: 15px; }
 
 .v2-ai-thread { display: flex; flex-direction: column; gap: 9px; max-height: 340px; overflow-y: auto; }
+/* states for the live assistant (see /api/ai-dock) */
+.v2-ai-msg--typing { color: var(--text-faint); font-style: italic; opacity: 0.85; }
+.v2-ai-tool:disabled { opacity: 0.4; cursor: not-allowed; }
+.v2-ai-send:disabled { opacity: 0.5; cursor: not-allowed; }
 .v2-ai-msg { font-size: 13.5px; line-height: 1.6; margin: 0; }
 .v2-ai-msg--you { color: var(--text-faint); padding-left: 2px; }
 .v2-ai-msg--ai {
   border-radius: 12px;
   border: 1px solid var(--line);
-  background: rgba(10, 10, 10, 0.03);
+  background: rgba(255, 255, 255, 0.035);
   padding: 11px 13px;
   color: var(--text-dim);
 }
@@ -1246,11 +1087,11 @@
 .v2-ai-composer {
   border-radius: 14px;
   border: 1px solid var(--line-2);
-  background: rgba(10, 10, 10, 0.045);
+  background: rgba(4, 3, 10, 0.65);
   padding: 11px 12px 9px;
   transition: border-color 0.25s var(--ease);
 }
-.v2-ai-composer:focus-within { border-color: rgba(10, 10, 10, 0.4); }
+.v2-ai-composer:focus-within { border-color: rgba(247, 37, 133, 0.55); }
 .v2-ai-textarea {
   width: 100%;
   border: none;
@@ -1284,9 +1125,7 @@
   cursor: pointer;
   transition: color 0.2s var(--ease), background 0.2s var(--ease);
 }
-.v2-ai-tool:hover { color: var(--text); background: rgba(10, 10, 10, 0.06); }
-.v2-ai-tool:disabled { opacity: 0.4; cursor: not-allowed; }
-.v2-ai-tool:disabled:hover { color: var(--text-faint); background: transparent; }
+.v2-ai-tool:hover { color: var(--text); background: rgba(255, 255, 255, 0.07); }
 .v2-ai-tool svg { width: 16px; height: 16px; }
 .v2-ai-count {
   font-size: 11px;
@@ -1309,9 +1148,6 @@
   animation: v2-btn-float 7s ease-in-out infinite;
 }
 .v2-ai-send svg { width: 15px; height: 15px; }
-.v2-ai-send:disabled { opacity: 0.5; cursor: not-allowed; animation-play-state: paused; }
-
-.v2-ai-msg--typing { color: var(--text-faint); font-style: italic; animation: v2-breathe 1.4s ease-in-out infinite; }
 
 .v2-ai-foot {
   display: flex;
@@ -1328,7 +1164,7 @@
   padding: 1px 5px;
   border-radius: 4px;
   border: 1px solid var(--line-2);
-  background: rgba(10, 10, 10, 0.04);
+  background: rgba(255, 255, 255, 0.05);
 }
 .v2-ai-status { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 .v2-ai-status-dot {
@@ -1343,7 +1179,7 @@
    circle and lifts above it instead of fighting for the same row. */
 @media (max-width: 700px) {
   .v2-ai-shell { right: 16px; bottom: 96px; }
-  .v2-ai-fab { width: 44px; height: 44px; padding: 0; justify-content: center; border-radius: 50%; }
+  .v2-ai-fab { width: 54px; height: 54px; padding: 0; justify-content: center; border-radius: 50%; }
   .v2-ai-fab-label { display: none; }
   .v2-ai-fab svg { width: 22px; height: 22px; }
   .v2-ai-panel { position: relative; bottom: 0; }
@@ -1380,9 +1216,9 @@
 .v2-input-wrap { position: relative; display: flex; align-items: center; }
 .v2-input {
   width: 100%;
-  border-radius: var(--radius);
+  border-radius: 12px;
   border: 1px solid var(--line-2);
-  background: var(--ink-1);
+  background: rgba(10, 6, 22, 0.62);
   padding: 15px 16px;
   color: var(--text);
   font-family: inherit;
@@ -1392,9 +1228,9 @@
 .v2-input::placeholder { color: var(--text-faint); }
 .v2-input:focus {
   outline: none;
-  border-color: var(--text-faint);
-  background: var(--ink-2);
-  box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.06);
+  border-color: rgba(247, 37, 133, 0.65);
+  background: rgba(18, 10, 31, 0.8);
+  box-shadow: 0 0 0 4px rgba(247, 37, 133, 0.12);
 }
 .v2-eye {
   position: absolute;
@@ -1444,17 +1280,8 @@
 }
 .v2-check input:focus-visible + .v2-check-box { outline: 2px solid var(--magenta-soft); outline-offset: 3px; }
 
-/* The secondary CTA voice: a text link with a drawn accent underline.
-   design.md is explicit that there is no second filled button. */
-.v2-link {
-  color: var(--accent);
-  font-size: 15px;
-  text-decoration: none;
-  border-bottom: 1px solid color-mix(in oklch, var(--accent) 35%, transparent);
-  padding-bottom: 1px;
-  transition: border-color var(--dur-micro) var(--ease-out);
-}
-.v2-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.v2-link { color: var(--magenta-soft); font-size: 14px; text-decoration: none; }
+.v2-link:hover { color: var(--blush); text-decoration: underline; text-underline-offset: 3px; }
 
 .v2-or {
   display: flex;
@@ -1474,7 +1301,7 @@
   width: 100%;
   border-radius: 999px;
   border: 1px solid var(--line-2);
-  background: rgba(10, 10, 10, 0.03);
+  background: rgba(255, 255, 255, 0.045);
   padding: 15px 20px;
   color: var(--text);
   font-family: inherit;
@@ -1484,8 +1311,8 @@
   transition: background 0.3s var(--ease), border-color 0.3s var(--ease), transform 0.25s var(--ease);
 }
 .v2-google:hover {
-  background: rgba(10, 10, 10, 0.06);
-  border-color: rgba(10, 10, 10, 0.3);
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 214, 255, 0.4);
   transform: translateY(-2px);
 }
 .v2-google svg { width: 19px; height: 19px; flex-shrink: 0; }
@@ -1530,8 +1357,8 @@
   inset: 0;
   background:
     linear-gradient(180deg, rgba(4, 1, 12, 0.34) 0%, transparent 34%, rgba(4, 1, 12, 0.82) 100%),
-    radial-gradient(ellipse 78% 62% at 74% 84%, rgba(250, 250, 250, 0.16), transparent 68%),
-    radial-gradient(ellipse 70% 60% at 18% 18%, rgba(250, 250, 250, 0.14), transparent 70%);
+    radial-gradient(ellipse 78% 62% at 74% 84%, rgba(247, 37, 133, 0.16), transparent 68%),
+    radial-gradient(ellipse 70% 60% at 18% 18%, rgba(123, 44, 191, 0.14), transparent 70%);
 }
 
 /* close the sign-in and go back */
@@ -1546,19 +1373,17 @@
   height: 44px;
   border-radius: 50%;
   border: 1px solid var(--line-2);
-  /* opaque-ish so it stays legible whether it's sitting over the white
-     page (art panel hidden below 940px) or the dark space photo */
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(8, 5, 16, 0.66);
   backdrop-filter: blur(14px);
-  color: var(--text);
+  color: var(--text-dim);
   cursor: pointer;
   transition: color 0.25s var(--ease), border-color 0.25s var(--ease),
     background 0.25s var(--ease), transform 0.25s var(--ease);
 }
 .v2-auth-close:hover {
   color: var(--text);
-  border-color: rgba(10, 10, 10, 0.2);
-  background: rgba(240, 240, 240, 0.96);
+  border-color: rgba(255, 214, 255, 0.42);
+  background: rgba(42, 15, 58, 0.8);
   transform: rotate(90deg);
 }
 .v2-auth-close svg { width: 20px; height: 20px; }
@@ -1586,18 +1411,17 @@
 }
 
 /* ---------------------------------------------------------------
-   Entrance — none.
-   design.md: "Reveal pattern: NONE. The page is composed and present
-   on load." The staggered fade-and-rise was applied to ~69 elements;
-   it made every page feel like it was assembling itself for the
-   visitor. Now the page is simply there. The class stays (it is used
-   across many routes) but is inert.
+   Entrance
    --------------------------------------------------------------- */
 
 .v2-in {
-  opacity: 1;
-  transform: none;
-  animation: none;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: v2-in 0.9s var(--ease) forwards;
+  animation-delay: var(--d, 0s);
+}
+@keyframes v2-in {
+  to { opacity: 1; transform: none; }
 }
 
 /* ---------------------------------------------------------------
@@ -1606,31 +1430,6 @@
    is both blurred and animating has to re-rasterise every frame. These
    rules keep the look while giving the compositor a cheaper job.
    --------------------------------------------------------------- */
-
-/* ---------------------------------------------------------------
-   Magnetic scroll
-   Native CSS scroll-snap, `proximity` (not `mandatory`) so it only
-   pulls into place once the user has basically stopped — never a
-   scroll-jack that fights a flick or traps the wheel. Only the hero
-   is a snap point: one clean landing as you leave it, then normal
-   free scroll the rest of the page. Snapping every section made the
-   whole page feel like it kept grabbing the wheel.
-   --------------------------------------------------------------- */
-html {
-  scroll-snap-type: y proximity;
-}
-
-.v2-content > section:first-child {
-  scroll-snap-align: start;
-  scroll-snap-stop: normal;
-  scroll-margin-top: 64px; /* clears the fixed navbar */
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-snap-type: none;
-  }
-}
 
 /* off-screen sections skip layout, style and paint entirely */
 .v2-content > section {
@@ -1724,11 +1523,11 @@ html {
   margin: -4px 0 16px;
   padding: 10px 13px;
   border-radius: 10px;
-  border: 1px solid rgba(214, 51, 108, 0.35);
-  background: rgba(214, 51, 108, 0.08);
+  border: 1px solid rgba(247, 37, 133, 0.35);
+  background: rgba(247, 37, 133, 0.10);
   font-size: 13.5px;
   line-height: 1.5;
-  color: #b3245f;
+  color: #ffb3d4;
 }
 
 .v2-auth-demo {
@@ -1743,7 +1542,7 @@ html {
   padding: 2px 6px;
   border-radius: 5px;
   border: 1px solid var(--line);
-  background: rgba(10, 10, 10, 0.04);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--text-dim);
 }
 
@@ -1797,7 +1596,7 @@ html {
   margin: 0 auto 26px;
   border-radius: 16px;
   background: var(--grad-brand);
-  box-shadow: none;
+  box-shadow: 0 0 44px -6px rgba(247, 37, 133, 0.7);
   animation: v2-mark-in 1.1s var(--ease) both;
 }
 @keyframes v2-mark-in {
@@ -1845,7 +1644,7 @@ html {
   padding: 22px 20px;
   border-radius: 16px;
   border: 1px solid var(--line);
-  background: rgba(10, 10, 10, 0.03);
+  background: rgba(10, 6, 22, 0.62);
   backdrop-filter: blur(16px);
   animation: v2-rise 0.9s var(--ease) var(--d, 0.4s) both;
 }
@@ -1853,7 +1652,7 @@ html {
   width: 24px;
   height: 24px;
   color: var(--blush);
-  filter: drop-shadow(0 0 12px rgba(var(--accent-rgb), 0.4));
+  filter: drop-shadow(0 0 12px rgba(247, 37, 133, 0.4));
 }
 .v2-welcome-beat h2 {
   margin: 14px 0 0;
@@ -1883,7 +1682,7 @@ html {
   z-index: 3;
   pointer-events: none;
   opacity: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(250, 250, 250, 0.95), rgba(250, 250, 250, 0.22) 40%, transparent 70%);
+  background: radial-gradient(circle at 50% 50%, rgba(255, 240, 255, 0.95), rgba(247, 37, 133, 0.22) 40%, transparent 70%);
 }
 .v2-welcome.is-launched .v2-welcome-bloom {
   animation: v2-bloom 2.1s ease-in forwards;
@@ -2344,15 +2143,15 @@ html {
 .v2-dash-kpis {
   display: grid;
   gap: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(178px, 1fr));
 }
-.v2-kpi { display: flex; flex-direction: column; gap: 8px; padding: 19px 20px; }
-.v2-kpi-label { font-size: 22px; font-weight: 700; color: var(--text); line-height: 1.3; }
+.v2-kpi { display: flex; flex-direction: column; gap: 7px; padding: 17px 18px; }
+.v2-kpi-label { font-size: 12px; color: var(--text-faint); }
 .v2-kpi-value {
-  font-size: 40px;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.05;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 .v2-kpi-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -2482,7 +2281,7 @@ html {
 .v2-table-right { text-align: right; }
 .v2-table-who { display: flex; align-items: center; gap: 10px; }
 
-.v2-call-tag--passed { background: var(--ink-2); color: var(--text-dim); }
+.v2-call-tag--passed { background: rgba(255, 138, 0, 0.15); color: #ffb066; }
 
 /* ---- reports ---- */
 
@@ -2677,7 +2476,7 @@ html {
   padding: 11px 16px;
   border-radius: 999px;
   border: 1px solid var(--line-2);
-  background: rgba(10, 10, 10, 0.025);
+  background: rgba(18, 10, 31, 0.4);
   color: var(--text);
   font-family: inherit;
   font-size: 14px;
@@ -2685,10 +2484,10 @@ html {
   cursor: pointer;
   transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
 }
-.v2-multiselect-item:hover { border-color: rgba(10, 10, 10, 0.25); }
+.v2-multiselect-item:hover { border-color: rgba(255, 214, 255, 0.35); }
 .v2-multiselect-item[data-active="true"] {
   border-color: var(--magenta-soft);
-  background: rgba(255, 77, 31, 0.92);
+  background: rgba(236, 48, 19, 0.14);
   color: #fff;
 }
 .v2-multiselect-check {

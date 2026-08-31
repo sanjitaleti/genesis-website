@@ -23,5 +23,5 @@ export const MODES: { key: Mode; label: string }[] = [
   { key: "light", label: "Light" },
 ];
 
-export const DEFAULT_ACCENT: Accent = "mono";
-export const DEFAULT_MODE: Mode = "light";
+export const DEFAULT_ACCENT: Accent = "punch";
+export const DEFAULT_MODE: Mode = "dark";

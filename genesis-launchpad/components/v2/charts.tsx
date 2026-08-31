@@ -2,11 +2,7 @@
  * Chart primitives shared by the marketing preview and the real portal.
  *
  * Everything is plain SVG with no runtime dependency: the same shapes the
- * website advertises are the ones the client actually logs into. Brand
- * colors are optional props (defaulted to the existing pink/purple look)
- * so callers can retone without forking the component — the marketing
- * preview uses this to run a warm red/orange/yellow palette without
- * touching what the real dashboard renders.
+ * website advertises are the ones the client actually logs into.
  */
 
 /* ---------------------------------------------------------------- sparkline */
@@ -50,22 +46,12 @@ export function VolumeChart({
   labels,
   id = "vol",
   height = 190,
-  colorA = "#f72585",
-  colorB = "#7b2cbf",
-  dotColor = "#ffd6ff",
-  gridColor = "rgba(10, 10, 10, 0.08)",
-  labelColor = "rgba(10, 10, 10, 0.45)",
 }: {
   a: number[];
   b: number[];
   labels: string[];
   id?: string;
   height?: number;
-  colorA?: string;
-  colorB?: string;
-  dotColor?: string;
-  gridColor?: string;
-  labelColor?: string;
 }) {
   const w = 560;
   const h = height;
@@ -80,8 +66,8 @@ export function VolumeChart({
     >
       <defs>
         <linearGradient id={`${id}Fill`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={colorA} stopOpacity="0.32" />
-          <stop offset="100%" stopColor={colorA} stopOpacity="0" />
+          <stop offset="0%" stopColor="#f72585" stopOpacity="0.32" />
+          <stop offset="100%" stopColor="#f72585" stopOpacity="0" />
         </linearGradient>
         <filter id={`${id}Glow`} x="-20%" y="-40%" width="140%" height="200%">
           <feGaussianBlur stdDeviation="4" result="blur" />
@@ -99,21 +85,21 @@ export function VolumeChart({
           x2={w}
           y1={8 + (i * (h - 16)) / 3}
           y2={8 + (i * (h - 16)) / 3}
-          stroke={gridColor}
+          stroke="rgba(255,214,255,0.07)"
         />
       ))}
 
       <path d={`${pA} L ${w} ${h} L 0 ${h} Z`} fill={`url(#${id}Fill)`} />
-      <path d={pB} fill="none" stroke={colorB} strokeWidth="2" opacity="0.85" />
-      <path d={pA} fill="none" stroke={colorA} strokeWidth="2.4" filter={`url(#${id}Glow)`} />
-      <circle cx={w} cy={h - (a[a.length - 1] / 100) * (h - 16) - 8} r="4" fill={dotColor} />
+      <path d={pB} fill="none" stroke="#7b2cbf" strokeWidth="2" opacity="0.85" />
+      <path d={pA} fill="none" stroke="#f72585" strokeWidth="2.4" filter={`url(#${id}Glow)`} />
+      <circle cx={w} cy={h - (a[a.length - 1] / 100) * (h - 16) - 8} r="4" fill="#ffd6ff" />
 
       {labels.map((m, i) => (
         <text
           key={m}
           x={(i / (labels.length - 1)) * w}
           y={h + 16}
-          fill={labelColor}
+          fill="rgba(247,243,251,0.38)"
           fontSize="10"
           textAnchor={i === 0 ? "start" : i === labels.length - 1 ? "end" : "middle"}
         >
@@ -141,19 +127,11 @@ export function RadarChart({
   now,
   prev,
   size = 210,
-  nowColor = "#f72585",
-  prevColor = "#7b2cbf",
-  gridColor = "rgba(10, 10, 10, 0.09)",
-  labelColor = "rgba(10, 10, 10, 0.55)",
 }: {
   axes: string[];
   now: number[];
   prev: number[];
   size?: number;
-  nowColor?: string;
-  prevColor?: string;
-  gridColor?: string;
-  labelColor?: string;
 }) {
   const s = size;
   const c = s / 2;
@@ -170,7 +148,7 @@ export function RadarChart({
           key={k}
           points={radarPoints(axes.map(() => 100 * k), r, c, c)}
           fill="none"
-          stroke={gridColor}
+          stroke="rgba(255,214,255,0.09)"
         />
       ))}
       {axes.map((label, i) => {
@@ -182,12 +160,12 @@ export function RadarChart({
             y1={c}
             x2={c + Math.cos(a) * r}
             y2={c + Math.sin(a) * r}
-            stroke={gridColor}
+            stroke="rgba(255,214,255,0.07)"
           />
         );
       })}
-      <polygon points={radarPoints(prev, r, c, c)} fill={`${prevColor}38`} stroke={prevColor} strokeWidth="1.4" />
-      <polygon points={radarPoints(now, r, c, c)} fill={`${nowColor}38`} stroke={nowColor} strokeWidth="1.8" />
+      <polygon points={radarPoints(prev, r, c, c)} fill="rgba(123,44,191,0.22)" stroke="#7b2cbf" strokeWidth="1.4" />
+      <polygon points={radarPoints(now, r, c, c)} fill="rgba(247,37,133,0.22)" stroke="#f72585" strokeWidth="1.8" />
       {axes.map((label, i) => {
         const a = (Math.PI * 2 * i) / axes.length - Math.PI / 2;
         return (
@@ -195,7 +173,7 @@ export function RadarChart({
             key={label}
             x={c + Math.cos(a) * (r + 18)}
             y={c + Math.sin(a) * (r + 18)}
-            fill={labelColor}
+            fill="rgba(247,243,251,0.42)"
             fontSize="8.5"
             textAnchor="middle"
             dominantBaseline="middle"
@@ -213,15 +191,9 @@ export function RadarChart({
 export function DonutChart({
   slices,
   size = 168,
-  trackColor = "rgba(10, 10, 10, 0.08)",
-  centerColor = "#0a0a0a",
-  labelColor = "rgba(10, 10, 10, 0.45)",
 }: {
   slices: { label: string; value: number; tone: string }[];
   size?: number;
-  trackColor?: string;
-  centerColor?: string;
-  labelColor?: string;
 }) {
   const total = slices.reduce((sum, s) => sum + s.value, 0) || 1;
   const c = size / 2;
@@ -236,7 +208,7 @@ export function DonutChart({
       role="img"
       aria-label="How calls resolved"
     >
-      <circle cx={c} cy={c} r={r} fill="none" stroke={trackColor} strokeWidth="14" />
+      <circle cx={c} cy={c} r={r} fill="none" stroke="rgba(255,214,255,0.07)" strokeWidth="14" />
       {slices.map((s) => {
         const len = (s.value / total) * circumference;
         const dash = `${len} ${circumference - len}`;
@@ -258,10 +230,10 @@ export function DonutChart({
         offset += len;
         return el;
       })}
-      <text x={c} y={c - 4} textAnchor="middle" fill={centerColor} fontSize="26" fontWeight="600">
+      <text x={c} y={c - 4} textAnchor="middle" fill="#f7f3fb" fontSize="26" fontWeight="600">
         {total.toLocaleString()}
       </text>
-      <text x={c} y={c + 14} textAnchor="middle" fill={labelColor} fontSize="10">
+      <text x={c} y={c + 14} textAnchor="middle" fill="rgba(247,243,251,0.42)" fontSize="10">
         total calls
       </text>
     </svg>
@@ -274,16 +246,10 @@ export function ColumnChart({
   values,
   labels,
   height = 150,
-  colorStart = "#f72585",
-  colorEnd = "#7b2cbf",
-  labelColor = "rgba(10, 10, 10, 0.45)",
 }: {
   values: number[];
   labels: string[];
   height?: number;
-  colorStart?: string;
-  colorEnd?: string;
-  labelColor?: string;
 }) {
   const w = 560;
   const h = height;
@@ -295,8 +261,8 @@ export function ColumnChart({
     <svg viewBox={`0 0 ${w} ${h + 20}`} className="v2-chart" role="img" aria-label="Calls by hour of day">
       <defs>
         <linearGradient id="colFill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={colorStart} stopOpacity="0.95" />
-          <stop offset="100%" stopColor={colorEnd} stopOpacity="0.35" />
+          <stop offset="0%" stopColor="#f72585" stopOpacity="0.95" />
+          <stop offset="100%" stopColor="#7b2cbf" stopOpacity="0.35" />
         </linearGradient>
       </defs>
       {values.map((v, i) => {
@@ -319,7 +285,7 @@ export function ColumnChart({
             key={i}
             x={i * (bw + gap) + bw / 2}
             y={h + 14}
-            fill={labelColor}
+            fill="rgba(247,243,251,0.38)"
             fontSize="9.5"
             textAnchor="middle"
           >

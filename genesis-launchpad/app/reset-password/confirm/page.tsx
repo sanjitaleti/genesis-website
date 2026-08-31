@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AuroraField } from "@/components/v2/AuroraField";
 import { ResetPasswordConfirmForm } from "@/components/v2/ResetPasswordConfirmForm";
 import { IconX } from "@/components/v2/icons";
 
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 export default function ResetPasswordConfirmPage() {
   return (
     <>
+      <AuroraField />
 
       <Link href="/sign-in" className="v2-auth-close" aria-label="Close and go back">
         <IconX />

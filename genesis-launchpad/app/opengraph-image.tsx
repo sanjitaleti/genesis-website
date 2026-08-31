@@ -11,23 +11,22 @@ export default function Image() {
         style={{
           width: "100%",
           height: "100%",
-          background: "#ffffff",
+          background: "#060809",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           padding: "90px",
-          color: "#0a0a0a",
+          color: "#fff",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <div
             style={{
-              width: 30,
-              height: 30,
-              display: "flex",
-              background: "#ff4d1f",
-              clipPath:
-                "polygon(50% 0%, 58% 38%, 100% 50%, 58% 62%, 50% 100%, 42% 62%, 0% 50%, 42% 38%)",
+              width: 34,
+              height: 34,
+              borderRadius: 10,
+              background:
+                "linear-gradient(100deg, #5a189a 0%, #f72585 55%, #ff7ab8 100%)",
             }}
           />
           <div style={{ fontSize: 26, letterSpacing: "0.02em", opacity: 0.75 }}>
