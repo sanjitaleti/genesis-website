@@ -112,3 +112,51 @@ Note:       Found and fixed a real bug while verifying — `.v2-panel--glass`
             `.v2-dock`'s multi-function blur+saturate survives unprefixed.
             Removed the duplicate. Worth knowing: do not hand-write
             `-webkit-backdrop-filter` in this codebase.
+
+---
+
+## Run 2 — 2026-08-31 — Item 2/5 (deep pass on plumbing) — COMPLETE
+
+Did:        Deep pass on `/ai-receptionist/plumbing` only, no new routes.
+            Added a `.v2-bento--pairs` modifier to `app/v2.css` and applied it
+            to the capabilities grid; increased the timeline section's padding
+            from `20px 100px` to `44px 124px`.
+
+Verified:   - Orphan measured before: 3 cards at y=2406, 1 alone at y=2834.
+              After: `cardsPerRow [2,2]`, `gridTemplateColumns 332px 332px`.
+            - Real Tab keypress → `matches(':focus-visible') === true`,
+              outline `rgb(255,92,168) solid 2px`, offset `3px`.
+            - `tsc --noEmit` clean; `npm run build` "✓ Compiled successfully"
+            - 375 / 768 / 1180 → zero horizontal overflow at all three
+            - Full-page screenshots at 1180 and 375: timeline reads well at
+              both; glass CTA panel visibly more luminous than sibling panels
+
+Committed:  Item 2/5 — deep pass on the plumbing page
+
+Next:       Item 3/5 — build /ai-receptionist/electrical, reusing the pattern
+            proven in items 1–2 (`.v2-panel--glass`, `.v2-magnetic`,
+            `.v2-bento--pairs`, and the timeline shape adapted to electrical).
+
+Decisions:  - Kept the deep pass to objective fixes rather than taste
+              adjustments. Both changes are measurable problems: a card
+              orphaned on its own row, and every section identically padded so
+              the signature section carried no extra weight. Deliberately did
+              not re-tune type scale or rewrite copy — that would have been
+              preference, not correction, and the page already reads well.
+            - `.v2-bento--pairs` is opt-in rather than changing `.v2-bento`
+              itself, so the 3-card homepage bento and 6-card features bento
+              are untouched.
+            - Left the timeline's single bright node on "Answered on the
+              second ring" rather than moving it to the final step. That
+              moment is the actual differentiator (every competitor's line
+              goes to voicemail at 12:41am); the last step is the outcome it
+              produces, not the claim.
+
+Blocked:    Nothing new. The hvac breadcrumb issue from Run 1 still stands as
+            logged-not-fixed.
+
+Correction: A probe earlier in this run appeared to show the primary CTA had
+            no focus ring (`outline: ... none 1.5px`). That was a bad test —
+            programmatic `.focus()` does not reliably trigger `:focus-visible`.
+            Re-tested with a real Tab press: the ring is present and correct.
+            No accessibility bug, and nothing was changed for it.
