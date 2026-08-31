@@ -252,3 +252,103 @@ Decisions:  - Third re-argument of the timeline rather than a reskin: roofing's
 
 Blocked:    Nothing new. The hvac breadcrumb pattern is now mirrored on all
             three new pages, still logged-not-fixed as instructed.
+
+---
+
+## Run 5 — 2026-08-31 — Item 5/5 (site-wide polish pass) — COMPLETE
+
+Did:        Audited every existing marketing page against DIRECTION.md at 375
+            and 1180 — `/`, `/features`, `/pricing`, `/contact`, `/portal`,
+            `/configurator`, `/ai-receptionist/hvac`. Measured horizontal
+            overflow, `<h1>` count, images missing alt, touch-target heights,
+            input font-size, and grid row occupancy.
+
+            Made exactly ONE change, committed on its own:
+            - `Polish 1/n: fix orphaned capability card on the hvac page`
+              hvac's 4 capability cards sat 3-then-1 in the 3-column bento
+              while its three new siblings render 2x2. Applied the existing
+              `.v2-bento--pairs` modifier. Layout only.
+
+Verified:   - hvac after fix at 1180: `perRow [2,2]`, `cols 538px 538px`,
+              zero overflow
+            - All audited pages: `scrollWidth - clientWidth === 0` at 375
+            - Exactly one `<h1>` per page; zero images missing alt
+            - Contact + configurator inputs at 17px (≥16px, so no iOS
+              zoom-on-focus) and 58px tall
+            - `tsc --noEmit` clean; `npm run build` clean, all four
+              `/ai-receptionist/*` routes prerendered
+
+Committed:  Polish 1/n: fix orphaned capability card on the hvac page
+
+Next:       Queue exhausted. Loop stopped.
+
+Decisions:  - Only one fix met the bar. The instruction was that existing pages
+              are already approved and the threshold for touching them is
+              objective inconsistency, not preference — so I did not "improve"
+              anything that merely looked improvable.
+
+Blocked / for your attention, in priority order:
+
+  1. **The three new pages are orphans — nothing links to them.**
+     Grepped every `href` in `app/` and `components/`: the ONLY internal link
+     to any trade page is `/ai-receptionist/hvac`, from the homepage's "Built
+     for trades…" line. `/plumbing`, `/electrical` and `/roofing` are in
+     sitemap.xml but unreachable by crawling or by a visitor browsing the
+     site, which materially limits what last night's work is worth.
+     NOT fixed because item 5 is explicitly layout/CSS-only and the natural
+     fix is adding link copy to your homepage — wording on your own homepage
+     is exactly the call you'd want to make yourself rather than have me
+     invent at 4am.
+     Suggested (2 minutes): change the homepage's "Built for trades, clinics,
+     salons…" line so each trade links to its page, or add a short row of
+     links beneath it. Your wording.
+
+  2. `/features` capabilities bento renders 3 / 2 / 1 at desktop — the 6th
+     card sits alone. SKIPPED deliberately: unlike hvac, the asymmetry is
+     explicitly authored (`.v2-bento > :nth-child(5) { grid-column: span 2 }`)
+     and `/features` has no sibling page to be inconsistent with, so changing
+     it would be me overriding an approved design on taste rather than fixing
+     a defect.
+
+  3. Breadcrumb JSON-LD: position 2 ("AI Receptionist") points at the leaf URL
+     on all four trade pages because no `/ai-receptionist` index route exists.
+     Mirrored not fixed, per instruction. Proper fix is an index page plus
+     updating four schemas.
+
+---
+
+## NIGHT SUMMARY — 2026-08-31
+
+All 5 queue items complete. Loop stopped. **Nothing pushed** — everything is
+committed on `worktree-genesis-lp-kokonut`, ahead of `origin/main`.
+
+Shipped:
+  1. `/ai-receptionist/plumbing` — new page
+  2. Deep pass on it (orphan card fix + scroll pacing)
+  3. `/ai-receptionist/electrical` — new page
+  4. `/ai-receptionist/roofing` — new page
+  5. Site-wide polish audit → one fix (hvac orphan card)
+
+New reusable primitives in `app/v2.css` + `components/v2/`:
+  - `.v2-panel--glass` — heightened variant of the existing frosted panel,
+    used on exactly one focal surface per page
+  - `.v2-magnetic` + `MagneticCta.tsx` — cursor-proximity CTA, capped at 9px,
+    genuinely inert (listeners never attached) on touch and reduced-motion
+  - `.v2-callline` — the call timeline, brand gradient as its structural spine
+  - `.v2-bento--pairs` — two-up grid for even card counts
+
+Two real bugs found and fixed while verifying, neither of which would have
+shown up in a build:
+  - `.v2-panel--glass` had `backdrop-filter` silently stripped from the
+    SERVED css by the build's prefixer, because I hand-wrote a
+    `-webkit-backdrop-filter` duplicate. Do not do that in this codebase.
+  - An orphaned 4th capability card on hvac (and initially plumbing).
+
+One near-miss worth knowing: a draft roofing timeline step read "seven calls
+in the first hour" — an invented statistic. Caught and rewritten
+qualitatively before commit.
+
+To review:
+    git log --oneline origin/main..HEAD
+Top action item is Blocked #1 above — the three new pages have no internal
+links pointing at them.
