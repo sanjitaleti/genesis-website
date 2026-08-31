@@ -160,3 +160,52 @@ Correction: A probe earlier in this run appeared to show the primary CTA had
             programmatic `.focus()` does not reliably trigger `:focus-visible`.
             Re-tested with a real Tab press: the ring is present and correct.
             No accessibility bug, and nothing was changed for it.
+
+---
+
+## Run 3 — 2026-08-31 — Item 3/5 (electrical page) — COMPLETE
+
+Did:        Built `/ai-receptionist/electrical`
+            (`app/(marketing)/ai-receptionist/electrical/page.tsx`) and added
+            its sitemap entry at priority 0.8. No new CSS — reused the
+            primitives from items 1–2 unchanged.
+
+Verified:   - `tsc --noEmit` clean; `npm run build` clean, all three
+              `/ai-receptionist/*` routes prerendered
+            - 375 and 1180 → zero horizontal overflow, nothing past viewport
+            - 6 timeline steps; exactly 1 `.v2-panel--glass`; 2 `.v2-magnetic`
+              (both primary CTAs); capabilities 2-per-row desktop, 1 mobile
+            - Page JSON-LD parses as `FAQPage` + `BreadcrumbList` (the third
+              block on the page is the site-wide StructuredData from layout)
+            - Magnetic confirmed inert on coarse pointer (no inline transform
+              written after a dispatched pointermove)
+
+Committed:  Item 3/5 — build /ai-receptionist/electrical
+
+Next:       Item 4/5 — build /ai-receptionist/roofing (storm damage, leaks,
+            inspections, insurance jobs, seasonal demand), same pattern.
+
+Decisions:  - **Reused the call timeline on electrical**, which changes its
+              status from "signature move unique to the plumbing page" (how it
+              was framed when approved) to a shared pattern across the trade
+              pages. Reasoning: item 3's brief says to reuse the proven
+              pattern from items 1–2, and three sibling landing pages sharing
+              one strong structural device reads as a designed family, whereas
+              one page having it and two not reads as unfinished. The "one
+              signature move" constraint still holds *within* each page — no
+              second effect was added. FLAGGING THIS FOR REVIEW: if the intent
+              was strictly plumbing-only, remove the "One call, minute by
+              minute" section from electrical (and roofing) — it is one
+              self-contained section per page, no other code depends on it.
+            - The timeline is genuinely re-argued, not word-swapped: plumbing
+              is about stopping damage, electrical is about making the property
+              safe (shock/burning triage, then make-safe, then scope).
+            - "The big jobs start small" card makes a qualitative claim about
+              panel upgrades rather than quoting a ticket size, because there
+              is no sourced figure for that in the repo.
+            - Permit/inspection FAQ explicitly says it will not invent code
+              requirements or promise inspection dates — keeps the page from
+              implying a capability the product doesn't have.
+
+Blocked:    Nothing new. hvac breadcrumb issue still logged-not-fixed, and the
+            same mirrored pattern is now on electrical too.
