@@ -1,6 +1,10 @@
-# Run — /ai-receptionist/plumbing
+# Tonight's run — 5-item queue, depth before breadth
 
 Paste the block below after `/loop 25m`.
+
+Queue: plumbing page → deep pass on it → electrical → roofing →
+site-wide polish. Worked strictly in order, one at a time, so an early
+usage-limit stop leaves one excellent page rather than three rough ones.
 
 Decisions already made with the user (do not re-litigate these at 3am):
 
@@ -28,9 +32,13 @@ source of truth for where the last run stopped. Then read
 genesis-launchpad/DIRECTION.md and follow it exactly.
 
 GOAL
-Build /ai-receptionist/plumbing, matching /ai-receptionist/hvac in
-structure, tone and metadata — but executed with noticeably more visual
-craft: restrained, minimal, zero AI-slop.
+Work the QUEUE at the bottom of this prompt, in order, one item at a
+time. Item 1 is below; do not start item 2 until item 1 is committed
+and verified.
+
+ITEM 1 — Build /ai-receptionist/plumbing, matching /ai-receptionist/hvac
+in structure, tone and metadata — but executed with noticeably more
+visual craft: restrained, minimal, zero AI-slop.
 
 DESIGN — decisions already made, do not re-open
 - DIRECTION.md's palette, gradient and type system are NOT up for
@@ -107,10 +115,59 @@ The hvac breadcrumb's JSON-LD position 2 ("AI Receptionist") points at
 consistency and note it in PROGRESS.md as separate cleanup. Do not
 expand scope to build an index page tonight.
 
+QUEUE — work this list IN ORDER, top to bottom
+Finish and commit each item completely before starting the next. Never
+run two items at once. Record which item you are on at the top of every
+PROGRESS.md block, e.g. "Item 2/5 — deep pass".
+
+The order is deliberate: depth before breadth. Item 1 is the template
+items 3 and 4 copy, so it gets perfected FIRST — otherwise you mass-
+produce a mediocre pattern. If a usage limit ends the night early, this
+order means waking up to one excellent page rather than three rough ones.
+
+  1. /ai-receptionist/plumbing — the full GOAL + DESIGN + DONE spec above.
+  2. DEEP PASS on the plumbing page ONLY. No new routes. Refine the
+     signature move, typographic rhythm, scroll pacing and the glass /
+     magnetic details until the page is genuinely excellent, not merely
+     correct. Re-verify at 375 / 768 / desktop after each change. This
+     item has no fixed end state — improve until item 3 looks like the
+     better use of remaining budget.
+  3. /ai-receptionist/electrical — same structure and rules as item 1,
+     copy rewritten for electrical (panel upgrades, outages, fault
+     finding, permits/licensing, emergency call-outs). Reuse the now-
+     proven pattern from items 1–2, including .v2-panel--glass and
+     .v2-magnetic, exactly as scoped. Add the sitemap entry (0.8).
+  4. /ai-receptionist/roofing — same again (storm damage, leaks,
+     inspections, insurance jobs, seasonal demand). Sitemap entry (0.8).
+  5. SITE-WIDE POLISH PASS — audit the EXISTING marketing pages against
+     DIRECTION.md and fix inconsistencies: spacing rhythm, panel
+     treatment, hover states, focus rings, responsive breaks.
+     Constraints, non-negotiable:
+       - Do NOT rewrite existing copy. Layout and CSS only.
+       - Do NOT restyle the identity. No palette/type/gradient changes.
+       - ONE fix per commit, each independently revertible, each with a
+         one-line rationale in the commit message.
+       - If a "fix" is really a taste preference rather than an
+         inconsistency with DIRECTION.md, skip it and log it under
+         Blocked instead. Existing pages are already approved; the bar
+         for touching them is objective inconsistency, not opinion.
+
+WHEN THE QUEUE IS EXHAUSTED — STOP THE LOOP
+When every item above is complete, or the token threshold is hit: write
+a final PROGRESS.md block summarising the night, then STOP THE LOOP
+(ScheduleWakeup with stop: true). Do NOT invent additional scope. An
+idle loop re-reading context is waste; self-directed 4am scope creep is
+worse.
+
 TOKEN BUDGET
 When your remaining token count drops below 2,000,000: stop taking new
 work, finish and commit whatever is in flight, write a final PROGRESS.md
 block, end cleanly. Never stop mid-edit with uncommitted changes.
+
+USAGE-LIMIT AWARENESS
+A usage-limit stop is expected and fine — it is what /loop exists for.
+Do not try to race it or work faster to beat it. Just keep commits and
+PROGRESS.md current so the next tick resumes cheaply.
 
 VERIFICATION
 Never claim something works because it should. Run the command and show
