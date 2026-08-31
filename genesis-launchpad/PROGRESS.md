@@ -209,3 +209,46 @@ Decisions:  - **Reused the call timeline on electrical**, which changes its
 
 Blocked:    Nothing new. hvac breadcrumb issue still logged-not-fixed, and the
             same mirrored pattern is now on electrical too.
+
+---
+
+## Run 4 — 2026-08-31 — Item 4/5 (roofing page) — COMPLETE
+
+Did:        Built `/ai-receptionist/roofing`
+            (`app/(marketing)/ai-receptionist/roofing/page.tsx`) and added its
+            sitemap entry at priority 0.8. No new CSS.
+
+Verified:   - `tsc --noEmit` clean; `npm run build` clean, all four
+              `/ai-receptionist/*` routes prerendered
+            - 375 and 1180 → zero horizontal overflow
+            - 6 timeline steps; exactly 1 `.v2-panel--glass`; 2 `.v2-magnetic`;
+              capabilities 2-per-row desktop / 1 mobile
+            - JSON-LD parses as `FAQPage` + `BreadcrumbList`
+            - Grepped `lib/v2/pricing-tiers.ts` to confirm the "no per-call
+              pricing" FAQ claim before shipping it — model is setup + flat
+              retainer, no usage component, so the claim holds
+
+Committed:  Item 4/5 — build /ai-receptionist/roofing
+
+Next:       Item 5/5 — site-wide polish pass. Audit EXISTING marketing pages
+            against DIRECTION.md; layout/CSS only, no copy rewrites, no
+            identity changes, one revertible fix per commit, skip anything
+            that is preference rather than objective inconsistency.
+
+Decisions:  - Third re-argument of the timeline rather than a reskin: roofing's
+              distinguishing problem is volume (a storm puts every damaged roof
+              on the phone at once), so the bright node sits on "All of them
+              answered" rather than on a triage step.
+            - Caught myself about to invent a statistic. A draft timeline step
+              read "seven calls in the first hour" — a fabricated number.
+              Rewritten to make the same point qualitatively. Worth noting
+              because it is exactly the failure mode the no-invented-stats rule
+              exists for, and it appeared naturally while writing narrative
+              copy.
+            - The concurrency claim ("calls that land while another is still
+              running get answered too") is consistent with the site's existing
+              "answers every call" positioning and is inherent to the product,
+              so it is not an overclaim.
+
+Blocked:    Nothing new. The hvac breadcrumb pattern is now mirrored on all
+            three new pages, still logged-not-fixed as instructed.
