@@ -17,7 +17,10 @@ export const dynamic = "force-dynamic";
 const FETCH_TIMEOUT_MS = 8000;
 const MAX_HTML_BYTES = 400_000;
 const MAX_TEXT_CHARS = 6000;
-const MODEL = "claude-haiku-4-5-20251001";
+/* Routed through OpenRouter (OpenAI-compatible: Bearer auth,
+   /chat/completions), same as /api/ai-dock. */
+const MODEL = "anthropic/claude-haiku-4.5";
+const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
 const BLOCKED_HOSTS = /^(localhost|0\.0\.0\.0|127\.|10\.|192\.168\.|169\.254\.|::1$|\[::1\])/i;
 const isPrivateIpV4 = (host: string) => {
@@ -89,7 +92,7 @@ async function fetchSiteText(url: URL): Promise<string | null> {
 }
 
 async function draftTranscript(siteText: string, context: Record<string, string>): Promise<string | null> {
-  const key = process.env.ANTHROPIC_API_KEY;
+  const key = process.env.OPENROUTER_API_KEY;
   if (!key) return null;
 
   const prompt = `You are drafting a SHORT illustrative example of a phone call, to show a prospective client roughly what an AI receptionist could sound like for their specific business. This is a mockup for a sales tool, not a real recording.
@@ -110,13 +113,14 @@ Write a short (120-200 word) sample phone call between a "Caller" and "Agent", g
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15000);
   try {
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
+    const res = await fetch(OPENROUTER_URL, {
       method: "POST",
       signal: controller.signal,
       headers: {
         "content-type": "application/json",
-        "x-api-key": key,
-        "anthropic-version": "2023-06-01",
+        authorization: `Bearer ${key}`,
+        "HTTP-Referer": "https://www.genesislp.ai",
+        "X-Title": "Genesis LP",
       },
       body: JSON.stringify({
         model: MODEL,
@@ -125,14 +129,16 @@ Write a short (120-200 word) sample phone call between a "Caller" and "Agent", g
       }),
     });
     if (!res.ok) {
-      console.error("[configurator/analyze] Anthropic request failed:", res.status, await res.text().catch(() => ""));
+      console.error("[configurator/analyze] OpenRouter request failed:", res.status, await res.text().catch(() => ""));
       return null;
     }
-    const data = (await res.json()) as { content?: { type: string; text?: string }[] };
-    const text = data.content?.find((c) => c.type === "text")?.text?.trim();
+    const data = (await res.json()) as {
+      choices?: { message?: { content?: string } }[];
+    };
+    const text = data.choices?.[0]?.message?.content?.trim();
     return text || null;
   } catch (err) {
-    console.error("[configurator/analyze] Anthropic call errored:", err);
+    console.error("[configurator/analyze] OpenRouter call errored:", err);
     return null;
   } finally {
     clearTimeout(timeout);

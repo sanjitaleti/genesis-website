@@ -11,7 +11,11 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const MODEL = "claude-haiku-4-5-20251001";
+/* Routed through OpenRouter, which is OpenAI-compatible: Bearer auth and
+   /chat/completions, with the system prompt as the first message rather
+   than a top-level field. */
+const MODEL = "anthropic/claude-haiku-4.5";
+const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 const MAX_MESSAGES = 12;
 const MAX_MESSAGE_CHARS = 2000;
 
@@ -39,7 +43,7 @@ Rules:
 
 export async function POST(req: Request) {
   try {
-    const key = process.env.ANTHROPIC_API_KEY;
+    const key = process.env.OPENROUTER_API_KEY;
     if (!key) {
       return NextResponse.json(
         { ok: false, error: "not_configured" },
@@ -72,29 +76,32 @@ export async function POST(req: Request) {
     const timeout = setTimeout(() => controller.abort(), 20000);
 
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
+      const res = await fetch(OPENROUTER_URL, {
         method: "POST",
         signal: controller.signal,
         headers: {
           "content-type": "application/json",
-          "x-api-key": key,
-          "anthropic-version": "2023-06-01",
+          authorization: `Bearer ${key}`,
+          // optional, but it's how OpenRouter attributes the traffic
+          "HTTP-Referer": "https://www.genesislp.ai",
+          "X-Title": "Genesis LP",
         },
         body: JSON.stringify({
           model: MODEL,
           max_tokens: 400,
-          system: SYSTEM_PROMPT,
-          messages,
+          messages: [{ role: "system", content: SYSTEM_PROMPT }, ...messages],
         }),
       });
 
       if (!res.ok) {
-        console.error("[ai-dock] Anthropic request failed:", res.status, await res.text().catch(() => ""));
+        console.error("[ai-dock] OpenRouter request failed:", res.status, await res.text().catch(() => ""));
         return NextResponse.json({ ok: false, error: "upstream" }, { status: 502 });
       }
 
-      const data = (await res.json()) as { content?: { type: string; text?: string }[] };
-      const text = data.content?.find((c) => c.type === "text")?.text?.trim();
+      const data = (await res.json()) as {
+        choices?: { message?: { content?: string } }[];
+      };
+      const text = data.choices?.[0]?.message?.content?.trim();
       if (!text) {
         return NextResponse.json({ ok: false, error: "empty" }, { status: 502 });
       }
