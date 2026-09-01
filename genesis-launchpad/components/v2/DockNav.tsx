@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IconHome, IconSpark, IconChart, IconCard } from "./icons";
+import { GenesisLogo } from "./GenesisLogo";
 
 /** Floating dock. Icons only; the active item expands to show its label. */
 const items = [
@@ -18,6 +19,13 @@ export function DockNav() {
   return (
     <div className="v2-dock-shell">
       <nav className="v2-dock" aria-label="Site">
+        {/* The mark anchors the dock — the site has no header, so this is
+            the only persistent piece of brand on screen. */}
+        <Link href="/" className="v2-dock-mark" aria-label="Genesis LP — home">
+          <GenesisLogo size={18} />
+        </Link>
+        <span className="v2-dock-sep" aria-hidden="true" />
+
         {items.map(({ href, label, Icon }) => {
           const active = href === "/" ? pathname === "/" : pathname?.startsWith(href);
           return (

@@ -20,15 +20,15 @@ export default function Image() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <div
-            style={{
-              width: 34,
-              height: 34,
-              borderRadius: 10,
-              background:
-                "linear-gradient(100deg, #5a189a 0%, #f72585 55%, #ff7ab8 100%)",
-            }}
-          />
+          {/* the open-line mark, drawn flat for Satori */}
+          <svg width="38" height="38" viewBox="0 0 48 48">
+            <path
+              d="M 33.85 11.4 A 16 16 0 1 0 40 24 L 28 24"
+              fill="none"
+              stroke="#f72585"
+              strokeWidth="5.5"
+              strokeLinecap="round"
+            /></svg>
           <div style={{ fontSize: 26, letterSpacing: "0.02em", opacity: 0.75 }}>
             Genesis LP
           </div>

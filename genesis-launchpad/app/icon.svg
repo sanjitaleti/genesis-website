@@ -1,11 +1,17 @@
 <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="g" x1="8%" y1="0%" x2="92%" y2="100%">
       <stop offset="0%" stop-color="#5a189a" />
       <stop offset="55%" stop-color="#f72585" />
       <stop offset="100%" stop-color="#ff7ab8" />
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="14" fill="#060809" />
-  <rect x="18" y="18" width="28" height="28" rx="8" fill="url(#g)" />
+  <rect width="64" height="64" rx="14" fill="#04030A" />
+  <!-- The open line. 48-unit mark centred in the 64 tile; stroke thickened
+       to 6.5 because at favicon scale a hairline aperture closes up. -->
+  <g transform="translate(8 8)">
+    <path d="M 33.85 11.4 A 16 16 0 1 0 40 24 L 28 24"
+          fill="none" stroke="url(#g)" stroke-width="6.5"
+          stroke-linecap="round" stroke-linejoin="round" />
+  </g>
 </svg>

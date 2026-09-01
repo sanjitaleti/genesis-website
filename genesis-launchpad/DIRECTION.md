@@ -54,8 +54,37 @@ consultancy. The gradient IS the brand.
 --grad-text      linear-gradient(100deg, #c77dff, #f72585 55%, #ffd6ff)
 ```
 
-**Type:** Apple system stack (`-apple-system`, SF Pro). No webfont. Do not
-introduce Space Grotesk, Inter, JetBrains Mono, or a script face.
+**Type:** the brand system, added 2026-08-31 with the identity. Superseded the
+old "Apple system stack, no webfont" rule — that was a placeholder, not a
+choice, and it meant the site looked like whatever device opened it.
+
+| Role | Face | Weights |
+|---|---|---|
+| Display (`--font-display`) | **Schibsted Grotesk** | 500/600/700/800, tracking −0.02 to −0.03em |
+| Body & UI (`--font-sans`) | **Hanken Grotesk** | 400/500/600, line-height 1.6 |
+| Figures (`--font-mono`) | **JetBrains Mono** | 400/500, always `tabular-nums` |
+
+Loaded via `next/font/google` in `app/layout.tsx`. Display above ~24px only.
+Do **not** introduce Inter, Space Grotesk, Plus Jakarta Sans, or a script face —
+the first three are the faces every AI-built site converges on, and the script
+accent was already tried and removed.
+
+**Logo:** the "open line" monogram — `components/v2/GenesisLogo.tsx`
+(`<GenesisLogo>` and `<GenesisLockup>`), favicon at `app/icon.svg`. A geometric
+G drawn as one continuous stroke that never closes; the aperture is the idea
+(the line is always open). Do not close the gap, rotate it, or crowd it — clear
+space is one aperture-width. Below 24px the stroke thickens so the aperture
+doesn't optically fill in; the component handles this. Full kit, exported
+assets and usage rules live in `~/Downloads/genesis-lp-brand-v1/`.
+
+**Semantic colours** (state, deliberately separate from brand so a "booked"
+chip can't be mistaken for a brand accent): `--mint #3DDC97` booked/healthy,
+`--amber #FFB454` pending, `--coral #FF5C7A` missed/destructive,
+`--sky #6BA8FF` informational.
+
+**Contrast rule:** violet `#5A189A` is 1.99:1 on the ground — a **surface
+colour only, never text**. Use `--magenta-soft` (7.19:1) for anything a person
+has to read.
 
 **Motion:** glow, float and aurora drift are *wanted here*. `--ease` is
 `cubic-bezier(0.16, 1, 0.3, 1)`. Entrance animations (`.v2-in`) are on.

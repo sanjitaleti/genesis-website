@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { GalaxyLayer } from "@/components/v2/GalaxyLayer";
+import { GenesisLockup } from "@/components/v2/GenesisLogo";
 import {
   IconArrow,
   IconClock,
@@ -337,8 +338,9 @@ export default function V2Landing() {
               color: "var(--text-faint)",
             }}
           >
-            <span style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
-              <span>© {new Date().getFullYear()} Genesis LP</span>
+            <span style={{ display: "flex", flexWrap: "wrap", gap: 16, alignItems: "center" }}>
+              <GenesisLockup size={20} />
+              <span>© {new Date().getFullYear()}</span>
               <span style={{ opacity: 0.6 }}>Voices powered by ElevenLabs</span>
             </span>
             <div style={{ display: "flex", gap: 22, alignItems: "center" }}>
